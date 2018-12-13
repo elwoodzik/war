@@ -12,6 +12,7 @@ class Building extends Sprite {
 
     onClick() {
         this.selectedBorder();
+        this.game.VAR.hud.setInfo(this.info)
     }
 
     selectedBorder() {

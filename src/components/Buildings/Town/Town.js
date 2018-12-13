@@ -4,6 +4,35 @@ class Town extends Buildings {
     constructor(game, options) {
         super(game, options);
 
+
+        this.info = {
+            imageKey: 'town',
+            name : 'Town',
+            descriptios : [
+                'Production',
+                'Gold: 100',
+                'Wood: 100'
+            ],
+            inProgress : false,
+            inProgressTime : 0,
+    
+            // actions : [
+            //     {
+            //         image: this.AssetManager.get('icons'),
+            //         iconLeft: (-46 * 0 + -3 * 0) - 3,
+            //         iconTop: (-38 * 0 + -3 * 0) - 3,
+            //         goldCost: 100,
+            //         woodCost: 0,
+            //         time: 10000,
+            //         // create: {
+            //         //     class: Peasant,
+            //         //     key: 'peasant'
+            //         // },
+            //         // callback: this.buildingUnit
+            //     },
+            // ],    
+        }
+
         this.animations.add({
             key: 'first',
             frames: [

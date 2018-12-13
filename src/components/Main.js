@@ -16,7 +16,7 @@ class Main {
     create() {
         new Map(this.game, {
             key: 'world',
-            json: '../../jsons/map2.json'
+            json: '../../jsons/map2.json',
         }).then((map) => {
             this.game.VAR.map = map;
             new Pathfinder(this.game, {
@@ -86,15 +86,7 @@ class Main {
                 })
 
 
-                new Hud(this.game, {
-                    x: 0,
-                    y: 0,
-                    width: 32 * 5,
-                    height: this.game.height,
-                    fill: 'gray',
-                    static: true,
-
-                })
+                this.game.VAR.hud = new Hud(this.game, {})
 
                 this.game.VAR.sellectedObj = null;
                 this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })

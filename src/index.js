@@ -7,13 +7,14 @@ class Game {
         const gameWidth = 1024;
         const gameHeight = 768;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
-        const scallable = true;
+        const scallable = false;
         const mobile = false;
         const images = {
             world: 'images/world_summer.png',
             peasant: 'images/peasant.png',
             buildings: 'images/buildings.png',
-            gold: 'images/gold.png',
+            gold: 'images/gold.png' ,
+            icons: 'images/icons.png' ,
         }
 
         new Leya(gameWidth, gameHeight, orientation, scallable, mobile, images)

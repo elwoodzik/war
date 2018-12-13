@@ -4,9 +4,9 @@ export const nodeEnv = env.NODE_ENV || 'development';
 
 //10.10.97.126
 export default {
-  // mongodbUri: 'mongodb://192.168.0.192:27017/words',
+  // mongodbUri: 'mongodb://192.168.0.192:27017/test',
   port: 8010,
-  host: env.HOST || '192.168.0.192',
+  host: env.HOST || 'localhost',
   get serverUrl() {
     return `http://${this.host}:${this.port}`;
   }
