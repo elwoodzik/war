@@ -41,29 +41,28 @@ class Hud extends Rect {
         }
     }
 
-
     setInfo(info) {
         console.log(info)
         this.infoName.use(info.name);
         this.infoIcon.animations.playOnce({ key: info.imageKey });
         this.hideDescription();
-        this.showDescription(info)
+        this.showDescription(info.descriptios)
     }
 
-    hideDescription(info) {
+    hideDescription() {
         for (let i = 0; i < this.descriptionsInfo.length; i++) {
             const text = this.descriptionsInfo[i];
             text.used = false;
         }
     }
 
-    showDescription(info) {
-        for (let i = 0; i < info.descriptios.length; i++) {
+    showDescription(descriptios) {
+        for (let i = 0; i < descriptios.length; i++) {
             const text = this.descriptionsInfo[i];
             text.x = 30;
             text.y = 100 + 22 * i;
             text.used = true;
-            text.use(info.descriptios[i])
+            text.use(descriptios[i])
             console.log(text)
         }
     }

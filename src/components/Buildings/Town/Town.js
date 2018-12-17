@@ -41,7 +41,7 @@ class Town extends Buildings {
         });
 
         this.animations.playOnce({ key: 'first', delay: 16 })
-        this.unWalkable(5);
+        this.unWalkable(5, 'town');
     }
 
     update(dt) {

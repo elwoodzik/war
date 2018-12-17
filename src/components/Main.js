@@ -14,96 +14,106 @@ class Main {
     }
 
     create() {
-        new Map(this.game, {
+        this.game.add.map({
             key: 'world',
             json: '../../jsons/map2.json',
         }).then((map) => {
             this.game.VAR.map = map;
-            new Pathfinder(this.game, {
-                json: '../../jsons/path2.json',
-                isRender: true
-            }).then((pathfinder) => {
-                this.game.VAR.pathfinder = pathfinder;
+            console.log(this.game.VAR.map)
 
-                this.game.easystar = new EasyStar.js();
-                this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
-                this.game.easystar.setAcceptableTiles([6, 5, 4, 3, 1]);
-                this.game.easystar.enableDiagonals();
-                this.game.easystar.enableCornerCutting();
+            // new Pathfinder(this.game, {
+            //     json: '../../jsons/path2.json',
+            //     isRender: true
+            // }).then((pathfinder) => {
+            //     this.game.VAR.pathfinder = pathfinder;
 
-                this.game.VAR.cameraMan = this.game.add.rect({
-                    x: 350,
-                    y: 400,
-                    width: 20,
-                    height: 20
-                });
+            this.game.easystar = new EasyStar.js();
 
-                this.game.VAR.cameraSpeed = 700;
+            this.game.easystar.setAcceptableTiles([266]);
+            this.game.easystar.enableDiagonals();
+            this.game.easystar.enableCornerCutting();
+            // this.game.easystar.setIterationsPerCalculation(50);
 
-                this.game.setPortView(2240, 2240);
-                this.game.add.camera({
-                    followed: this.game.VAR.cameraMan
-                })
+            this.game.VAR.cameraMan = this.game.add.rect({
+                x: 350,
+                y: 400,
+                width: 20,
+                height: 20
+            });
 
-                this.game.VAR.player = new Peasant(this.game, {
-                    key: 'peasant',
-                    x: 32 * 9,
-                    y: 32 * 4
-                });
+            this.game.VAR.cameraSpeed = 700;
 
-                for (let i = 0; i < 20; i++) {
-                    new Peasant(this.game, {
-                        key: 'peasant',
-                        x: 32 * i,
-                        y: 32 * 12
-                    });
-                }
-                for (let i = 0; i < 20; i++) {
-                    new Peasant(this.game, {
-                        key: 'peasant',
-                        x: 32 * i,
-                        y: 32 * 13
-                    });
-                }
-                for (let i = 0; i < 20; i++) {
-                    new Peasant(this.game, {
-                        key: 'peasant',
-                        x: 32 * i,
-                        y: 32 * 14
-                    });
-                }
-
-                this.game.VAR.town = new Town(this.game, {
-                    key: 'buildings',
-                    x: 32 * 13,
-                    y: 32 * 11
-                })
-
-                this.game.VAR.goldMine = new GoldMine(this.game, {
-                    key: 'gold',
-                    x: 32 * 1,
-                    y: 32 * 7
-                })
-
-
-                this.game.VAR.hud = new Hud(this.game, {})
-
-                this.game.VAR.sellectedObj = null;
-                this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
-                this.game.VAR.sellectedBorder.hide();
-
-                this.normalMouseClick();
-                // this.mouseElement = {
-                //     x: this.game.mouse.mouseX,
-                //     y: this.game.mouse.mouseY,
-                //     halfHeight: 1,
-                //     halfWidth: 1
-                // }
-                // this.game.add.camera({
-                //     followed: this.mouseElement///this.game.VAR.player
-                // });
-
+            this.game.setPortView(2240, 2240);
+            this.game.add.camera({
+                followed: this.game.VAR.cameraMan
             })
+
+            this.game.VAR.player = new Peasant(this.game, {
+                key: 'peasant',
+                x: 32 * 9,
+                y: 32 * 4
+            });
+
+            this.game.VAR.town = new Town(this.game, {
+                key: 'buildings',
+                x: 32 * 15,
+                y: 32 * 12
+            })
+
+            this.game.VAR.goldMine = new GoldMine(this.game, {
+                key: 'gold',
+                x: 32 * 1,
+                y: 32 * 7
+            })
+            this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
+            const endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
+
+            for (let i = 0; i < 20; i++) {
+                new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * i,
+                    y: 32 * 21
+                });
+            }
+            for (let i = 0; i < 20; i++) {
+                new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * i,
+                    y: 32 * 20
+                });
+            }
+            for (let i = 0; i < 20; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 3),
+                    y: 32 * 19
+                });
+                pes.move(endPos);
+
+            }
+
+
+
+
+            this.game.VAR.hud = new Hud(this.game, {})
+
+            this.game.VAR.sellectedObj = null;
+            this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
+            this.game.VAR.sellectedBorder.hide();
+
+            this.normalMouseClick();
+            // this.mouseElement = {
+            //     x: this.game.mouse.mouseX,
+            //     y: this.game.mouse.mouseY,
+            //     halfHeight: 1,
+            //     halfWidth: 1
+            // }
+            // this.game.add.camera({
+            //     followed: this.mouseElement///this.game.VAR.player
+            // });
+            console.log(this.game.VAR.map)
+
+            // })
         })
     }
 
@@ -131,7 +141,7 @@ class Main {
         this.game.mouse.trigger((mouse) => {
             // this.game.VAR.pathfinder.reRenderTile(Math.floor(this.game.mouse.mouseX / 32), Math.floor(this.game.mouse.mouseY / 32), 6);
             if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.move) {
-                const endPos = this.game.VAR.pathfinder.getTileByMouse();
+                const endPos = this.game.VAR.map.getTileByMouse();
 
                 if (this.game.VAR.sellectedObj.inWooding) {
                     this.game.VAR.sellectedObj.doInTimeStop();

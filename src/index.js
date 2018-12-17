@@ -4,8 +4,8 @@ import Main from './components/Main';
 class Game {
 
     constructor() {
-        const gameWidth = 1024;
-        const gameHeight = 768;
+        const gameWidth = 1280;
+        const gameHeight = 720;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
         const scallable = false;
         const mobile = false;

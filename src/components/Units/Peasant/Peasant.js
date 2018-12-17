@@ -21,15 +21,15 @@ class Peasant extends Units {
 
     extendsMove(nextTile, nextStep, startPos) {
         // nextTile 4 === kopalnia
-        if (nextTile === 4 && !this.inBuildin) {
+        if (nextTile.type === 'gold' && this.cargo === 'empty'  && !this.inBuildin) {
             this.inMine(nextStep, startPos);
             return true;
         }
-        else if (nextTile === 5 && (this.cargo === 'gold' || this.cargo === 'wood') && !this.inBuildin) {
+        else if (nextTile.type === 'town' && (this.cargo === 'gold' || this.cargo === 'wood') && !this.inBuildin) {
             this.inTown(nextStep, startPos);
             return true;
         }
-        else if (nextTile === 6) {
+        else if (nextTile === 'forest') {
             this.inForest(nextStep, startPos);
             return true;
         }
@@ -38,18 +38,18 @@ class Peasant extends Units {
     inMine(nextStep, startPos) {
         this.unSelectedBorder();
         this.inBuildin = true;
-        this.used = false;
+        this.isRender = false;
 
         this.x = startPos.x;
         this.y = startPos.y;
         this.restartPosition();
 
-        setTimeout(() => {
-            this.used = true;
+        this.doInTime(4500, () => {
+            this.isRender = true;
             this.inBuildin = false;
             this.cargo = 'gold';
-            let endPos = this.game.VAR.pathfinder.getTileBySprite(this.game.VAR.town);
-            const currentPos = this.game.VAR.pathfinder.getTileBySprite(this);
+            let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
+            const currentPos = this.game.VAR.map.getTileBySprite(this);
 
             if (endPos.column > currentPos.column) {
                 endPos = { ...endPos, column: endPos.column - 1 }
@@ -60,15 +60,48 @@ class Peasant extends Units {
             // this.game.VAR.sellectedObj.restartPosition();
             this.move(endPos);
             this.showBorder();
-        }, 4500)
+        })
+    }
+
+    inTown(nextStep, startPos) {
+        this.unSelectedBorder();
+        this.inBuildin = true;
+        this.isRender = false;
+
+        this.x = startPos.x;
+        this.y = startPos.y;
+        this.restartPosition();
+
+        this.doInTime(2500, () => {
+            this.isRender = true;
+            this.inBuildin = false;
+            let endPos;
+            if (this.cargo === 'gold') {
+                endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
+            } else if (this.cargo === 'wood') {
+                endPos = this.inForestPos;
+            }
+            const currentPos = this.game.VAR.map.getTileBySprite(this);
+
+            if (endPos.column >= currentPos.column) {
+                endPos = { ...endPos, column: endPos.column - 1 }
+            }
+            if (endPos.row > currentPos.row) {
+                endPos = { ...endPos, row: endPos.row - 1 }
+            }
+            this.cargo = 'empty';
+            // this.game.VAR.sellectedObj.restartPosition();
+            this.move(endPos);
+            this.showBorder();
+        })
     }
 
     inForest(nextStep, startPos) {
-        this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, 2);
+        // this.game.VAR.map.reRenderTile(startPos.row, startPos.column, 2);
         this.inForestPos = { x: this.x, y: this.y, column: nextStep.y, row: nextStep.x };
         if (this.cargo === 'wood' || this.cargo === 'gold') {
-            let endPos = this.game.VAR.pathfinder.getTileBySprite(this.game.VAR.town);
-            const currentPos = this.game.VAR.pathfinder.getTileBySprite(this);
+            let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
+            const currentPos = this.game.VAR.map.getTileBySprite(this);
 
             if (endPos.column >= currentPos.column) {
                 endPos = { ...endPos, column: endPos.column - 1 }
@@ -83,8 +116,8 @@ class Peasant extends Units {
             // this.getAnimationInMove(startPos, nextStep);
             this.doInTime(4500, () => {
                 this.cargo = 'wood';
-                let endPos = this.game.VAR.pathfinder.getTileBySprite(this.game.VAR.town);
-                const currentPos = this.game.VAR.pathfinder.getTileBySprite(this);
+                let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
+                const currentPos = this.game.VAR.map.getTileBySprite(this);
 
                 if (endPos.column >= currentPos.column) {
                     endPos = { ...endPos, column: endPos.column - 1 }
@@ -98,29 +131,6 @@ class Peasant extends Units {
         }
     }
 
-    inTown(nextStep, startPos) {
-        this.unSelectedBorder();
-        this.inBuildin = true;
-        this.used = false;
 
-        this.x = startPos.x;
-        this.y = startPos.y;
-        this.restartPosition();
-
-        setTimeout(() => {
-            this.used = true;
-            this.inBuildin = false;
-            let endPos;
-            if (this.cargo === 'gold') {
-                endPos = this.game.VAR.pathfinder.getTileBySprite(this.game.VAR.goldMine);
-            } else if (this.cargo === 'wood') {
-                endPos = this.inForestPos;
-            }
-            this.cargo = 'empty';
-            // this.game.VAR.sellectedObj.restartPosition();
-            this.move(endPos);
-            this.showBorder();
-        }, 2000)
-    }
 }
 export default Peasant;

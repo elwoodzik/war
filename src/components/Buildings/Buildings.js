@@ -38,26 +38,29 @@ class Building extends Sprite {
 
     // }
 
-    restartPosition() {
-        if (this.nextPosition) {
-            this.game.VAR.pathfinder.reRenderTile(this.nextPosition.row, this.nextPosition.column, 1);
-        }
+    // restartPosition() {
+    //     if (this.nextPosition) {
+    //         this.game.VAR.pathfinder.reRenderTile(this.nextPosition.row, this.nextPosition.column, 1);
+    //     }
 
-        if (this.currentPosition) {
-            this.game.VAR.pathfinder.reRenderTile(this.currentPosition.row, this.currentPosition.column, 1);
-        }
+    //     if (this.currentPosition) {
+    //         this.game.VAR.pathfinder.reRenderTile(this.currentPosition.row, this.currentPosition.column, 1);
+    //     }
 
 
-        this.nextPosition = null;
-        this.currentPosition = null;
-    }
+    //     this.nextPosition = null;
+    //     this.currentPosition = null;
+    // }
 
-    unWalkable(index) {
+    unWalkable(index, type) {
+        let cost = 10;
         for (let i = 0; i < this.width; i += 32) {
+            cost++;
             for (let j = 0; j < this.height; j += 32) {
-                const startPos = this.game.VAR.pathfinder.getTileByCords(this.x + i, this.y + j);
-                this.currentPosition = this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, index);
-                this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 20)
+                const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
+                tile.type = type || 'solid';
+                // this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, index);
+                this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 30)
             }
         }
     }

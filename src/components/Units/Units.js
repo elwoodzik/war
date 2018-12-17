@@ -61,69 +61,119 @@ class Units extends Sprite {
     }
 
     move(endPos) {
-        const startPos = this.game.VAR.pathfinder.getTileBySprite(this);
-        this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
+        // this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
+        this.startPos = this.game.VAR.map.getTileBySprite(this);
 
-        this.game.easystar.findPath(startPos.row, startPos.column, endPos.row, endPos.column, (newPath) => {
+
+        this.game.easystar.findPath(this.startPos.row, this.startPos.column, endPos.row, endPos.column, (newPath) => {
+
             if (newPath === null) {
                 console.log("Path was not found.");
             } else {
                 if (newPath.length > 0) {
                     newPath.shift();
-                    const nextStep = newPath.shift();
-                    const nextTile = this.game.VAR.pathfinder.getTile(nextStep.x, nextStep.y);
+                    this.nextStep = newPath.shift();
+                    this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
 
-                    if (nextTile === 3) {
-                        // 3 oznacza ze juz na tym polu stoi jakas postac
-                        this.game.VAR.pathfinder.reRenderTile(nextStep.x, nextStep.y, 2);
-                        this.move(endPos);
-                        return false;
+                    this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
+                    this.currentTile = this.game.VAR.map.getTile(this.startPos.row, this.startPos.column);
+
+                    if (this.nextTile.type === 'town' && this.cargo === 'empty') {
+                        this.nextTile.type = 'town'
+                        return this.move(endPos);
+                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
+                    }
+                    if (this.currentTile.type === 'town' && this.cargo === 'empty') {
+                        this.currentTile.type = 'town'
+                        return this.move(endPos);
+                    }
+                    if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
+                        this.nextTile.type = 'gold'
+                        return this.move(endPos);
+                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
+                    }
+                    if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
+                        this.currentTile.type = 'gold'
+                        return this.move(endPos);
                     }
 
+                    this.currentTile.type = 'solid';
+
+                    if (this.nextTile.type === 'solid') {
+                        if (newPath.length === 0) {
+                            this.currentTile.type = 'solid'
+                            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
+                            this.dir = `idle${this.dir.slice(4)}`;
+                            return false;
+                        }
+                        return this.move(endPos);
+                    }
+
+
                     if (this.extendsMove && typeof this.extendsMove === 'function') {
-                        const bool = this.extendsMove(nextTile, nextStep, startPos);
+                        const bool = this.extendsMove(this.nextTile, this.nextStep, this.startPos);
                         if (bool) {
                             return;
                         }
                     }
 
-                    this.currentPosition = this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, 1);
-                    this.nextPosition = this.game.VAR.pathfinder.reRenderTile(nextStep.x, nextStep.y, 3);
-
-                    this.getAnimationInMove(this.currentPosition, this.nextPosition);
+                    this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
+                    this.nextTile.type = 'solid';
+                    // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
+                    // this.nextPosition = { x: this.nextStep.x * 32, y: this.nextStep.y * 32 } //this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
+                    // console.log(this.startPos)
+                    this.getAnimationInMove(this.startPos, this.nextStep);
 
                     this.moveToPoint({
-                        x: nextStep.x * 32, y: nextStep.y * 32, speed: this.speed, callback: () => {
+                        x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
+                            // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
+                            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 0);
+                            this.currentTile.type = 'empty';
+
                             if (newPath.length > 0) {
                                 this.move(endPos);
                             } else {
-                                this.currentPosition = this.game.VAR.pathfinder.reRenderTile(nextStep.x, nextStep.y, 3);
-                                this.dir = `idle${this.dir.slice(4)}`;
+                                this.nextTile.type = 'solid'
+                                // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
+                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
 
+
+                                this.dir = `idle${this.dir.slice(4)}`;
                             }
                         }
                     })
                 }
-
             }
         })
         this.game.easystar.calculate();
     }
 
     restartPosition() {
-        if (this.nextPosition) {
-            this.game.VAR.pathfinder.reRenderTile(this.nextPosition.row, this.nextPosition.column, 1);
+        if (this.startPos) {
+            // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
+            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 0);
+            if (this.currentTile.type === 'solid') {
+                this.currentTile.type = 'empty';
+            }
         }
-        if (this.currentPosition) {
-            this.game.VAR.pathfinder.reRenderTile(this.currentPosition.row, this.currentPosition.column, 1);
+        if (this.nextStep) {
+            // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 1);
+            this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 0);
+            if (this.nextTile.type === 'solid') {
+                this.nextTile.type = 'empty';
+            }
         }
 
-        this.nextPosition = null;
-        this.currentPosition = null;
+
+
+        // this.nextPosition = null;
+        // this.currentPosition = null;
     }
 
-    getAnimationInMove(currentPos, pos) {
-        if (pos.x > currentPos.x && pos.y > currentPos.y) {
+    getAnimationInMove(startPos, nextStep) {
+        const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
+
+        if (_nextStep.x > startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right_down';
             } else if (this.cargo === 'wood') {
@@ -131,7 +181,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_right_down';
             }
-        } else if (pos.x === currentPos.x && pos.y > currentPos.y) {
+        } else if (_nextStep.x === startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_down';
             } else if (this.cargo === 'wood') {
@@ -139,7 +189,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_down';
             }
-        } else if (pos.x < currentPos.x && pos.y > currentPos.y) {
+        } else if (_nextStep.x < startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left_down';
             } else if (this.cargo === 'wood') {
@@ -147,7 +197,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_left_down';
             }
-        } else if (pos.x < currentPos.x && pos.y === currentPos.y) {
+        } else if (_nextStep.x < startPos.x && _nextStep.y === startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left';
             } else if (this.cargo === 'wood') {
@@ -155,7 +205,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_left';
             }
-        } else if (pos.x < currentPos.x && pos.y < currentPos.y) {
+        } else if (_nextStep.x < startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left_up';
             } else if (this.cargo === 'wood') {
@@ -163,7 +213,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_left_up';
             }
-        } else if (pos.x === currentPos.x && pos.y < currentPos.y) {
+        } else if (_nextStep.x === startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_up';
             } else if (this.cargo === 'wood') {
@@ -171,7 +221,7 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_up';
             }
-        } else if (pos.x > currentPos.x && pos.y < currentPos.y) {
+        } else if (_nextStep.x > startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right_up';
             } else if (this.cargo === 'wood') {
@@ -179,8 +229,8 @@ class Units extends Sprite {
             } else {
                 this.dir = 'move_right_up';
             }
-           
-        } else if (pos.x > currentPos.x && pos.y === currentPos.y) {
+
+        } else if (_nextStep.x > startPos.x && _nextStep.y === startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right';
             } else if (this.cargo === 'wood') {
