@@ -29,10 +29,11 @@ class Main {
 
             this.game.easystar = new EasyStar.js();
 
-            this.game.easystar.setAcceptableTiles([266]);
+            this.game.easystar.setAcceptableTiles([266, 349]);
             this.game.easystar.enableDiagonals();
-            this.game.easystar.enableCornerCutting();
-            // this.game.easystar.setIterationsPerCalculation(50);
+            
+            // this.game.easystar.enableCornerCutting();
+            //  this.game.easystar.setIterationsPerCalculation(3);
 
             this.game.VAR.cameraMan = this.game.add.rect({
                 x: 350,
@@ -65,6 +66,15 @@ class Main {
                 x: 32 * 1,
                 y: 32 * 7
             })
+            this.game.easystar.setAdditionalPointCost(13, 7, 3)
+            this.game.easystar.setAdditionalPointCost(12, 7, 3)
+            this.game.easystar.setAdditionalPointCost(11, 7, 3)
+            this.game.easystar.setAdditionalPointCost(13, 8, 3)
+            // this.game.easystar.setAdditionalPointCost(12, 8, 3)
+            this.game.easystar.setAdditionalPointCost(11, 8, 3)
+            this.game.easystar.setAdditionalPointCost(13, 9, 3)
+            this.game.easystar.setAdditionalPointCost(12, 9, 3)
+            this.game.easystar.setAdditionalPointCost(11, 9, 3)
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
             const endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
 
@@ -88,7 +98,7 @@ class Main {
                     x: 32 * (i + 3),
                     y: 32 * 19
                 });
-                pes.move(endPos);
+                //    pes.move(endPos);
 
             }
 
