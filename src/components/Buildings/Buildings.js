@@ -52,10 +52,8 @@ class Building extends Sprite {
     //     this.currentPosition = null;
     // }
 
-    unWalkable(index, type) {
-        let cost = 10;
+    unWalkable(index, type, cost) {
         for (let i = 0; i < this.width; i += 32) {
-            cost++;
             for (let j = 0; j < this.height; j += 32) {
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
                 tile.type = type || 'solid';

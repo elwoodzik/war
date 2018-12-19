@@ -7,15 +7,15 @@ class Town extends Buildings {
 
         this.info = {
             imageKey: 'town',
-            name : 'Town',
-            descriptios : [
+            name: 'Town',
+            descriptios: [
                 'Production',
                 'Gold: 100',
                 'Wood: 100'
             ],
-            inProgress : false,
-            inProgressTime : 0,
-    
+            inProgress: false,
+            inProgressTime: 0,
+
             // actions : [
             //     {
             //         image: this.AssetManager.get('icons'),
@@ -41,7 +41,7 @@ class Town extends Buildings {
         });
 
         this.animations.playOnce({ key: 'first', delay: 16 })
-        this.unWalkable(5, 'town');
+        this.unWalkable(5, 'town', 30);
     }
 
     update(dt) {

@@ -31,7 +31,7 @@ class Main {
 
             this.game.easystar.setAcceptableTiles([266, 349]);
             this.game.easystar.enableDiagonals();
-            
+
             // this.game.easystar.enableCornerCutting();
             //  this.game.easystar.setIterationsPerCalculation(3);
 
@@ -52,7 +52,8 @@ class Main {
             this.game.VAR.player = new Peasant(this.game, {
                 key: 'peasant',
                 x: 32 * 9,
-                y: 32 * 4
+                y: 32 * 4,
+                zIndex: 100
             });
 
             this.game.VAR.town = new Town(this.game, {
@@ -63,7 +64,7 @@ class Main {
 
             this.game.VAR.goldMine = new GoldMine(this.game, {
                 key: 'gold',
-                x: 32 * 1,
+                x: 32 * 2,
                 y: 32 * 7
             })
             this.game.easystar.setAdditionalPointCost(13, 7, 3)

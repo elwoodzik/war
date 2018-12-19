@@ -54,12 +54,16 @@ class Units extends Sprite {
 
     draw(dt) {
         super.draw(dt);
-        if (this.path)
+
+        if (this.path) {
             this.path.forEach((path) => {
+                this.context.beginPath();
+                this.context.strokeStyle = 'red';
                 this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
                 this.context.stroke()
+                this.context.closePath();
             })
-
+        }
     }
 
     update(dt) {
@@ -73,7 +77,7 @@ class Units extends Sprite {
     move(endPos) {
         // this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
         this.startPos = this.game.VAR.map.getTileBySprite(this);
-      
+
 
         this.myCurrentPath = this.game.easystar.findPath(this.startPos.row, this.startPos.column, endPos.row, endPos.column, (newPath) => {
             this.path = newPath;
@@ -115,7 +119,7 @@ class Units extends Sprite {
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';
                             this.dir = `idle${this.dir.slice(4)}`;
-                           
+
                             return false;
                         }
                         return this.move(endPos);
@@ -125,9 +129,17 @@ class Units extends Sprite {
                     if (this.extendsMove && typeof this.extendsMove === 'function') {
                         const bool = this.extendsMove(this.nextTile, this.nextStep, this.startPos);
                         if (bool) {
-                           
-                           
-                            return;
+                            // newPath.pop();
+                            // newPath.shift();
+                            // newPath.shift();
+
+                            // const a = {
+                            //     row: this.nextStep.x,
+                            //     column: this.nextStep.y
+                            // }
+                            // this.path = [];
+
+                            return false
                         }
                     }
 
@@ -140,11 +152,11 @@ class Units extends Sprite {
 
                     this.moveToPoint({
                         x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
-                            console.log(this.myCurrentPath)
+                            // console.log(this.myCurrentPath)
                             // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                             this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
                             this.currentTile.type = 'empty';
-                            this.game.easystar.cancelPath(this.myCurrentPath);
+
                             if (newPath.length > 0) {
                                 this.move(endPos);
                             } else {

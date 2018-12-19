@@ -21,7 +21,7 @@ class Peasant extends Units {
 
     extendsMove(nextTile, nextStep, startPos) {
         // nextTile 4 === kopalnia
-        if (nextTile.type === 'gold' && this.cargo === 'empty'  && !this.inBuildin) {
+        if (nextTile.type === 'gold' && this.cargo === 'empty' && !this.inBuildin) {
             this.inMine(nextStep, startPos);
             return true;
         }
@@ -59,7 +59,7 @@ class Peasant extends Units {
             }
             // this.game.VAR.sellectedObj.restartPosition();
             this.move(endPos);
-            this.showBorder();
+            // this.showBorder();
         })
     }
 
@@ -77,22 +77,24 @@ class Peasant extends Units {
             this.inBuildin = false;
             let endPos;
             if (this.cargo === 'gold') {
-                endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
+                // endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
+                this.game.VAR.goldMine.goToMine();
+                this.cargo = 'empty';
             } else if (this.cargo === 'wood') {
                 endPos = this.inForestPos;
             }
-            const currentPos = this.game.VAR.map.getTileBySprite(this);
+            // const currentPos = this.game.VAR.map.getTileBySprite(this);
 
-            if (endPos.column >= currentPos.column) {
-                endPos = { ...endPos, column: endPos.column - 1 }
-            }
-            if (endPos.row > currentPos.row) {
-                endPos = { ...endPos, row: endPos.row - 1 }
-            }
-            this.cargo = 'empty';
+            // if (endPos.column >= currentPos.column) {
+            //     endPos = { ...endPos, column: endPos.column - 1 }
+            // }
+            // if (endPos.row > currentPos.row) {
+            //     endPos = { ...endPos, row: endPos.row - 1 }
+            // }
+
             // this.game.VAR.sellectedObj.restartPosition();
-            this.move(endPos);
-            this.showBorder();
+            // this.move(endPos);
+            // this.showBorder();
         })
     }
 

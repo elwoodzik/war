@@ -18,10 +18,7 @@
     "url": "https://github.com/jscomplete/learn-fullstack-javascript/issues"
   },
   "homepage": "https://github.com/jscomplete/learn-fullstack-javascript#readme",
-  "dependencies": {
-   
-   
-  },
+  "dependencies": {},
   "devDependencies": {
     "express": "^4.14.0",
     "socket.io": "^2.0.4",
