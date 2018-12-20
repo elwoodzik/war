@@ -1,7 +1,7 @@
 import Rect from "../../../lib/Rect";
 import Icons from "./Icons";
 
-class Hud extends Rect {
+class HudLeft extends Rect {
     constructor(game, options) {
         super(game, options);
 
@@ -42,7 +42,7 @@ class Hud extends Rect {
     }
 
     setInfo(info) {
-        console.log(info)
+        // console.log(info)
         this.infoName.use(info.name);
         this.infoIcon.animations.playOnce({ key: info.imageKey });
         this.hideDescription();
@@ -63,7 +63,6 @@ class Hud extends Rect {
             text.y = 100 + 22 * i;
             text.used = true;
             text.use(descriptios[i])
-            console.log(text)
         }
     }
 
@@ -72,4 +71,4 @@ class Hud extends Rect {
         return false;
     }
 }
-export default Hud;
+export default HudLeft;

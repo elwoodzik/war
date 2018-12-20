@@ -4,7 +4,8 @@ import Map from "../../lib/Map";
 import Peasant from "./Units/Peasant/Peasant";
 import Town from "./Buildings/Town/Town";
 import GoldMine from "./Buildings/GoldMine/GoldMine";
-import Hud from "./Hud/Hud";
+import HudLeft from "./Hud/HudLeft";
+import HudTop from "./Hud/HudTop";
 
 
 class Main {
@@ -19,8 +20,15 @@ class Main {
             json: '../../jsons/map2.json',
         }).then((map) => {
             this.game.VAR.map = map;
-            console.log(this.game.VAR.map)
 
+            this.game.VAR.settings = {
+                gold: 100,
+                goldUpdateBy: 100,
+                wood: 100,
+                woodUpdateBy: 100,
+                homeMax: 4,
+                people: []
+            }
             // new Pathfinder(this.game, {
             //     json: '../../jsons/path2.json',
             //     isRender: true
@@ -29,7 +37,7 @@ class Main {
 
             this.game.easystar = new EasyStar.js();
 
-            this.game.easystar.setAcceptableTiles([266, 349]);
+            this.game.easystar.setAcceptableTiles([266, 349, 116, 117, 137]);
             this.game.easystar.enableDiagonals();
 
             this.game.easystar.enableCornerCutting();
@@ -37,7 +45,7 @@ class Main {
 
             this.game.VAR.cameraMan = this.game.add.rect({
                 x: 350,
-                y: 400,
+                y: 200,
                 width: 20,
                 height: 20
             });
@@ -45,16 +53,17 @@ class Main {
             this.game.VAR.cameraSpeed = 700;
 
             this.game.setPortView(2240, 2240);
+
             this.game.add.camera({
                 followed: this.game.VAR.cameraMan
             })
 
-            this.game.VAR.player = new Peasant(this.game, {
+            this.game.VAR.settings.people.push(new Peasant(this.game, {
                 key: 'peasant',
                 x: 32 * 9,
                 y: 32 * 4,
                 zIndex: 100
-            });
+            }));
 
             this.game.VAR.town = new Town(this.game, {
                 key: 'buildings',
@@ -99,32 +108,22 @@ class Main {
                     x: 32 * (i + 3),
                     y: 32 * 19
                 });
-                pes.move(null, this.game.VAR.goldMine, 1);
+                // pes.move(null, this.game.VAR.goldMine, 1);
 
             }
 
-
-
-
-            this.game.VAR.hud = new Hud(this.game, {})
+            this.game.VAR.hudLeft = new HudLeft(this.game, {})
+            this.game.VAR.hudTop = new HudTop(this.game, {})
+            this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
+            this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
+            this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax)
+            this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length)
 
             this.game.VAR.sellectedObj = null;
             this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
             this.game.VAR.sellectedBorder.hide();
 
             this.normalMouseClick();
-            // this.mouseElement = {
-            //     x: this.game.mouse.mouseX,
-            //     y: this.game.mouse.mouseY,
-            //     halfHeight: 1,
-            //     halfWidth: 1
-            // }
-            // this.game.add.camera({
-            //     followed: this.mouseElement///this.game.VAR.player
-            // });
-            console.log(this.game.VAR.map)
-
-            // })
         })
     }
 
@@ -158,7 +157,6 @@ class Main {
                     this.game.VAR.sellectedObj.doInTimeStop();
                     this.game.VAR.sellectedObj.inWooding = false;
                 }
-
                 this.game.VAR.sellectedObj.restartPosition();
                 this.game.VAR.sellectedObj.move(endPos);
             }

@@ -58,7 +58,7 @@ class Peasant extends Units {
             this.inTown(nextStep, startPos);
             return true;
         }
-        else if (nextTile === 'forest') {
+        else if (nextTile.type === 'forest' && this.cargo === 'empty' && !this.inBuildin) {
             this.inForest(nextStep, startPos);
             return true;
         }
@@ -88,13 +88,22 @@ class Peasant extends Units {
         this.y = startPos.y;
         this.restartPosition();
 
+        if (this.cargo === 'gold') {
+            this.game.VAR.settings.gold += this.game.VAR.settings.goldUpdateBy;
+            this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
+        } else if (this.cargo === 'wood') {
+            this.game.VAR.settings.wood += this.game.VAR.settings.woodUpdateBy;
+            this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
+        }
+
         this.doInTime(2500, () => {
             if (this.cargo === 'gold') {
                 this.cargo = 'empty';
                 this.leaveBuilding(this.game.VAR.goldMine, 1, startPos, 0, 800);
             } else if (this.cargo === 'wood') {
                 this.cargo = 'empty';
-                endPos = this.inForestPos;
+                this.leaveBuilding(this.inForestPos, 1, startPos, 0, 800);
+                // endPos = this.inForestPos;
             }
         })
     }
@@ -119,24 +128,18 @@ class Peasant extends Units {
             // this.getAnimationInMove(startPos, nextStep);
             this.doInTime(4500, () => {
                 this.cargo = 'wood';
-                let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
-                const currentPos = this.game.VAR.map.getTileBySprite(this);
-
-                if (endPos.column >= currentPos.column) {
-                    endPos = { ...endPos, column: endPos.column - 1 }
-                }
-                if (endPos.row > currentPos.row) {
-                    endPos = { ...endPos, row: endPos.row - 1 }
-                }
-                this.move(endPos);
-                this.showBorder();
+                this.goToBuilding(this.game.VAR.town, 2);
             })
         }
     }
 
     goToBuilding(building, index = 1) {
         this.restartPosition();
-        this.move(null, building, index);
+        if (building.update) {
+            this.move(null, building, index);
+        } else {
+            this.move(building);
+        }
     }
 
     leaveBuilding(building, index = 1, startPos, firstTime, nextTime) {

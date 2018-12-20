@@ -13,7 +13,7 @@ class Units extends Sprite {
 
     onClick() {
         this.selectedBorder();
-        this.game.VAR.hud.setInfo(this.info)
+        this.game.VAR.hudLeft.setInfo(this.info)
     }
 
     selectedBorder() {
@@ -97,7 +97,7 @@ class Units extends Sprite {
                 console.log("Path was not found.");
             } else {
                 if (newPath.length > 0) {
-                    
+
                     newPath.shift();
                     this.nextStep = newPath.shift();
                     // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
@@ -106,7 +106,7 @@ class Units extends Sprite {
                     this.currentTile = this.game.VAR.map.getTile(this.startPos.row, this.startPos.column);
 
                     this.getAnimationInMove(this.startPos, this.nextStep);
-                    
+
                     if (this.nextTile.type === 'town' && this.cargo === 'empty') {
                         this.nextTile.type = 'town'
                         return this.move(endPos);
@@ -140,7 +140,7 @@ class Units extends Sprite {
                         return this.move(endPos);
                     }
 
-                    
+
                     if (this.extendsMove && typeof this.extendsMove === 'function') {
                         const bool = this.extendsMove(this.nextTile, this.nextStep, this.startPos);
                         if (bool) {
@@ -182,15 +182,15 @@ class Units extends Sprite {
     restartPosition() {
         if (this.startPos) {
             // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 0);
-            if (this.currentTile.type === 'solid') {
+            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
+            if (this.currentTile && this.currentTile.type === 'solid') {
                 this.currentTile.type = 'empty';
             }
         }
         if (this.nextStep) {
             // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 1);
-            this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 0);
-            if (this.nextTile.type === 'solid') {
+            this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 1);
+            if (this.nextTile && this.nextTile.type === 'solid') {
                 this.nextTile.type = 'empty';
             }
         }
