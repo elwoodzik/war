@@ -32,8 +32,8 @@ class Main {
             this.game.easystar.setAcceptableTiles([266, 349]);
             this.game.easystar.enableDiagonals();
 
-            // this.game.easystar.enableCornerCutting();
-            //  this.game.easystar.setIterationsPerCalculation(3);
+            this.game.easystar.enableCornerCutting();
+            //   this.game.easystar.setIterationsPerCalculation(500);
 
             this.game.VAR.cameraMan = this.game.add.rect({
                 x: 350,
@@ -99,7 +99,7 @@ class Main {
                     x: 32 * (i + 3),
                     y: 32 * 19
                 });
-                //    pes.move(endPos);
+                pes.move(null, this.game.VAR.goldMine, 1);
 
             }
 

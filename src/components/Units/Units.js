@@ -13,11 +13,15 @@ class Units extends Sprite {
 
     onClick() {
         this.selectedBorder();
+        this.game.VAR.hud.setInfo(this.info)
     }
 
     selectedBorder() {
-        this.game.VAR.sellectedObj = this;
-        this.game.VAR.sellectedBorder.show();
+        if (this.isRender) {
+            this.game.VAR.sellectedObj = this;
+            this.game.VAR.sellectedBorder.show();
+        }
+
         // this.game.VAR.sellectedBorder.x = this.x; //+ this.width / 4
         // this.game.VAR.sellectedBorder.y = this.y; //+ this.height / 2
         // this.game.VAR.sellectedBorder.width = this.width;
@@ -52,32 +56,40 @@ class Units extends Sprite {
         }
     }
 
-    draw(dt) {
-        super.draw(dt);
+    // draw(dt) {
+    //     super.draw(dt);
 
-        if (this.path) {
-            this.path.forEach((path) => {
-                this.context.beginPath();
-                this.context.strokeStyle = 'red';
-                this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
-                this.context.stroke()
-                this.context.closePath();
-            })
-        }
-    }
+    //     if (this.path) {
+    //         this.path.forEach((path) => {
+    //             this.context.beginPath();
+    //             this.context.strokeStyle = 'red';
+    //             this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
+    //             this.context.stroke()
+    //             this.context.closePath();
+    //         })
+    //     }
+    // }
 
     update(dt) {
-        super.update(dt);
-        this.updateBorder();
         this.animations.play({
             key: this.dir
         })
+        super.update(dt);
+        this.updateBorder();
+
     }
 
-    move(endPos) {
+    move(_endPos, building, index = 1) {
+        let endPos = _endPos;
+        if (!endPos) {
+            if (!building) {
+                return false;
+            } else {
+                endPos = this.findShortPathToBuilding(building, index);
+            }
+        }
         // this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
         this.startPos = this.game.VAR.map.getTileBySprite(this);
-
 
         this.myCurrentPath = this.game.easystar.findPath(this.startPos.row, this.startPos.column, endPos.row, endPos.column, (newPath) => {
             this.path = newPath;
@@ -85,6 +97,7 @@ class Units extends Sprite {
                 console.log("Path was not found.");
             } else {
                 if (newPath.length > 0) {
+                    
                     newPath.shift();
                     this.nextStep = newPath.shift();
                     // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
@@ -92,6 +105,8 @@ class Units extends Sprite {
                     this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
                     this.currentTile = this.game.VAR.map.getTile(this.startPos.row, this.startPos.column);
 
+                    this.getAnimationInMove(this.startPos, this.nextStep);
+                    
                     if (this.nextTile.type === 'town' && this.cargo === 'empty') {
                         this.nextTile.type = 'town'
                         return this.move(endPos);
@@ -114,7 +129,7 @@ class Units extends Sprite {
                     this.currentTile.type = 'solid';
 
                     if (this.nextTile.type === 'solid') {
-                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 60);
+                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                         this.dir = `idle${this.dir.slice(4)}`;
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';
@@ -125,21 +140,11 @@ class Units extends Sprite {
                         return this.move(endPos);
                     }
 
-
+                    
                     if (this.extendsMove && typeof this.extendsMove === 'function') {
                         const bool = this.extendsMove(this.nextTile, this.nextStep, this.startPos);
                         if (bool) {
-                            // newPath.pop();
-                            // newPath.shift();
-                            // newPath.shift();
-
-                            // const a = {
-                            //     row: this.nextStep.x,
-                            //     column: this.nextStep.y
-                            // }
-                            // this.path = [];
-
-                            return false
+                            return false;
                         }
                     }
 
@@ -148,7 +153,7 @@ class Units extends Sprite {
                     // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     // this.nextPosition = { x: this.nextStep.x * 32, y: this.nextStep.y * 32 } //this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                     // console.log(this.startPos)
-                    this.getAnimationInMove(this.startPos, this.nextStep);
+
 
                     this.moveToPoint({
                         x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
@@ -158,14 +163,12 @@ class Units extends Sprite {
                             this.currentTile.type = 'empty';
 
                             if (newPath.length > 0) {
-                                this.move(endPos);
+                                this.move(_endPos ? endPos : null, building, index);
                             } else {
                                 this.nextTile.type = 'solid';
-                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 60);
+                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                                 // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                                 // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
-
-
                                 this.dir = `idle${this.dir.slice(4)}`;
                             }
                         }
@@ -191,11 +194,27 @@ class Units extends Sprite {
                 this.nextTile.type = 'empty';
             }
         }
+    }
 
+    findShortPathToBuilding(building, index = 1) {
+        let endPos = this.game.VAR.map.getTileBySprite(building);
+        const currentPos = this.game.VAR.map.getTileBySprite(this);
+        if (endPos.column === currentPos.column) {
+            endPos = { ...endPos, column: endPos.column }
+        } else if (endPos.column > currentPos.column) {
+            endPos = { ...endPos, column: endPos.column - index }
+        } else if (endPos.column < currentPos.column) {
+            endPos = { ...endPos, column: endPos.column + 1 }
+        }
 
-
-        // this.nextPosition = null;
-        // this.currentPosition = null;
+        if (endPos.row === currentPos.row) {
+            endPos = { ...endPos, row: endPos.row }
+        } else if (endPos.row > currentPos.row) {
+            endPos = { ...endPos, row: endPos.row - index }
+        } else if (endPos.row < currentPos.row) {
+            endPos = { ...endPos, row: endPos.row + 1 }
+        }
+        return endPos;
     }
 
     getAnimationInMove(startPos, nextStep) {

@@ -58,7 +58,7 @@ class Building extends Sprite {
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
                 tile.type = type || 'solid';
                 // this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, index);
-                this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 6.8)
+                this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 120)
             }
         }
     }

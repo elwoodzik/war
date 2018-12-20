@@ -7,7 +7,7 @@ class Game {
         const gameWidth = 1280;
         const gameHeight = 720;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
-        const scallable = false;
+        const scallable = true;
         const mobile = false;
         const images = {
             world: 'images/world_summer.png',

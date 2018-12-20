@@ -45,38 +45,36 @@ class GoldMine extends Buildings {
 
     onClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && this.game.VAR.sellectedObj.cargo === 'empty') {
-            this.goToMine();
+            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.goldMine, 1);
         } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold')) {
-            const endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
-            this.game.VAR.sellectedObj.restartPosition();
-            this.game.VAR.sellectedObj.move(endPos);
+            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
         } else {
             super.onClick();
         }
     }
 
-    goToMine() {
-        let endPos = this.game.VAR.map.getTileBySprite(this);
-        const currentPos = this.game.VAR.map.getTileBySprite(this.game.VAR.sellectedObj);
-        if (endPos.column === currentPos.column) {
-            endPos = { ...endPos, column: endPos.column }
-        } else if (endPos.column > currentPos.column) {
-            endPos = { ...endPos, column: endPos.column - 1 }
-        } else if (endPos.column < currentPos.column) {
-            endPos = { ...endPos, column: endPos.column + 1 }
-        }
+    // goToMine() {
+    //     let endPos = this.game.VAR.map.getTileBySprite(this);
+    //     const currentPos = this.game.VAR.map.getTileBySprite(this.game.VAR.sellectedObj);
+    //     if (endPos.column === currentPos.column) {
+    //         endPos = { ...endPos, column: endPos.column }
+    //     } else if (endPos.column > currentPos.column) {
+    //         endPos = { ...endPos, column: endPos.column - 1 }
+    //     } else if (endPos.column < currentPos.column) {
+    //         endPos = { ...endPos, column: endPos.column + 1 }
+    //     }
 
-        if (endPos.row === currentPos.row) {
-            endPos = { ...endPos, row: endPos.row }
-        } else if (endPos.row > currentPos.row) {
-            endPos = { ...endPos, row: endPos.row - 1 }
-        } else if (endPos.row < currentPos.row) {
-            endPos = { ...endPos, row: endPos.row + 1 }
-        }
+    //     if (endPos.row === currentPos.row) {
+    //         endPos = { ...endPos, row: endPos.row }
+    //     } else if (endPos.row > currentPos.row) {
+    //         endPos = { ...endPos, row: endPos.row - 1 }
+    //     } else if (endPos.row < currentPos.row) {
+    //         endPos = { ...endPos, row: endPos.row + 1 }
+    //     }
 
-        this.game.VAR.sellectedObj.restartPosition();
-        this.game.VAR.sellectedObj.move(endPos);
-    }
+    //     this.game.VAR.sellectedObj.restartPosition();
+    //     this.game.VAR.sellectedObj.move(endPos);
+    // }
 
     // update(dt) {
     //     super.update(dt);

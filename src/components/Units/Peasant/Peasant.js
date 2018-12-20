@@ -11,6 +11,35 @@ class Peasant extends Units {
         this.dir = 'idle_up';
         this.cargo = 'empty';
         this.inForestPos = {};
+        this.speed = 60;
+
+        this.info = {
+            imageKey: 'peasant',
+            name: 'Peasant',
+            descriptios: [
+                'Production',
+                'Gold: 100',
+                'Wood: 100'
+            ],
+            inProgress: false,
+            inProgressTime: 0,
+
+            // actions : [
+            //     {
+            //         image: this.AssetManager.get('icons'),
+            //         iconLeft: (-46 * 0 + -3 * 0) - 3,
+            //         iconTop: (-38 * 0 + -3 * 0) - 3,
+            //         goldCost: 100,
+            //         woodCost: 0,
+            //         time: 10000,
+            //         // create: {
+            //         //     class: Peasant,
+            //         //     key: 'peasant'
+            //         // },
+            //         // callback: this.buildingUnit
+            //     },
+            // ],    
+        }
 
         new Animations(this);
     }
@@ -45,21 +74,8 @@ class Peasant extends Units {
         this.restartPosition();
 
         this.doInTime(4500, () => {
-            this.isRender = true;
-            this.inBuildin = false;
             this.cargo = 'gold';
-            let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
-            const currentPos = this.game.VAR.map.getTileBySprite(this);
-
-            if (endPos.column > currentPos.column) {
-                endPos = { ...endPos, column: endPos.column - 1 }
-            }
-            if (endPos.row >= currentPos.row) {
-                endPos = { ...endPos, row: endPos.row - 1 }
-            }
-            // this.game.VAR.sellectedObj.restartPosition();
-            this.move(endPos);
-            // this.showBorder();
+            this.leaveBuilding(this.game.VAR.town, 2, startPos, 0, 800);
         })
     }
 
@@ -73,28 +89,13 @@ class Peasant extends Units {
         this.restartPosition();
 
         this.doInTime(2500, () => {
-            this.isRender = true;
-            this.inBuildin = false;
-            let endPos;
             if (this.cargo === 'gold') {
-                // endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
-                this.game.VAR.goldMine.goToMine();
                 this.cargo = 'empty';
+                this.leaveBuilding(this.game.VAR.goldMine, 1, startPos, 0, 800);
             } else if (this.cargo === 'wood') {
+                this.cargo = 'empty';
                 endPos = this.inForestPos;
             }
-            // const currentPos = this.game.VAR.map.getTileBySprite(this);
-
-            // if (endPos.column >= currentPos.column) {
-            //     endPos = { ...endPos, column: endPos.column - 1 }
-            // }
-            // if (endPos.row > currentPos.row) {
-            //     endPos = { ...endPos, row: endPos.row - 1 }
-            // }
-
-            // this.game.VAR.sellectedObj.restartPosition();
-            // this.move(endPos);
-            // this.showBorder();
         })
     }
 
@@ -133,6 +134,23 @@ class Peasant extends Units {
         }
     }
 
+    goToBuilding(building, index = 1) {
+        this.restartPosition();
+        this.move(null, building, index);
+    }
+
+    leaveBuilding(building, index = 1, startPos, firstTime, nextTime) {
+        this.doInTime(firstTime, () => {
+            if (this.game.VAR.map.getTile(startPos.row, startPos.column).type !== 'solid') {
+                this.isRender = true;
+                this.inBuildin = false;
+
+                this.goToBuilding(building, index);
+            } else {
+                this.leaveBuilding(building, index, startPos, nextTime, nextTime);
+            }
+        })
+    }
 
 }
 export default Peasant;

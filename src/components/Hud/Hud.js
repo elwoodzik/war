@@ -8,7 +8,7 @@ class Hud extends Rect {
         this.immovable = true;
         this.x = 0;
         this.y = 0;
-        this.width = 32 * 5;
+        this.width = 32 * 5 + 1;
         this.height = this.game.height;
         this.fill = 'gray';
         this.static = true;
