@@ -102,13 +102,13 @@ class Main {
                     y: 32 * 20
                 });
             }
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 5; i++) {
                 const pes = new Peasant(this.game, {
                     key: 'peasant',
                     x: 32 * (i + 3),
                     y: 32 * 19
                 });
-                // pes.move(null, this.game.VAR.goldMine, 1);
+                //  pes.move(null, this.game.VAR.goldMine, 1);
 
             }
 

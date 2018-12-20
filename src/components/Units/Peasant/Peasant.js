@@ -8,7 +8,7 @@ class Peasant extends Units {
         this.type = 'worker';
 
         this.inBuildin = false;
-        this.dir = 'idle_up';
+        this.dir = 'move_wood_right_up';
         this.cargo = 'empty';
         this.inForestPos = {};
         this.speed = 60;

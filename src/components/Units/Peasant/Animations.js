@@ -271,6 +271,149 @@ class Animations {
 
 
 
+
+
+
+
+
+
+
+        sprite.animations.add({
+            key: 'idle_wood_up',
+            frames: [
+                { sx: 16, sy: 12 + 36 * 19, fW: 32, fH: 36, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_right_up',
+            frames: [
+                { sx: (16 + 41 * 1), sy: 14 + 36 * 19, fW: 32, fH: 36, }
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_right',
+            frames: [
+                { sx: (16 + 41 * 2), sy: 16 + 36 * 19, fW: 32, fH: 36, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_right_down',
+            frames: [
+                { sx: (8 + 41 * 3), sy: 16 + 36 * 19, fW: 32, fH: 36, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_down',
+            frames: [
+                { sx: (11 + 41 * 4), sy: 16 + 36 * 19, fW: 32, fH: 36, }
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_left_down',
+            frames: [
+                { sx: (8 + 41 * 3), sy: 16 + 36 * 19, fW: 32, fH: 36, flip: true },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_left',
+            frames: [
+                { sx: (16 + 41 * 2), sy: 16 + 36 * 19, fW: 32, fH: 36, flip: true },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'idle_wood_left_up',
+            frames: [
+                { sx: (16 + 41 * 1), sy: 14 + 36 * 19, fW: 32, fH: 36, flip: true }
+            ]
+        });
+
+
+        sprite.animations.add({
+            key: 'move_wood_up',
+            frames: [
+                { sx: 16, sy: 24 + 36 * 20, fW: 32, fH: 36, },
+                { sx: 16, sy: 29 + 36 * 21, fW: 32, fH: 36, },
+                { sx: 16, sy: 37 + 36 * 22, fW: 32, fH: 36, },
+                { sx: 16, sy: 40 + 36 * 23, fW: 32, fH: 36, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_right_up',
+            frames: [
+                { sx: (16 + 41 * 2), sy: 24 + 36 * 20, fW: 32, fH: 36, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_right',
+            frames: [
+                { sx: (24 + 35 * 2), sy: 47 + 36 * 17, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 40 + 36 * 16, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 33 + 36 * 15, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 26 + 36 * 14, fW: 32, fH: 32, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_right_down',
+            frames: [
+                { sx: (18 + 35 * 3), sy: 44 + 36 * 17, fW: 32, fH: 38, },
+                { sx: (18 + 35 * 3), sy: 36 + 36 * 16, fW: 32, fH: 38, },
+                { sx: (18 + 35 * 3), sy: 26 + 36 * 15, fW: 32, fH: 38, },
+                { sx: (18 + 35 * 3), sy: 20 + 36 * 14, fW: 32, fH: 38, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_down',
+            frames: [
+                { sx: (15 + 35 * 4), sy: 21 + 36 * 14, fW: 32, fH: 38, },
+                { sx: (15 + 35 * 4), sy: 28 + 36 * 15, fW: 32, fH: 38, },
+                { sx: (15 + 35 * 4), sy: 35 + 36 * 16, fW: 32, fH: 38, },
+                { sx: (15 + 35 * 4), sy: 42 + 36 * 17, fW: 32, fH: 38, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_left_down',
+            frames: [
+                { sx: (18 + 35 * 3), sy: 44 + 36 * 17, fW: 32, fH: 38, flip: true },
+                { sx: (18 + 35 * 3), sy: 36 + 36 * 16, fW: 32, fH: 38, flip: true },
+                { sx: (18 + 35 * 3), sy: 26 + 36 * 15, fW: 32, fH: 38, flip: true },
+                { sx: (18 + 35 * 3), sy: 20 + 36 * 14, fW: 32, fH: 38, flip: true },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_left',
+            frames: [
+                { sx: (24 + 35 * 2), sy: 47 + 36 * 17, fW: 32, fH: 32, flip: true },
+                { sx: (24 + 35 * 2), sy: 40 + 36 * 16, fW: 32, fH: 32, flip: true },
+                { sx: (24 + 35 * 2), sy: 33 + 36 * 15, fW: 32, fH: 32, flip: true },
+                { sx: (24 + 35 * 2), sy: 26 + 36 * 14, fW: 32, fH: 32, flip: true },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'move_wood_left_up',
+            frames: [
+                { sx: (24 + 35 * 1), sy: 28 + 36 * 14, fW: 32, fH: 33, flip: true },
+                { sx: (24 + 35 * 1), sy: 34 + 36 * 15, fW: 32, fH: 33, flip: true },
+                { sx: (24 + 35 * 1), sy: 40 + 36 * 16, fW: 32, fH: 33, flip: true },
+                { sx: (24 + 35 * 1), sy: 46 + 36 * 17, fW: 32, fH: 33, flip: true },
+            ]
+        });
+
+
+
         sprite.animations.play({ key: sprite.dir, delay: 16 })
     }
 
