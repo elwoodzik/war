@@ -50,6 +50,7 @@ class Units extends Sprite {
     updateBorder() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === this.objID) {
             this.game.VAR.sellectedBorder.x = this.x; //+ this.width / 4
+            // this.game.VAR.sellectedBorder.y = this.y + 8//+ this.height / 2
             this.game.VAR.sellectedBorder.y = this.y + (this.height - 30)//+ this.height / 2
             this.game.VAR.sellectedBorder.width = 32//this.width;
             this.game.VAR.sellectedBorder.height = 32//this.height;
@@ -219,12 +220,20 @@ class Units extends Sprite {
 
     getAnimationInMove(startPos, nextStep) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
+        // console.log(this.key, this.inWooding)
+        // if (this.key === 'chop') {
+        this.image = this.AssetManager.get('peasant');
+        // }
+        // this.image = this.AssetManager.get('chop')
 
         if (_nextStep.x > startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right_down';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_right_down' //'move_wood_right_down';
+                this.dir = 'move_wood_right_down';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_right_down';
             } else {
                 this.dir = 'move_right_down';
             }
@@ -232,7 +241,10 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_down';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_down'//'move_wood_down';
+                this.dir = 'move_wood_down';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_down';
             } else {
                 this.dir = 'move_down';
             }
@@ -240,7 +252,10 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left_down';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_left_down'//'move_wood_left_down';
+                this.dir = 'move_wood_left_down';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_left_down';
             } else {
                 this.dir = 'move_left_down';
             }
@@ -248,7 +263,10 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_left'//'move_wood_left';
+                this.dir = 'move_wood_left';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_left';
             } else {
                 this.dir = 'move_left';
             }
@@ -256,7 +274,10 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_left_up';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_left_up'//'move_wood_left_up';
+                this.dir = 'move_wood_left_up';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_left_up';
             } else {
                 this.dir = 'move_left_up';
             }
@@ -264,7 +285,10 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_up';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_up'//'move_wood_up';
+                this.dir = 'move_wood_up';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_up';
             } else {
                 this.dir = 'move_up';
             }
@@ -272,16 +296,21 @@ class Units extends Sprite {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right_up';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_right_up'//'move_wood_right_up';
+                this.dir = 'move_wood_right_up';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_right_up';
             } else {
                 this.dir = 'move_right_up';
             }
-
         } else if (_nextStep.x > startPos.x && _nextStep.y === startPos.y) {
             if (this.cargo === 'gold') {
                 this.dir = 'move_gold_right';
             } else if (this.cargo === 'wood') {
-                this.dir = 'move_right'//'move_wood_right';
+                this.dir = 'move_wood_right';
+            } else if (this.inWooding) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'chop_right';
             } else {
                 this.dir = 'move_right';
             }

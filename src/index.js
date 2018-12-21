@@ -12,6 +12,7 @@ class Game {
         const images = {
             world: 'images/world_summer.png',
             peasant: 'images/peasant.png',
+            chop: 'images/chop.png',
             buildings: 'images/buildings.png',
             gold: 'images/gold.png',
             icons: 'images/icons.png',

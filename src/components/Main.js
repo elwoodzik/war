@@ -59,7 +59,7 @@ class Main {
             })
 
             this.game.VAR.settings.people.push(new Peasant(this.game, {
-                key: 'peasant',
+                key: 'chop',
                 x: 32 * 9,
                 y: 32 * 4,
                 zIndex: 100
@@ -88,20 +88,20 @@ class Main {
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
             const endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.goldMine);
 
-            for (let i = 0; i < 20; i++) {
-                new Peasant(this.game, {
-                    key: 'peasant',
-                    x: 32 * i,
-                    y: 32 * 21
-                });
-            }
-            for (let i = 0; i < 20; i++) {
-                new Peasant(this.game, {
-                    key: 'peasant',
-                    x: 32 * i,
-                    y: 32 * 20
-                });
-            }
+            // for (let i = 3; i < 5; i++) {
+            //     new Peasant(this.game, {
+            //         key: 'peasant',
+            //         x: 32 * i,
+            //         y: 32 * 21
+            //     });
+            // }
+            // for (let i = 3; i < 5; i++) {
+            //     new Peasant(this.game, {
+            //         key: 'peasant',
+            //         x: 32 * i,
+            //         y: 32 * 20
+            //     });
+            // }
             for (let i = 0; i < 5; i++) {
                 const pes = new Peasant(this.game, {
                     key: 'peasant',
