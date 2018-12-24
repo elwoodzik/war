@@ -7,7 +7,7 @@ class Game {
         const gameWidth = 960;
         const gameHeight = 540;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
-        const scallable = true;
+        const scallable = false;
         const mobile = false;
         const images = {
             world: 'images/world_summer.png',
@@ -28,7 +28,7 @@ class Game {
     create(game) {
         game.keyboard.initialize();
         game.mouse.initialize();
-        // game.mouse.enableHover();
+        game.mouse.enableHover();
 
         game.state.add('Main', Main);
         game.state.start('Main');

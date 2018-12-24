@@ -7,7 +7,7 @@ class Peasant extends Units {
 
         this.type = 'worker';
 
-        this.inBuildin = false;
+        this.inBuilding = false;
         this.dir = 'idle_up';
         this.cargo = 'empty';
         this.inForestPos = {};
@@ -17,9 +17,9 @@ class Peasant extends Units {
             imageKey: 'peasant',
             name: 'Peasant',
             descriptios: [
-                'Production',
-                'Gold: 100',
-                'Wood: 100'
+                'opis',
+                'opis',
+                'opis'
             ],
             inProgress: false,
             inProgressTime: 0,
@@ -50,15 +50,15 @@ class Peasant extends Units {
 
     extendsMove(nextTile, nextStep, startPos) {
         // nextTile 4 === kopalnia
-        if (nextTile.type === 'gold' && this.cargo === 'empty' && !this.inBuildin) {
+        if (nextTile.type === 'gold' && this.cargo === 'empty' && !this.inBuilding) {
             this.inMine(nextStep, startPos);
             return true;
         }
-        else if (nextTile.type === 'town' && (this.cargo === 'gold' || this.cargo === 'wood') && !this.inBuildin) {
+        else if (nextTile.type === 'town' && (this.cargo === 'gold' || this.cargo === 'wood') && !this.inBuilding) {
             this.inTown(nextStep, startPos);
             return true;
         }
-        else if (nextTile.type === 'forest' && this.cargo === 'empty' && !this.inBuildin) {
+        else if (nextTile.type === 'forest' && this.cargo === 'empty' && !this.inBuilding) {
             this.inForest(nextStep, startPos);
             return true;
         }
@@ -66,7 +66,7 @@ class Peasant extends Units {
 
     inMine(nextStep, startPos) {
         this.unSelectedBorder();
-        this.inBuildin = true;
+        this.inBuilding = true;
         this.isRender = false;
 
         this.x = startPos.x;
@@ -81,7 +81,7 @@ class Peasant extends Units {
 
     inTown(nextStep, startPos) {
         this.unSelectedBorder();
-        this.inBuildin = true;
+        this.inBuilding = true;
         this.isRender = false;
 
         this.x = startPos.x;
@@ -135,7 +135,7 @@ class Peasant extends Units {
     }
 
     goToBuilding(building, index = 1) {
-        this.restartPosition();
+        // this.restartPosition();
         if (building.update) {
             this.move(null, building, index);
         } else {
@@ -147,7 +147,7 @@ class Peasant extends Units {
         this.doInTime(firstTime, () => {
             if (this.game.VAR.map.getTile(startPos.row, startPos.column).type !== 'solid') {
                 this.isRender = true;
-                this.inBuildin = false;
+                this.inBuilding = false;
 
                 this.goToBuilding(building, index);
             } else {

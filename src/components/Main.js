@@ -6,6 +6,8 @@ import Town from "./Buildings/Town/Town";
 import GoldMine from "./Buildings/GoldMine/GoldMine";
 import HudLeft from "./Hud/HudLeft";
 import HudTop from "./Hud/HudTop";
+import HudRight from "./Hud/HudRight";
+import HudBottom from "./Hud/HudBottom";
 
 
 class Main {
@@ -29,19 +31,11 @@ class Main {
                 homeMax: 4,
                 people: []
             }
-            // new Pathfinder(this.game, {
-            //     json: '../../jsons/path2.json',
-            //     isRender: true
-            // }).then((pathfinder) => {
-            //     this.game.VAR.pathfinder = pathfinder;
 
             this.game.easystar = new EasyStar.js();
-
             this.game.easystar.setAcceptableTiles([266, 349, 116, 117, 137]);
             this.game.easystar.enableDiagonals();
-
             this.game.easystar.enableCornerCutting();
-            //   this.game.easystar.setIterationsPerCalculation(500);
 
             this.game.VAR.cameraMan = this.game.add.rect({
                 x: 350,
@@ -50,7 +44,7 @@ class Main {
                 height: 20
             });
 
-            this.game.VAR.cameraSpeed = 700;
+            this.game.VAR.cameraMan.cameraSpeed = 700;
 
             this.game.setPortView(2240, 2240);
 
@@ -59,10 +53,9 @@ class Main {
             })
 
             this.game.VAR.settings.people.push(new Peasant(this.game, {
-                key: 'chop',
+                key: 'peasant',
                 x: 32 * 9,
-                y: 32 * 4,
-                zIndex: 100
+                y: 32 * 4
             }));
 
             this.game.VAR.town = new Town(this.game, {
@@ -114,6 +107,8 @@ class Main {
 
             this.game.VAR.hudLeft = new HudLeft(this.game, {})
             this.game.VAR.hudTop = new HudTop(this.game, {})
+            this.game.VAR.hudRight = new HudRight(this.game, {});
+            this.game.VAR.hudBottom = new HudBottom(this.game, {});
             this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
             this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax)
@@ -130,21 +125,20 @@ class Main {
     update(dt) {
         if (this.game.VAR.cameraMan) {
             if (this.game.keyboard.trigger('D') || this.game.keyboard.trigger('right')) {
-                this.game.VAR.cameraMan.body.velocity.x = this.game.VAR.cameraSpeed;
+                this.game.VAR.cameraMan.body.velocity.x = this.game.VAR.cameraMan.cameraSpeed;
             } else if (this.game.keyboard.trigger('A') || this.game.keyboard.trigger('left')) {
-                this.game.VAR.cameraMan.body.velocity.x = -this.game.VAR.cameraSpeed;
+                this.game.VAR.cameraMan.body.velocity.x = -this.game.VAR.cameraMan.cameraSpeed;
             } else {
                 this.game.VAR.cameraMan.body.velocity.x = 0
             }
             if (this.game.keyboard.trigger('W') || this.game.keyboard.trigger('up')) {
-                this.game.VAR.cameraMan.body.velocity.y = -this.game.VAR.cameraSpeed;
+                this.game.VAR.cameraMan.body.velocity.y = -this.game.VAR.cameraMan.cameraSpeed;
             } else if (this.game.keyboard.trigger('S') || this.game.keyboard.trigger('down')) {
-                this.game.VAR.cameraMan.body.velocity.y = this.game.VAR.cameraSpeed;
+                this.game.VAR.cameraMan.body.velocity.y = this.game.VAR.cameraMan.cameraSpeed;
             } else {
                 this.game.VAR.cameraMan.body.velocity.y = 0;
             }
         }
-
     }
 
     normalMouseClick() {

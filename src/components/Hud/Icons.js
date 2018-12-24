@@ -4,14 +4,15 @@ class Icons extends Sprite {
     constructor(game, options) {
         super(game, options);
 
-        this.x = 5;
-        this.y = 20;
+        this.immovable = true;
+        this.x = options.x || 5;
+        this.y = options.y || 20;
         this.static = true;
 
         this.animations.add({
             key: 'peasant',
             frames: [
-                { sx: 0, sy: 0, fW: 46, fH: 38, },
+                { sx: 3, sy: 3, fW: 46, fH: 38, },
             ]
         });
         this.animations.add({

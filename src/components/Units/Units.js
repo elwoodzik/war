@@ -166,6 +166,7 @@ class Units extends Sprite {
                             if (newPath.length > 0) {
                                 this.move(_endPos ? endPos : null, building, index);
                             } else {
+
                                 this.nextTile.type = 'solid';
                                 this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                                 // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
@@ -188,7 +189,7 @@ class Units extends Sprite {
                 this.currentTile.type = 'empty';
             }
         }
-        if (this.nextStep) {
+        if (this.nextStep && !this.inBuilding) {
             // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 1);
             this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 1);
             if (this.nextTile && this.nextTile.type === 'solid') {

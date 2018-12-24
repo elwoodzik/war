@@ -1,9 +1,9 @@
 import Buildings from "../Buildings";
+import BuildPeasant from "./actions/BuildPeasant";
 
 class Town extends Buildings {
     constructor(game, options) {
         super(game, options);
-
 
         this.info = {
             imageKey: 'town',
@@ -16,23 +16,40 @@ class Town extends Buildings {
             inProgress: false,
             inProgressTime: 0,
 
-            // actions : [
-            //     {
-            //         image: this.AssetManager.get('icons'),
-            //         iconLeft: (-46 * 0 + -3 * 0) - 3,
-            //         iconTop: (-38 * 0 + -3 * 0) - 3,
-            //         goldCost: 100,
-            //         woodCost: 0,
-            //         time: 10000,
-            //         // create: {
-            //         //     class: Peasant,
-            //         //     key: 'peasant'
-            //         // },
-            //         // callback: this.buildingUnit
-            //     },
-            // ],    
-        }
+            actions: [
+                {
+                    key: 'peasant',
+                    hoverText: '1'
+                },
+                {
+                    key: 'town',
+                    hoverText: '2'
+                },
+                {
+                    key: 'town',
+                    hoverText: '3'
+                },
+                {
+                    key: 'peasant',
+                    hoverText: '4'
+                },
+                {
+                    key: 'town',
+                    hoverText: '5'
+                },
+                {
+                    key: 'town',
+                    hoverText: '6'
+                }
+            ],
 
+        }
+        // this.infoIcon = new BuildPeasant(this.game, {
+        //     key: 'icons',
+        //     x: 400
+        // })
+        // this.infoIcon.animations.playOnce({ key: 'peasant' });
+        // console.log(this.infoIcon)
         this.animations.add({
             key: 'first',
             frames: [
@@ -42,6 +59,10 @@ class Town extends Buildings {
 
         this.animations.playOnce({ key: 'first', delay: 16 })
         this.unWalkable(5, 'town', 30);
+    }
+
+    onHover() {
+        console.log('a')
     }
 
     update(dt) {

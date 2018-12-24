@@ -1,5 +1,6 @@
 import Rect from "../../../lib/Rect";
 import Icons from "./Icons";
+import Action from "./Action";
 
 class HudLeft extends Rect {
     constructor(game, options) {
@@ -14,7 +15,7 @@ class HudLeft extends Rect {
         this.static = true;
 
         this.infoName = this.game.add.text({
-            text: 'aaa\r\nss',
+            text: ' ',
             x: 60,
             y: 45,
             // asImage: true,
@@ -23,10 +24,12 @@ class HudLeft extends Rect {
         }).getProps()
 
         this.infoIcon = new Icons(this.game, {
-            key: 'icons'
+            key: 'icons',
+            used: false
         })
 
-        this.descriptionsInfo = []
+        this.descriptionsInfo = [];
+
         for (let i = 0; i < 5; i++) {
             this.descriptionsInfo.push(
                 this.game.add.text({
@@ -39,14 +42,29 @@ class HudLeft extends Rect {
                 })
             )
         }
+
+        this.actions = [];
+
+        for (let i = 0; i < 10; i++) {
+            this.actions.push(
+                new Action(this.game, {
+                    key: 'icons',
+                    used: false,
+                    zIndex: 10
+                })
+            )
+        }
     }
 
     setInfo(info) {
         // console.log(info)
         this.infoName.use(info.name);
+        this.infoIcon.used = true;
         this.infoIcon.animations.playOnce({ key: info.imageKey });
         this.hideDescription();
+        this.hideActions();
         this.showDescription(info.descriptios)
+        this.showActions(info.actions)
     }
 
     hideDescription() {
@@ -66,9 +84,34 @@ class HudLeft extends Rect {
         }
     }
 
-    onClick() {
-        console.log('rect')
-        return false;
+    showActions(actions) {
+        if (actions && actions.length > 0) {
+            let x = 5;
+            let y = 250;
+            for (let i = 1; i < actions.length; i++) {
+                const action = this.actions[i - 1];
+                action.used = true;
+                action.animations.playOnce({ key: actions[i - 1].key });
+                action.x = x;
+                action.y = y;
+                action.data = actions[i - 1];
+                x += 52;
+                if (i % 3 === 0) {
+                    y += 50;
+                    x = 5;
+                }
+            }
+        } else {
+            return false;
+        }
     }
+
+    hideActions() {
+        for (let i = 0; i < this.actions.length; i++) {
+            const action = this.actions[i];
+            action.used = false;
+        }
+    }
+
 }
 export default HudLeft;
