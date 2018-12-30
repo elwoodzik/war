@@ -14,11 +14,30 @@ class HudBottom extends Rect {
 
 
         this.hoverText = this.game.add.text({
-            x: 200,
+            x: 32 * 5 + 1,
             y: this.game.height - 5,
             text: ' ',
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
+        })
+
+        this.goldIcon = this.game.add.image({
+            x: 32 * 18 + 1,
+            y: this.game.height - 19,
+            key: 'gold_icon',
+            static: true,
+            zIndex: 51,
+            used: false
+        })
+
+        this.woodIcon = this.game.add.image({
+            x: 32 * 23 + 1,
+            y: this.game.height - 19,
+            key: 'wood_icon',
+            static: true,
+            zIndex: 51,
+            used: false
         })
     }
 }

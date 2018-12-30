@@ -1,68 +1,43 @@
 import Buildings from "../Buildings";
-import BuildPeasant from "./actions/BuildPeasant";
+import Peasant from "../../Units/Peasant/Peasant";
+import Animations from "./Animations";
+import Sounds from "./Sounds";
+
 
 class Town extends Buildings {
     constructor(game, options) {
         super(game, options);
 
+        this.dir = 'idle';
+
         this.info = {
             imageKey: 'town',
-            name: 'Town',
+            name: 'Town Hall',
             descriptios: [
-                'Production',
+                'Production:',
                 'Gold: 100',
                 'Wood: 100'
             ],
             inProgress: false,
             inProgressTime: 0,
-
             actions: [
                 {
                     key: 'peasant',
-                    hoverText: '1'
+                    onActionHover: this.onActionHover,
+                    woodCost: 0,
+                    goldCost: 400,
+                    time: 13000,
+                    onBuild: this.onActionBuild,
+                    create: {
+                        class: Peasant,
+                        key: 'peasant'
+                    },
                 },
-                {
-                    key: 'town',
-                    hoverText: '2'
-                },
-                {
-                    key: 'town',
-                    hoverText: '3'
-                },
-                {
-                    key: 'peasant',
-                    hoverText: '4'
-                },
-                {
-                    key: 'town',
-                    hoverText: '5'
-                },
-                {
-                    key: 'town',
-                    hoverText: '6'
-                }
             ],
-
         }
-        // this.infoIcon = new BuildPeasant(this.game, {
-        //     key: 'icons',
-        //     x: 400
-        // })
-        // this.infoIcon.animations.playOnce({ key: 'peasant' });
-        // console.log(this.infoIcon)
-        this.animations.add({
-            key: 'first',
-            frames: [
-                { sx: 265, sy: 5, fW: 128, fH: 128, },
-            ]
-        });
-
-        this.animations.playOnce({ key: 'first', delay: 16 })
+        new Animations(this);
+        this.sounds = new Sounds();
         this.unWalkable(5, 'town', 30);
-    }
-
-    onHover() {
-        console.log('a')
     }
 
     update(dt) {

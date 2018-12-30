@@ -1,5 +1,6 @@
 import Units from "../Units";
 import Animations from "./Animations";
+import Sounds from "./Sounds";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -42,10 +43,15 @@ class Peasant extends Units {
         }
 
         new Animations(this);
+        this.sounds = new Sounds();
     }
 
     update(dt) {
         super.update(dt);
+
+        if (this.inWooding) {
+
+        }
     }
 
     extendsMove(nextTile, nextStep, startPos) {
@@ -126,12 +132,30 @@ class Peasant extends Units {
         } else {
             this.inWooding = true;
             this.getAnimationInMove(startPos, nextStep);
-            this.doInTime(4500, () => {
+            // this.AssetManager.play('S_chopTree1', { duration: 0, })
+            // this.AssetManager.play('S_chopTree2', { duration: 100 })
+            // this.AssetManager.play('S_chopTree3', { duration: 200 })
+            // this.AssetManager.play('S_chopTree4', { duration: 300 })
+            this.treeSound(1);
+            this.doInTime(13000, () => {
                 this.cargo = 'wood';
                 this.inWooding = false;
                 this.goToBuilding(this.game.VAR.town, 2);
             })
         }
+    }
+
+    treeSound(index) {
+        // console.log(this.isOutOfScreen)
+        if (!this.AssetManager.getSrc(`S_chopTree${index}`)) {
+            index = 1;
+        }
+
+        this.AssetManager.play(`S_chopTree${index}`, { duration: 600, volume: !this.isOutOfScreen ? 0.5 : 0 }).on("complete", () => {
+            if (this.inWooding) {
+                this.treeSound(index + 1);
+            }
+        })
     }
 
     goToBuilding(building, index = 1) {

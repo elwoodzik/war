@@ -16,7 +16,8 @@ class HudTop extends Rect {
             x: 350,
             y: 2,
             key: 'gold_icon',
-            static: true
+            static: true,
+            zIndex: 51
         })
         this.goldText = this.game.add.text({
             text: 500,
@@ -24,14 +25,16 @@ class HudTop extends Rect {
             y: 2,
             asImage: true,
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
         })
 
         this.woodIcon = this.game.add.image({
             x: 550,
             y: 2,
             key: 'wood_icon',
-            static: true
+            static: true,
+            zIndex: 51
         })
         this.woodText = this.game.add.text({
             text: 200,
@@ -39,14 +42,16 @@ class HudTop extends Rect {
             y: 2,
             asImage: true,
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
         })
 
         this.homeIcon = this.game.add.image({
             x: 750,
             y: 2,
             key: 'home_icon',
-            static: true
+            static: true,
+            zIndex: 51
         })
 
         this.homeTextCurrent = this.game.add.text({
@@ -55,7 +60,8 @@ class HudTop extends Rect {
             y: 2,
             asImage: true,
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
         })
         this.game.add.text({
             text: '/',
@@ -63,7 +69,8 @@ class HudTop extends Rect {
             y: 2,
             asImage: true,
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
         })
         this.homeTextMax = this.game.add.text({
             text: 5,
@@ -71,7 +78,8 @@ class HudTop extends Rect {
             y: 2,
             asImage: true,
             static: true,
-            fontSize: 18
+            fontSize: 18,
+            zIndex: 51
         })
     }
 }

@@ -8,26 +8,23 @@ class Action extends Icons {
     }
 
     onClick() {
-        console.log(this.data)
+        this.currentAction.onBuild(this.currentAction);
     }
 
     update(dt) {
         super.update(dt);
-        // if (this.hovered) {
-        //     console.log('a')
-        //     this.game.VAR.hudBottom.hoverText.use(this.data.hoverText)
-        // }
-        // console.log('a')
     }
 
     onHover() {
-        console.log('jest')
-        this.game.VAR.hudBottom.hoverText.use(this.data.hoverText)
+        this.game.VAR.hudBottom.hoverText.use(this.currentAction.onActionHover(this.currentAction));
+        this.game.VAR.hudBottom.goldIcon.used = true;
+        this.game.VAR.hudBottom.woodIcon.used = true;
     }
-    
+
     onLeave() {
-        console.log('wysz')
-        this.game.VAR.hudBottom.hoverText.use(' ')
+        this.game.VAR.hudBottom.hoverText.use(' ');
+        this.game.VAR.hudBottom.goldIcon.used = false;
+        this.game.VAR.hudBottom.woodIcon.used = false;
     }
 }
 export default Action;

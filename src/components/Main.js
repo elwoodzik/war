@@ -8,6 +8,7 @@ import HudLeft from "./Hud/HudLeft";
 import HudTop from "./Hud/HudTop";
 import HudRight from "./Hud/HudRight";
 import HudBottom from "./Hud/HudBottom";
+import AssetManager from "../../lib/AssetManager";
 
 
 class Main {
@@ -24,7 +25,7 @@ class Main {
             this.game.VAR.map = map;
 
             this.game.VAR.settings = {
-                gold: 100,
+                gold: 5400,
                 goldUpdateBy: 100,
                 wood: 100,
                 woodUpdateBy: 100,
@@ -61,6 +62,12 @@ class Main {
             this.game.VAR.town = new Town(this.game, {
                 key: 'buildings',
                 x: 32 * 15,
+                y: 32 * 12
+            })
+
+            new Town(this.game, {
+                key: 'buildings',
+                x: 32 * 19,
                 y: 32 * 12
             })
 
@@ -105,10 +112,11 @@ class Main {
 
             }
 
-            this.game.VAR.hudLeft = new HudLeft(this.game, {})
-            this.game.VAR.hudTop = new HudTop(this.game, {})
-            this.game.VAR.hudRight = new HudRight(this.game, {});
-            this.game.VAR.hudBottom = new HudBottom(this.game, {});
+           
+            this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 })
+            this.game.VAR.hudRight = new HudRight(this.game, { zIndex: 50 });
+            this.game.VAR.hudBottom = new HudBottom(this.game, { zIndex: 50 });
+            this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 })
             this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
             this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax)
@@ -153,6 +161,7 @@ class Main {
                 }
                 this.game.VAR.sellectedObj.restartPosition();
                 this.game.VAR.sellectedObj.move(endPos);
+                this.game.VAR.sellectedObj.getRandomMoveSound();
             }
         }, false)
     }

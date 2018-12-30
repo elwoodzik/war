@@ -13,7 +13,23 @@ class Units extends Sprite {
 
     onClick() {
         this.selectedBorder();
-        this.game.VAR.hudLeft.setInfo(this.info)
+        this.game.VAR.hudLeft.setInfo(this.info);
+        this.getRandomSelectedSound();
+    }
+
+
+    getRandomSelectedSound() {
+        if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
+            const rand = this.game.rand(0, this.sounds.selected.length - 1);
+            this.AssetManager.play(this.sounds.selected[rand]);
+        }
+    }
+
+    getRandomMoveSound() {
+        if (this.sounds && this.sounds.move && this.sounds.move.length > 0) {
+            const rand = this.game.rand(0, this.sounds.move.length - 1);
+            this.AssetManager.play(this.sounds.move[rand]);
+        }
     }
 
     selectedBorder() {
