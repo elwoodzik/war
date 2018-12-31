@@ -65,11 +65,18 @@ class Building extends Sprite {
                     this.game.sortByIndex();
                 })
             }
+            else {
+                this.AssetManager.play('S_click');
+                this.game.VAR.textError.display('houses')
+            }
+        } else {
+            this.AssetManager.play('S_click');
+            this.game.VAR.textError.display('resources')
         }
     }
 
     onActionHover = (action) => {
-        return `Train ${action.key}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
+        return `Trenuj ${action.create.name}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
     }
 
     selectedBorder() {
@@ -92,6 +99,10 @@ class Building extends Sprite {
 
     update(dt) {
         super.update(dt);
+
+        this.animations.play({
+            key: this.dir
+        })
 
     }
 

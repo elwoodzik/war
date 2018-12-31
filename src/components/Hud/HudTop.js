@@ -22,8 +22,8 @@ class HudTop extends Rect {
         this.goldText = this.game.add.text({
             text: 500,
             x: 375,
-            y: 2,
-            asImage: true,
+            y: 16,
+            // asImage: true,
             static: true,
             fontSize: 18,
             zIndex: 51
@@ -39,8 +39,8 @@ class HudTop extends Rect {
         this.woodText = this.game.add.text({
             text: 200,
             x: 575,
-            y: 2,
-            asImage: true,
+            y: 16,
+            // asImage: true,
             static: true,
             fontSize: 18,
             zIndex: 51
@@ -57,8 +57,8 @@ class HudTop extends Rect {
         this.homeTextCurrent = this.game.add.text({
             text: '0',
             x: 775,
-            y: 2,
-            asImage: true,
+            y: 16,
+            // asImage: true,
             static: true,
             fontSize: 18,
             zIndex: 51
@@ -66,8 +66,8 @@ class HudTop extends Rect {
         this.game.add.text({
             text: '/',
             x: 788,
-            y: 2,
-            asImage: true,
+            y: 16,
+            // asImage: true,
             static: true,
             fontSize: 18,
             zIndex: 51
@@ -75,8 +75,8 @@ class HudTop extends Rect {
         this.homeTextMax = this.game.add.text({
             text: 5,
             x: 795,
-            y: 2,
-            asImage: true,
+            y: 16,
+            // asImage: true,
             static: true,
             fontSize: 18,
             zIndex: 51

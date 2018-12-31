@@ -1,5 +1,6 @@
 import Leya from '../lib/Leya';
-import Main from './components/Main';
+import Main from './components/Pages/Main';
+import Start from './components/Pages/Start/Start';
 
 class Game {
 
@@ -7,9 +8,9 @@ class Game {
         const gameWidth = 960;
         const gameHeight = 540;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
-        const scallable = false;
+        const scallable = true;
         const mobile = false;
-        const images = {
+        const assets = {
             // world: 'images/world_summer.png',
             world: 'images/world_summer.png',
             peasant: 'images/peasant.png',
@@ -37,7 +38,7 @@ class Game {
             S_chopTree4: 'sounds/tree4.wav',
         }
 
-        new Leya(gameWidth, gameHeight, orientation, scallable, mobile, images)
+        new Leya(gameWidth, gameHeight, orientation, scallable, mobile, assets)
             .then((game) => this.create(game))
     }
 
@@ -47,7 +48,8 @@ class Game {
         game.mouse.enableHover();
         game.showFPS();
         game.state.add('Main', Main);
-        game.state.start('Main');
+        game.state.add('Start', Start);
+        game.state.start('Start');
     }
 };
 

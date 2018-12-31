@@ -12,11 +12,11 @@ class Town extends Buildings {
 
         this.info = {
             imageKey: 'town',
-            name: 'Town Hall',
+            name: 'Ratusz',
             descriptios: [
-                'Production:',
-                'Gold: 100',
-                'Wood: 100'
+                'Produkuja:',
+                'Złoto: 100',
+                'Drewno: 100'
             ],
             inProgress: false,
             inProgressTime: 0,
@@ -30,7 +30,8 @@ class Town extends Buildings {
                     onBuild: this.onActionBuild,
                     create: {
                         class: Peasant,
-                        key: 'peasant'
+                        key: 'peasant',
+                        name: 'Chłop'
                     },
                 },
             ],
@@ -42,6 +43,15 @@ class Town extends Buildings {
 
     update(dt) {
         super.update(dt);
+    }
+
+    onClick() {
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold' || this.game.VAR.sellectedObj.cargo === 'wood')) {
+            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
+            this.game.VAR.sellectedObj.getRandomMoveSound();
+        } else {
+            super.onClick();
+        }
     }
 }
 export default Town;

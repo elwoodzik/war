@@ -16,7 +16,7 @@ class Peasant extends Units {
 
         this.info = {
             imageKey: 'peasant',
-            name: 'Peasant',
+            name: 'Chłop',
             descriptios: [
                 'opis',
                 'opis',
@@ -64,7 +64,7 @@ class Peasant extends Units {
             this.inTown(nextStep, startPos);
             return true;
         }
-        else if (nextTile.type === 'forest' && this.cargo === 'empty' && !this.inBuilding) {
+        else if (nextTile.type === 'forest' && !this.inBuilding) {
             this.inForest(nextStep, startPos);
             return true;
         }
@@ -79,8 +79,11 @@ class Peasant extends Units {
         this.y = startPos.y;
         this.restartPosition();
 
+        this.game.VAR.goldMine.addUserToMine();
+
         this.doInTime(4500, () => {
             this.cargo = 'gold';
+            this.game.VAR.goldMine.removeUserFromMine();
             this.leaveBuilding(this.game.VAR.town, 2, startPos, 0, 800);
         })
     }
@@ -117,26 +120,28 @@ class Peasant extends Units {
     inForest(nextStep, startPos) {
         // this.game.VAR.map.reRenderTile(startPos.row, startPos.column, 2);
         this.inForestPos = { x: this.x, y: this.y, column: nextStep.y, row: nextStep.x };
-        if (this.cargo === 'wood' || this.cargo === 'gold') {
-            let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
-            const currentPos = this.game.VAR.map.getTileBySprite(this);
 
-            if (endPos.column >= currentPos.column) {
-                endPos = { ...endPos, column: endPos.column - 1 }
-            }
-            if (endPos.row > currentPos.row) {
-                endPos = { ...endPos, row: endPos.row - 1 }
-            }
-            this.move(endPos);
-            this.showBorder();
+        if (this.cargo === 'wood' || this.cargo === 'gold') {
+            // let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
+            // const currentPos = this.game.VAR.map.getTileBySprite(this);
+
+            // if (endPos.column >= currentPos.column) {
+            //     endPos = { ...endPos, column: endPos.column - 1 }
+            // }
+            // if (endPos.row > currentPos.row) {
+            //     endPos = { ...endPos, row: endPos.row - 1 }
+            // }
+            // this.move(endPos);
+            // this.showBorder();
+            this.goToBuilding(this.game.VAR.town, 2);
         } else {
+            if (this.chopSound) {
+                this.chopSound.destroy();
+            }
+            this.treeSound(1);
             this.inWooding = true;
             this.getAnimationInMove(startPos, nextStep);
-            // this.AssetManager.play('S_chopTree1', { duration: 0, })
-            // this.AssetManager.play('S_chopTree2', { duration: 100 })
-            // this.AssetManager.play('S_chopTree3', { duration: 200 })
-            // this.AssetManager.play('S_chopTree4', { duration: 300 })
-            this.treeSound(1);
+
             this.doInTime(13000, () => {
                 this.cargo = 'wood';
                 this.inWooding = false;
@@ -146,12 +151,12 @@ class Peasant extends Units {
     }
 
     treeSound(index) {
-        // console.log(this.isOutOfScreen)
         if (!this.AssetManager.getSrc(`S_chopTree${index}`)) {
             index = 1;
         }
 
-        this.AssetManager.play(`S_chopTree${index}`, { duration: 600, volume: !this.isOutOfScreen ? 0.5 : 0 }).on("complete", () => {
+        this.chopSound = this.AssetManager.play(`S_chopTree${index}`, { duration: 600, volume: !this.isOutOfScreen ? 0.5 : 0 })
+        this.chopSound.on("complete", () => {
             if (this.inWooding) {
                 this.treeSound(index + 1);
             }

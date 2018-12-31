@@ -53,7 +53,7 @@ class HudLeft extends Rect {
                     fontSize: 18,
                     text: 'test',
                     zIndex: 51,
-                    asImage: true,
+                    // asImage: true,
                 })
             )
         }
@@ -84,12 +84,12 @@ class HudLeft extends Rect {
 
         this.creationBarText = this.game.add.text({
             x: 33,
-            y: 170,
+            y: 185,
             static: true,
             fontSize: 18,
-            text: '% complete',
+            text: '% ukończone',
             zIndex: 51,
-            asImage: true,
+            // asImage: true,
             used: false,
         })
 
@@ -103,12 +103,12 @@ class HudLeft extends Rect {
 
         this.trainText = this.game.add.text({
             x: 28,
-            y: 110,
+            y: 125,
             static: true,
             fontSize: 18,
-            text: 'Training:',
+            text: 'Trenuje:',
             zIndex: 51,
-            asImage: true,
+            // asImage: true,
             used: false,
         })
     }
@@ -139,12 +139,11 @@ class HudLeft extends Rect {
         this.infoIcon.animations.playOnce({ key: info.imageKey });
         this.hideDescription();
         this.hideActions();
-        this.showDescription(info.descriptios)
+        this.showDescription(info.descriptios);
 
         if (!info.inProgress) {
-            this.showActions(info.actions)
+            this.showActions(info.actions);
         }
-
     }
 
     hideDescription() {
@@ -157,10 +156,10 @@ class HudLeft extends Rect {
     showDescription(descriptios) {
         for (let i = 0; i < descriptios.length; i++) {
             const text = this.descriptionsInfo[i];
-            text.x = 42;
-            text.y = 75 + 22 * i;
+            text.x = 32;
+            text.y = 85 + 22 * i;
             text.used = true;
-            text.use(descriptios[i])
+            text.use(descriptios[i]);
         }
     }
 

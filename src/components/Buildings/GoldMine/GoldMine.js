@@ -6,14 +6,15 @@ class GoldMine extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'idle';
+        this.dir = 'inMine';
+        this.usersInMine = 0;
 
         this.info = {
             imageKey: 'goldmine',
-            name: 'Goldmine',
+            name: 'Kopalnia',
             descriptios: [
-                'Resources:',
-                'unlimited',
+                'Zasoby:',
+                'Nieskończone',
                 // 'Wood: 100'
             ],
         }
@@ -26,13 +27,31 @@ class GoldMine extends Buildings {
     onClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && this.game.VAR.sellectedObj.cargo === 'empty') {
             this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.goldMine, 1);
-             this.game.VAR.sellectedObj.getRandomMoveSound();
-        } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold')) {
+            this.game.VAR.sellectedObj.getRandomMoveSound();
+        } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold' || this.game.VAR.sellectedObj.cargo === 'wood')) {
             this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
-             this.game.VAR.sellectedObj.getRandomMoveSound();
+            this.game.VAR.sellectedObj.getRandomMoveSound();
         } else {
             super.onClick();
         }
+    }
+
+    update(dt) {
+        super.update(dt);
+
+        if (this.usersInMine > 0) {
+            this.dir = 'inMine';
+        } else {
+            this.dir = 'idle';
+        }
+    }
+
+    addUserToMine() {
+        this.usersInMine++;
+    }
+
+    removeUserFromMine() {
+        this.usersInMine--;
     }
 }
 export default GoldMine;
