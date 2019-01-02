@@ -5,6 +5,10 @@ class Building extends Sprite {
     constructor(game, options) {
         super(game, options);
 
+        this.completed = options.completed || false;
+
+        this.buildingState = options.buildingState || 'complete';
+
         this.game = game;
         // const startPos = this.game.VAR.pathfinder.getTileBySprite(this);
         // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, 3);
@@ -102,8 +106,7 @@ class Building extends Sprite {
 
         this.animations.play({
             key: this.dir
-        })
-
+        });
     }
 
     // restartPosition() {
@@ -120,13 +123,17 @@ class Building extends Sprite {
     //     this.currentPosition = null;
     // }
 
+
     unWalkable(index, type, cost) {
         for (let i = 0; i < this.width; i += 32) {
             for (let j = 0; j < this.height; j += 32) {
+
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
-                tile.type = type || 'solid';
-                // this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, index);
-                this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 30)
+
+                if (tile) {
+                    tile.type = type || 'solid';
+                    this.game.easystar.setAdditionalPointCost(Math.floor((this.x + i) / 32), Math.floor((this.y + j) / 32), 30);
+                }
             }
         }
     }

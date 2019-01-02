@@ -87,6 +87,7 @@ class Units extends Sprite {
     //     }
     // }
 
+
     update(dt) {
         this.animations.play({
             key: this.dir
@@ -125,28 +126,28 @@ class Units extends Sprite {
                     this.getAnimationInMove(this.startPos, this.nextStep);
 
                     if (this.nextTile.type === 'town' && this.cargo === 'empty') {
-                        this.nextTile.type = 'town'
+                        this.nextTile.type = 'town';
                         return this.move(endPos);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'town' && this.cargo === 'empty') {
-                        this.currentTile.type = 'town'
+                        this.currentTile.type = 'town';
                         return this.move(endPos);
                     }
                     if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
-                        this.nextTile.type = 'gold'
+                        this.nextTile.type = 'gold';
                         return this.move(endPos);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
-                        this.currentTile.type = 'gold'
+                        this.currentTile.type = 'gold';
                         return this.move(endPos);
                     }
 
                     this.currentTile.type = 'solid';
 
                     if (this.nextTile.type === 'solid') {
-                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
+                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
                         this.dir = `idle${this.dir.slice(4)}`;
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';

@@ -177,7 +177,7 @@ class HudLeft extends Rect {
                 action.currentAction = actions[i];
                 x += 52;
                 if (index % 3 === 0) {
-                    y += 50;
+                    y += 42;
                     x = 5;
                 }
                 index++;

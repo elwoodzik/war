@@ -1,6 +1,7 @@
 import Units from "../Units";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
+import Farm from "../../Buildings/Farm/Farm";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -25,22 +26,62 @@ class Peasant extends Units {
             inProgress: false,
             inProgressTime: 0,
 
-            // actions : [
-            //     {
-            //         image: this.AssetManager.get('icons'),
-            //         iconLeft: (-46 * 0 + -3 * 0) - 3,
-            //         iconTop: (-38 * 0 + -3 * 0) - 3,
-            //         goldCost: 100,
-            //         woodCost: 0,
-            //         time: 10000,
-            //         // create: {
-            //         //     class: Peasant,
-            //         //     key: 'peasant'
-            //         // },
-            //         // callback: this.buildingUnit
-            //     },
-            // ],    
+            actions: [
+                {
+                    key: 'farm',
+                    onActionHover: this.onActionHover,
+                    woodCost: 100,
+                    goldCost: 500,
+                    time: 13000,
+                    onBuild: this.onActionBuild,
+                    create: {
+                        class: Farm,
+                        key: 'buildings',
+                        name: 'Farmę'
+                    },
+                },
+                {
+                    key: 'barracks',
+                    onActionHover: this.onActionHover,
+                    woodCost: 0,
+                    goldCost: 400,
+                    time: 13000,
+                    onBuild: this.onActionBuild,
+                    create: {
+                        class: Peasant,
+                        key: 'peasant',
+                        name: 'Koszary'
+                    },
+                },
+                {
+                    key: 'lumber_mill',
+                    onActionHover: this.onActionHover,
+                    woodCost: 0,
+                    goldCost: 400,
+                    time: 13000,
+                    onBuild: this.onActionBuild,
+                    create: {
+                        class: Peasant,
+                        key: 'peasant',
+                        name: 'Tartak'
+                    },
+                },
+                {
+                    key: 'blacksmith',
+                    onActionHover: this.onActionHover,
+                    woodCost: 0,
+                    goldCost: 400,
+                    time: 13000,
+                    onBuild: this.onActionBuild,
+                    create: {
+                        class: Peasant,
+                        key: 'peasant',
+                        name: 'Kuźnia'
+                    },
+                },
+            ],
         }
+
 
         new Animations(this);
         this.sounds = new Sounds();
@@ -48,9 +89,43 @@ class Peasant extends Units {
 
     update(dt) {
         super.update(dt);
+    }
 
-        if (this.inWooding) {
+    onActionHover = (action) => {
+        return `Buduj ${action.create.name}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
+    }
 
+    onActionBuild = (action) => {
+        if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
+            this.game.VAR.buildingPut.dir = action.key;
+            this.game.VAR.buildingPut.used = true;
+
+            // this.game.VAR.settings.gold -= action.goldCost;
+            // this.game.VAR.settings.wood -= action.woodCost;
+            // this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
+            // this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
+            // this.game.VAR.hudLeft.trainIcon.animations.playOnce({ key: action.key });
+            // this.info.inProgress = true;
+            // this.info.inProgressTime = action.time;
+            // this.AssetManager.play('S_click');
+            // this.doInTime(action.time, () => {
+            //     this.info.inProgress = false;
+            //     this.game.VAR.hudLeft.showActions(this.info.actions);
+            //     this.game.VAR.hudLeft.showDescription(this.info.descriptios);
+            // const building = new action.create.class(this.game, {
+            //     key: action.create.key,
+            //     x: -100,
+            //     y: -100,
+            //     buildingState: 'putting'
+            // });
+            //     unit.AssetManager.play(unit.sounds.created[0]);
+            //     this.game.VAR.settings.people.push(unit)
+            //     this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
+            //     this.game.sortByIndex();
+            // })
+        } else {
+            this.AssetManager.play('S_click');
+            this.game.VAR.textError.display('resources')
         }
     }
 
