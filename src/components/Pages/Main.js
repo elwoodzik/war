@@ -37,16 +37,16 @@ class Main {
                 people: []
             }
 
-            this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 })
+            this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
             this.game.VAR.hudRight = new HudRight(this.game, { zIndex: 50 });
             this.game.VAR.hudBottom = new HudBottom(this.game, { zIndex: 50 });
             this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 });
             this.game.VAR.textError = new TextError(this.game, { zIndex: 50 });
-            this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 51 })
+            this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 51 });
 
-            this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
-            this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
-            this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax)
+            this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
+            this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
+            this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax);
 
             this.game.easystar = new EasyStar.js();
             this.game.easystar.setAcceptableTiles([266, 349, 116, 117, 137]);
@@ -122,11 +122,11 @@ class Main {
                 y: 32 * 12
             })
 
-            // this.game.VAR.goldMine = new GoldMine(this.game, {
-            //     key: 'gold',
-            //     x: 32 * 2,
-            //     y: 32 * 7
-            // })
+            this.game.VAR.goldMine = new GoldMine(this.game, {
+                key: 'gold',
+                x: 32 * 2,
+                y: 32 * 7
+            })
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
 
@@ -181,9 +181,12 @@ class Main {
                 this.game.VAR.cameraMan.body.velocity.y = 0;
             }
         }
+        const tile = this.game.VAR.map.getTileByCords(this.game.mouse.mouseX + this.game.camera.xScroll, this.game.mouse.mouseY + this.game.camera.yScroll);
+        console.log(tile.id)
     }
 
     normalMouseClick() {
+
         this.game.mouse.trigger((mouse) => {
             // this.game.VAR.pathfinder.reRenderTile(Math.floor(this.game.mouse.mouseX / 32), Math.floor(this.game.mouse.mouseY / 32), 6);
             if (this.game.VAR.sellectedObj) {

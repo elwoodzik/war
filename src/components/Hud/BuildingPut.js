@@ -54,7 +54,9 @@ class BuildingPut extends Sprite {
         for (let i = 0; i < this.width + 32; i += 32) {
             for (let j = 0; j < this.height + 32; j += 32) {
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
+
                 if (tile && (tile.type === 'solid' || tile.type === 'gold' || tile.type === 'town' || tile.type === 'forest')) {
+
                     this.places.push({
                         x: this.x + i,
                         y: this.y + j
