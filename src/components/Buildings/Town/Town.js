@@ -45,12 +45,13 @@ class Town extends Buildings {
         super.update(dt);
     }
 
-    onClick() {
+    onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold' || this.game.VAR.sellectedObj.cargo === 'wood')) {
+            this.game.VAR.sellectedObj.restartPosition();
             this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
             this.game.VAR.sellectedObj.getRandomMoveSound();
         } else {
-            super.onClick();
+            return false;
         }
     }
 }

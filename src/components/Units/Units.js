@@ -4,7 +4,7 @@ class Units extends Sprite {
     constructor(game, options) {
         super(game, options);
 
-        this.type = 'worker';
+        this.objectType = 'unit';
 
         this.currentPosition = null;
         this.nextPosition = null;

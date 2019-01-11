@@ -5,6 +5,8 @@ class Building extends Sprite {
     constructor(game, options) {
         super(game, options);
 
+        this.objectType = 'building';
+
         this.completed = options.completed || false;
 
         this.buildingState = options.buildingState || 'complete';
@@ -19,6 +21,12 @@ class Building extends Sprite {
         this.selectedBorder();
         this.game.VAR.hudLeft.setInfo(this.info);
         this.getRandomSelectedSound();
+    }
+
+    onRightClick() {
+        // this.selectedBorder();
+        // this.game.VAR.hudLeft.setInfo(this.info);
+        // this.getRandomSelectedSound();
     }
 
 

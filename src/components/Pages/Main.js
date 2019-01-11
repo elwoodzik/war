@@ -42,7 +42,7 @@ class Main {
             this.game.VAR.hudBottom = new HudBottom(this.game, { zIndex: 50 });
             this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 });
             this.game.VAR.textError = new TextError(this.game, { zIndex: 50 });
-            this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 51 });
+            this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
             this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
@@ -116,12 +116,6 @@ class Main {
                 completed: true
             })
 
-            new Town(this.game, {
-                key: 'buildings',
-                x: 32 * 19,
-                y: 32 * 12
-            })
-
             this.game.VAR.goldMine = new GoldMine(this.game, {
                 key: 'gold',
                 x: 32 * 2,
@@ -131,36 +125,36 @@ class Main {
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
 
 
-            // for (let i = 3; i < 5; i++) {
-            //     new Peasant(this.game, {
-            //         key: 'peasant',
-            //         x: 32 * i,
-            //         y: 32 * 21
-            //     });
-            // }
-            // for (let i = 3; i < 5; i++) {
-            //     new Peasant(this.game, {
-            //         key: 'peasant',
-            //         x: 32 * i,
-            //         y: 32 * 20
-            //     });
-            // }
-            // for (let i = 0; i < 5; i++) {
-            //     const pes = new Peasant(this.game, {
-            //         key: 'peasant',
-            //         x: 32 * (i + 3),
-            //         y: 32 * 19
-            //     });
-            //     //  pes.move(null, this.game.VAR.goldMine, 1);
 
-            // }
+            for (let i = 0; i < 15; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 3),
+                    y: 32 * 19
+                });
+                pes.move(null, this.game.VAR.goldMine, 1);
+                this.game.VAR.settings.people.push(pes);
+
+            }
+
+            for (let i = 0; i < 15; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 3),
+                    y: 32 * 21
+                });
+                this.game.VAR.settings.people.push(pes);
+                // pes.move(null, this.game.VAR.goldMine, 1);
+
+            }
 
             this.game.VAR.sellectedObj = null;
             this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
             this.game.VAR.sellectedBorder.hide();
 
             this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length)
-            this.normalMouseClick();
+            this.rightMouseClick();
+            this.game.sortByIndex();
         })
     }
 
@@ -181,15 +175,15 @@ class Main {
                 this.game.VAR.cameraMan.body.velocity.y = 0;
             }
         }
-        const tile = this.game.VAR.map.getTileByCords(this.game.mouse.mouseX + this.game.camera.xScroll, this.game.mouse.mouseY + this.game.camera.yScroll);
-        console.log(tile.id)
+
+        // const tile = this.game.VAR.map.getTileByCords(this.game.mouse.mouseX + this.game.camera.xScroll, this.game.mouse.mouseY + this.game.camera.yScroll);
+        // console.log(tile.id)
     }
 
-    normalMouseClick() {
-
-        this.game.mouse.trigger((mouse) => {
+    rightMouseClick() {
+        this.game.mouse.triggerRight((mouse) => {
             // this.game.VAR.pathfinder.reRenderTile(Math.floor(this.game.mouse.mouseX / 32), Math.floor(this.game.mouse.mouseY / 32), 6);
-            if (this.game.VAR.sellectedObj) {
+            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
                 const endPos = this.game.VAR.map.getTileByMouse();
 
                 if (this.game.VAR.sellectedObj.inWooding) {

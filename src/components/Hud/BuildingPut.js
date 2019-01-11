@@ -5,6 +5,8 @@ class BuildingPut extends Sprite {
         super(game, options);
 
         this.used = false;
+        this.x = -500;
+        this.y = -500;
 
         this.objAlfa = 0.6;
 
@@ -31,9 +33,6 @@ class BuildingPut extends Sprite {
                 this.context.fillRect(place.x - this.game.camera.xScroll, place.y - this.game.camera.yScroll, 32, 32);
                 this.context.restore();
             })
-            // this.context.save();
-
-            // this.context.restore();
         }
     }
 
@@ -56,12 +55,10 @@ class BuildingPut extends Sprite {
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
 
                 if (tile && (tile.type === 'solid' || tile.type === 'gold' || tile.type === 'town' || tile.type === 'forest')) {
-
                     this.places.push({
                         x: this.x + i,
                         y: this.y + j
                     });
-                    // return;
                 }
             }
         }

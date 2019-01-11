@@ -23,6 +23,7 @@ class Peasant extends Units {
                 'opis',
                 'opis'
             ],
+            inPut: false,
             inProgress: false,
             inProgressTime: 0,
 
@@ -99,6 +100,10 @@ class Peasant extends Units {
         if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
             this.game.VAR.buildingPut.dir = action.key;
             this.game.VAR.buildingPut.used = true;
+            this.game.VAR.hudLeft.hideActions();
+            // this.game.VAR.hudLeft.hideDescription();
+            this.info.inPut = true;
+
 
             // this.game.VAR.settings.gold -= action.goldCost;
             // this.game.VAR.settings.wood -= action.woodCost;

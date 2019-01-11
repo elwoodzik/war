@@ -132,6 +132,14 @@ class HudLeft extends Rect {
         }
     }
 
+    onClick() {
+        return false;
+    }
+
+    onRightClick() {
+        return false;
+    }
+
     setInfo(info) {
         this.infoName.use(info.name);
         this.infoIcon.used = true;
