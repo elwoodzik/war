@@ -3,7 +3,7 @@ import EasyStar from 'easystarjs';
 import Peasant from "../Units/Peasant/Peasant";
 import Town from "../Buildings/Town/Town";
 import GoldMine from "../Buildings/GoldMine/GoldMine";
-import HudLeft from "../Hud/HudLeft";
+
 import HudTop from "../Hud/HudTop";
 import HudRight from "../Hud/HudRight";
 import HudBottom from "../Hud/HudBottom";
@@ -13,6 +13,7 @@ import Barracks from '../Buildings/Barracks/Barracks';
 import LumberMill from '../Buildings/LumberMill/LumberMill';
 import Blacksmith from '../Buildings/Blacksmith/Blacksmith';
 import BuildingPut from '../Hud/BuildingPut';
+import HudLeft from '../Hud/HudLeft/HudLeft';
 
 
 class Main {
@@ -82,10 +83,10 @@ class Main {
             })
 
             new Farm(this.game, {
-                key: 'buildings',
+                key: 'gold',
                 x: 32 * 15,
                 y: 32 * 9,
-                completed: true
+                // completed: true
             })
 
             new Farm(this.game, {
@@ -124,29 +125,27 @@ class Main {
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
 
+            // for (let i = 0; i < 15; i++) {
+            //     const pes = new Peasant(this.game, {
+            //         key: 'peasant',
+            //         x: 32 * (i + 3),
+            //         y: 32 * 19
+            //     });
+            //     pes.move(null, this.game.VAR.goldMine, 1);
+            //     this.game.VAR.settings.people.push(pes);
 
+            // }
 
-            for (let i = 0; i < 15; i++) {
-                const pes = new Peasant(this.game, {
-                    key: 'peasant',
-                    x: 32 * (i + 3),
-                    y: 32 * 19
-                });
-                pes.move(null, this.game.VAR.goldMine, 1);
-                this.game.VAR.settings.people.push(pes);
+            // for (let i = 0; i < 15; i++) {
+            //     const pes = new Peasant(this.game, {
+            //         key: 'peasant',
+            //         x: 32 * (i + 3),
+            //         y: 32 * 21
+            //     });
+            //     this.game.VAR.settings.people.push(pes);
+            //     // pes.move(null, this.game.VAR.goldMine, 1);
 
-            }
-
-            for (let i = 0; i < 15; i++) {
-                const pes = new Peasant(this.game, {
-                    key: 'peasant',
-                    x: 32 * (i + 3),
-                    y: 32 * 21
-                });
-                this.game.VAR.settings.people.push(pes);
-                // pes.move(null, this.game.VAR.goldMine, 1);
-
-            }
+            // }
 
             this.game.VAR.sellectedObj = null;
             this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
@@ -154,6 +153,7 @@ class Main {
 
             this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length)
             this.rightMouseClick();
+            this.leftMouseClick();
             this.game.sortByIndex();
         })
     }
@@ -194,6 +194,41 @@ class Main {
                 this.game.VAR.sellectedObj.getRandomMoveSound();
                 this.game.VAR.sellectedObj.restartPosition();
                 this.game.VAR.sellectedObj.move(endPos);
+            }
+        }, false)
+    }
+
+    leftMouseClick() {
+        this.game.mouse.trigger((mouse) => {
+            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.buildingPut.used) {
+                const canPut = this.game.VAR.buildingPut.canPut();
+                if (canPut) {
+                    this.game.VAR.buildingPut.used = false;
+                    this.game.VAR.buildingPut.border.used = false;
+
+                    this.game.VAR.hudLeft.cancelIcon.used = false;
+                    this.game.VAR.hudLeft.showActions(this.game.VAR.sellectedObj.info.actions);
+                    const endPos = this.game.VAR.map.getTileByMouse();
+                    const tile = this.game.VAR.map.getTileByMouse();
+                    //
+                    this.game.VAR.sellectedObj.getRandomMoveSound();
+                    this.game.VAR.sellectedObj.restartPosition();
+
+                    this.game.VAR.sellectedObj.goAndCreateBuilding(endPos, () => {
+                        const canPut = this.game.VAR.buildingPut.canPut();
+                        if (canPut) {
+                            this.game.VAR.sellectedObj.used = false;
+                            this.game.VAR.sellectedObj.unSelectedBorder();
+                            const building = new this.game.VAR.buildingPut.action.create.class(this.game, {
+                                key: 'gold',
+                                x: tile.row * 32,
+                                y: tile.column * 32,
+                                zIndex: 11
+                            });
+                            this.game.sortByIndex();
+                        }
+                    });
+                }
             }
         }, false)
     }

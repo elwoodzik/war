@@ -2,9 +2,16 @@
 class Animations {
     constructor(sprite) {
         sprite.animations.add({
-            key: 'farm',
+            key: 'complete',
             frames: [
                 { sx: 400, sy: 5, fW: 64, fH: 64, },
+            ]
+        });
+
+        sprite.animations.add({
+            key: 'start',
+            frames: [
+                { sx: 585, sy: 200, fW: 64, fH: 64, },
             ]
         });
 

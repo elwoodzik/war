@@ -1,10 +1,12 @@
-import Icons from "./Icons";
+import Icon from "../../InfoBox/modules/Icon";
 
-class Action extends Icons {
+
+class Action extends Icon {
     constructor(game, options) {
         super(game, options);
-
-        // 
+        
+        this.used = false;
+        this.zIndex = 51;
     }
 
     onClick() {

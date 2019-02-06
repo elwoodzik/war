@@ -12,6 +12,8 @@ class BuildingPut extends Sprite {
 
         this.dir = 'farm';
 
+        this.border = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2, used: false, x: -100, y: -100 });
+
         this.animations.add({
             key: 'farm',
             frames: [
@@ -20,6 +22,22 @@ class BuildingPut extends Sprite {
         });
 
         this.animations.playOnce({ key: this.dir })
+    }
+
+    hide() {
+        this.border.used = false;
+        this.used = false;
+        this.game.VAR.hudLeft.cancelIcon.used = false;
+    }
+
+    updateBorder() {
+        if (this.border && this.border.used) {
+            this.border.x = this.x; //+ this.width / 4
+            // this.border.y = this.y + 8//+ this.height / 2
+            this.border.y = this.y; //+ this.height / 2
+            this.border.width = this.width;//this.width;
+            this.border.height = this.height;//this.height;
+        }
     }
 
     draw(dt) {
@@ -39,12 +57,13 @@ class BuildingPut extends Sprite {
     update(dt) {
         super.update(dt);
 
-        this.x = this.game.mouse.mouseX + this.game.camera.xScroll;
-        this.y = this.game.mouse.mouseY + this.game.camera.yScroll;
+        this.x = this.game.mouse.mouseX - this.halfWidth + 10 + this.game.camera.xScroll;
+        this.y = this.game.mouse.mouseY - 10 + this.game.camera.yScroll;
 
         this.canPut();
 
         this.animations.play({ key: this.dir });
+        this.updateBorder();
     }
 
     canPut() {
@@ -62,6 +81,11 @@ class BuildingPut extends Sprite {
                 }
             }
         }
+
+        if (this.places.length > 0) {
+            return false
+        }
+        return true;
     }
 }
 export default BuildingPut;

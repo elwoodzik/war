@@ -1,13 +1,16 @@
-import Sprite from "../../../lib/Sprite";
+import Sprite from "../../../../../../../lib/Sprite";
 
-class Icons extends Sprite {
+
+class Icon extends Sprite {
     constructor(game, options) {
         super(game, options);
-
+        
         this.immovable = true;
         this.x = options.x || 5;
         this.y = options.y || 20;
         this.static = true;
+        this.used = false;
+        this.zIndex = 51;
 
         this.animations.add({
             key: 'peasant',
@@ -76,4 +79,4 @@ class Icons extends Sprite {
         this.animations.playOnce({ key: 'town', delay: 16 })
     }
 }
-export default Icons;
+export default Icon;

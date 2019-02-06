@@ -9,8 +9,6 @@ class Farm extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'farm';
-
         this.info = {
             imageKey: 'farm',
             name: 'Farma',
@@ -20,8 +18,6 @@ class Farm extends Buildings {
                 // 'Wood: 100'
             ],
         }
-
-        // this.objAlfa = 1;
 
         new Animations(this);
         this.sounds = new Sounds();

@@ -27,7 +27,7 @@ class Town extends Buildings {
                     woodCost: 0,
                     goldCost: 400,
                     time: 13000,
-                    onBuild: this.onActionBuild,
+                    onActionClick: this.onActionBuild,
                     create: {
                         class: Peasant,
                         key: 'peasant',

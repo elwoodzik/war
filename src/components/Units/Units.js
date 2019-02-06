@@ -12,9 +12,11 @@ class Units extends Sprite {
     }
 
     onClick() {
-        this.selectedBorder();
-        this.game.VAR.hudLeft.setInfo(this.info);
-        this.getRandomSelectedSound();
+        if (!this.game.VAR.buildingPut.used) {
+            this.selectedBorder();
+            this.game.VAR.hudLeft.set(this.info);
+            this.getRandomSelectedSound();
+        }
     }
 
 
@@ -151,6 +153,7 @@ class Units extends Sprite {
                         this.dir = `idle${this.dir.slice(4)}`;
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';
+                            this.nextTile = null;
                             this.dir = `idle${this.dir.slice(4)}`;
 
                             return false;

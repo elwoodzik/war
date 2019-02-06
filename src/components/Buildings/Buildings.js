@@ -1,5 +1,4 @@
 import Sprite from "../../../lib/Sprite";
-import Peasant from "../Units/Peasant/Peasant";
 
 class Building extends Sprite {
     constructor(game, options) {
@@ -7,28 +6,38 @@ class Building extends Sprite {
 
         this.objectType = 'building';
 
+        this.life = 0;
+        this.maxLife = 1000;
+
         this.completed = options.completed || false;
 
         this.buildingState = options.buildingState || 'complete';
 
         this.game = game;
+
+        this.dir = 'start';
+
+        if (this.completed) {
+            this.dir = 'complete';
+            this.key = 'buildings';
+            this.image = this.AssetManager.get(this.key);
+        }
         // const startPos = this.game.VAR.pathfinder.getTileBySprite(this);
         // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(startPos.row, startPos.column, 3);
         // this.nextPosition = null;
     }
 
     onClick() {
-        this.selectedBorder();
-        this.game.VAR.hudLeft.setInfo(this.info);
-        this.getRandomSelectedSound();
+        if (!this.game.VAR.buildingPut.used) {
+            this.selectedBorder();
+            this.game.VAR.hudLeft.setInfo(this.info);
+            this.getRandomSelectedSound();
+        }
     }
 
     onRightClick() {
-        // this.selectedBorder();
-        // this.game.VAR.hudLeft.setInfo(this.info);
-        // this.getRandomSelectedSound();
+        //nic sie nie dzieje po prawym klawiszu
     }
-
 
     getRandomSelectedSound() {
         if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
@@ -49,6 +58,12 @@ class Building extends Sprite {
     //         const rand = this.game.rand(0, this.sounds.actionCompleted.length - 1);
     //         this.AssetManager.play(this.sounds.actionCompleted[rand]);
     //     }
+    // }
+
+    // onBuilding() {
+    //     this.doInTime(this.buildingTime, () => {
+
+    //     })
     // }
 
     onActionBuild = (action) => {
