@@ -155,12 +155,13 @@ class Peasant extends Units {
 
     inMine(nextStep, startPos) {
         if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
-            this.game.VAR.hudLeft.hideActions();
-            this.game.VAR.hudLeft.hideDescription();
-            this.game.VAR.hudLeft.infoName.used = false;
-            this.game.VAR.hudLeft.infoIcon.used = false;
-            this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
-            this.game.VAR.buildingPut.hide();
+            this.game.VAR.hudLeft.infoBox.hide();
+            this.game.VAR.hudLeft.actionBox.hide();
+            // this.game.VAR.hudLeft.hideDescription();
+            // this.game.VAR.hudLeft.infoName.used = false;
+            // this.game.VAR.hudLeft.infoIcon.used = false;
+            // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
+            // this.game.VAR.buildingPut.hide();
         }
 
         this.unSelectedBorder();
@@ -183,12 +184,14 @@ class Peasant extends Units {
 
     inTown(nextStep, startPos) {
         if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
-            this.game.VAR.hudLeft.hideActions();
-            this.game.VAR.hudLeft.hideDescription();
-            this.game.VAR.hudLeft.infoName.used = false;
-            this.game.VAR.hudLeft.infoIcon.used = false;
-            this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
-            this.game.VAR.buildingPut.hide();
+            this.game.VAR.hudLeft.infoBox.hide();
+            this.game.VAR.hudLeft.actionBox.hide();
+            // this.game.VAR.hudLeft.hideActions();
+            // this.game.VAR.hudLeft.hideDescription();
+            // this.game.VAR.hudLeft.infoName.used = false;
+            // this.game.VAR.hudLeft.infoIcon.used = false;
+            // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
+            // this.game.VAR.buildingPut.hide();
         }
 
         this.unSelectedBorder();

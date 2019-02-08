@@ -30,7 +30,7 @@ class Building extends Sprite {
     onClick() {
         if (!this.game.VAR.buildingPut.used) {
             this.selectedBorder();
-            this.game.VAR.hudLeft.setInfo(this.info);
+            this.game.VAR.hudLeft.set(this.info);
             this.getRandomSelectedSound();
         }
     }
@@ -69,28 +69,30 @@ class Building extends Sprite {
     onActionBuild = (action) => {
         if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
             if (this.game.VAR.settings.people.length < this.game.VAR.settings.homeMax) {
-                this.game.VAR.settings.gold -= action.goldCost;
-                this.game.VAR.settings.wood -= action.woodCost;
-                this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
-                this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
-                this.game.VAR.hudLeft.trainIcon.animations.playOnce({ key: action.key });
-                this.info.inProgress = true;
-                this.info.inProgressTime = action.time;
-                this.AssetManager.play('S_click');
-                this.doInTime(action.time, () => {
-                    this.info.inProgress = false;
-                    this.game.VAR.hudLeft.showActions(this.info.actions);
-                    this.game.VAR.hudLeft.showDescription(this.info.descriptios);
-                    const unit = new action.create.class(this.game, {
-                        key: action.create.key,
-                        x: this.x - 32,
-                        y: this.y
-                    });
-                    unit.AssetManager.play(unit.sounds.created[0]);
-                    this.game.VAR.settings.people.push(unit)
-                    this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
-                    this.game.sortByIndex();
-                })
+                this.game.VAR.hudLeft.infoBox.hide();
+                this.game.VAR.hudLeft.actionBox.hide();
+                // this.game.VAR.settings.gold -= action.goldCost;
+                // this.game.VAR.settings.wood -= action.woodCost;
+                // this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
+                // this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
+                // this.game.VAR.hudLeft.trainIcon.animations.playOnce({ key: action.key });
+                // this.info.inProgress = true;
+                // this.info.inProgressTime = action.time;
+                // this.AssetManager.play('S_click');
+                // this.doInTime(action.time, () => {
+                //     this.info.inProgress = false;
+                //     this.game.VAR.hudLeft.showActions(this.info.actions);
+                //     this.game.VAR.hudLeft.showDescription(this.info.descriptios);
+                //     const unit = new action.create.class(this.game, {
+                //         key: action.create.key,
+                //         x: this.x - 32,
+                //         y: this.y
+                //     });
+                //     unit.AssetManager.play(unit.sounds.created[0]);
+                //     this.game.VAR.settings.people.push(unit)
+                //     this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
+                //     this.game.sortByIndex();
+                // })
             }
             else {
                 this.AssetManager.play('S_click');

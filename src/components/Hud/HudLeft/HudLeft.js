@@ -102,7 +102,7 @@ class HudLeft extends Rect {
             static: true,
             x: 7,
             y: 166,
-            used: false,
+            used: true,
             zIndex: 51,
             width: 148
         })
@@ -115,8 +115,10 @@ class HudLeft extends Rect {
             text: '% ukończone',
             zIndex: 51,
             // asImage: true,
-            used: false,
+            used: true,
         })
+
+        console.log(this.creationBar)
 
         this.trainIcon = new Icons(this.game, {
             key: 'icons',
@@ -188,12 +190,12 @@ class HudLeft extends Rect {
         // }
     }
 
-    hideDescription() {
-        for (let i = 0; i < this.descriptionsInfo.length; i++) {
-            const text = this.descriptionsInfo[i];
-            text.used = false;
-        }
-    }
+    // hideDescription() {
+    //     for (let i = 0; i < this.descriptionsInfo.length; i++) {
+    //         const text = this.descriptionsInfo[i];
+    //         text.used = false;
+    //     }
+    // }
 
     // showDescription(descriptios) {
     //     for (let i = 0; i < descriptios.length; i++) {
@@ -205,39 +207,39 @@ class HudLeft extends Rect {
     //     }
     // }
 
-    showActions(actions) {
-        if (actions && actions.length > 0) {
-            let x = 5;
-            let y = 200;
-            let index = 1;
-            for (let i = 0; i < actions.length; i++) {
-                const action = this.actions[i];
-                action.used = true;
-                action.animations.playOnce({ key: actions[i].key });
-                action.x = x;
-                action.y = y;
-                action.currentAction = actions[i];
-                x += 52;
-                if (index % 3 === 0) {
-                    y += 42;
-                    x = 5;
-                }
-                index++;
-            }
-        } else {
-            return false;
-        }
-    }
+    // showActions(actions) {
+    //     if (actions && actions.length > 0) {
+    //         let x = 5;
+    //         let y = 200;
+    //         let index = 1;
+    //         for (let i = 0; i < actions.length; i++) {
+    //             const action = this.actions[i];
+    //             action.used = true;
+    //             action.animations.playOnce({ key: actions[i].key });
+    //             action.x = x;
+    //             action.y = y;
+    //             action.currentAction = actions[i];
+    //             x += 52;
+    //             if (index % 3 === 0) {
+    //                 y += 42;
+    //                 x = 5;
+    //             }
+    //             index++;
+    //         }
+    //     } else {
+    //         return false;
+    //     }
+    // }
 
-    hideActions() {
-        for (let i = 0; i < this.actions.length; i++) {
-            const action = this.actions[i];
-            this.game.VAR.hudBottom.hoverText.use(' ');
-            this.game.VAR.hudBottom.goldIcon.used = false;
-            this.game.VAR.hudBottom.woodIcon.used = false;
-            action.used = false;
-        }
-    }
+    // hideActions() {
+    //     for (let i = 0; i < this.actions.length; i++) {
+    //         const action = this.actions[i];
+    //         this.game.VAR.hudBottom.hoverText.use(' ');
+    //         this.game.VAR.hudBottom.goldIcon.used = false;
+    //         this.game.VAR.hudBottom.woodIcon.used = false;
+    //         action.used = false;
+    //     }
+    // }
 
 }
 export default HudLeft;

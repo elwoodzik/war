@@ -3,17 +3,21 @@ import Action from "./modules/Action";
 class ActionBox {
 
     constructor(game) {
+        this.group = game.add.group();
+
         const actionCount = 10;
         this.actions = [];
 
         for (let i = 0; i < actionCount; i++) {
-            this.actions.push(
-                new Action(game, { key: 'icons' })
-            )
+            this.actions.push(new Action(game, { key: 'icons' }))
         }
+
+        this.group.add(this.actions);
     }
 
     set(actions) {
+        this.hide();
+        
         if (actions && actions.length > 0) {
             let x = 5;
             let y = 200;
@@ -35,6 +39,10 @@ class ActionBox {
         } else {
             return false;
         }
+    }
+
+    hide() {
+        this.group.hide();
     }
 };
 
