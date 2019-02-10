@@ -4,9 +4,9 @@ import Peasant from "../Units/Peasant/Peasant";
 import Town from "../Buildings/Town/Town";
 import GoldMine from "../Buildings/GoldMine/GoldMine";
 
-import HudTop from "../Hud/HudTop";
-import HudRight from "../Hud/HudRight";
-import HudBottom from "../Hud/HudBottom";
+import HudTop from "../Hud/HudTop/HudTop";
+import HudRight from "../Hud/HudRight/HudRight";
+import HudBottom from "../Hud/HudBottom/HudBottom";
 import TextError from "../Hud/TextError";
 import Farm from '../Buildings/Farm/Farm';
 import Barracks from '../Buildings/Barracks/Barracks';

@@ -23,15 +23,15 @@ class Town extends Buildings {
             actions: [
                 {
                     key: 'peasant',
-                    onActionHover: this.onActionHover,
                     woodCost: 0,
                     goldCost: 400,
-                    time: 13000,
-                    onActionClick: this.onActionBuild,
+                    time: 3000,
+                    onActionClick: this.onActionClick,
                     create: {
                         class: Peasant,
                         key: 'peasant',
-                        name: 'Chłop'
+                        name: 'Chłop',
+                        prefix: 'Trenuj'
                     },
                 },
             ],

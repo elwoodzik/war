@@ -1,4 +1,4 @@
-import Rect from "../../../../../../../lib/Rect";
+import Rect from "../../../../lib/Rect";
 
 
 class Border extends Rect {

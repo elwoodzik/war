@@ -2,6 +2,9 @@ import Units from "../Units";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
 import Farm from "../../Buildings/Farm/Farm";
+import Barracks from "../../Buildings/Barracks/Barracks";
+import LumberMill from "../../Buildings/LumberMill/LumberMill";
+import Blacksmith from "../../Buildings/Blacksmith/Blacksmith";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -29,7 +32,6 @@ class Peasant extends Units {
             actions: [
                 {
                     key: 'farm',
-                    onActionHover: this.onActionHover,
                     woodCost: 100,
                     goldCost: 500,
                     time: 13000,
@@ -37,46 +39,47 @@ class Peasant extends Units {
                     create: {
                         class: Farm,
                         key: 'buildings',
-                        name: 'Farmę'
+                        name: 'Farmę',
+                        prefix: 'Buduj'
                     },
                 },
                 {
                     key: 'barracks',
-                    onActionHover: this.onActionHover,
                     woodCost: 0,
                     goldCost: 400,
                     time: 13000,
                     onActionClick: this.onActionBuild,
                     create: {
-                        class: Peasant,
-                        key: 'peasant',
-                        name: 'Koszary'
+                        class: Barracks,
+                        key: 'buildings',
+                        name: 'Koszary',
+                        prefix: 'Buduj'
                     },
                 },
                 {
                     key: 'lumber_mill',
-                    onActionHover: this.onActionHover,
                     woodCost: 0,
                     goldCost: 400,
                     time: 13000,
                     onActionClick: this.onActionBuild,
                     create: {
-                        class: Peasant,
-                        key: 'peasant',
-                        name: 'Tartak'
+                        class: LumberMill,
+                        key: 'buildings',
+                        name: 'Tartak',
+                        prefix: 'Buduj'
                     },
                 },
                 {
                     key: 'blacksmith',
-                    onActionHover: this.onActionHover,
                     woodCost: 0,
                     goldCost: 400,
                     time: 13000,
                     onActionClick: this.onActionBuild,
                     create: {
-                        class: Peasant,
-                        key: 'peasant',
-                        name: 'Kuźnia'
+                        class: Blacksmith,
+                        key: 'buildings',
+                        name: 'Kuźnia',
+                        prefix: 'Buduj'
                     },
                 },
             ],

@@ -1,4 +1,4 @@
-import Sprite from "../../../../../../../lib/Sprite";
+import Sprite from "../../../../lib/Sprite";
 
 
 class Icon extends Sprite {
@@ -10,7 +10,7 @@ class Icon extends Sprite {
         this.y = options.y || 20;
         this.static = true;
         this.used = false;
-        this.zIndex = 51;
+        this.zIndex = options.zIndex || 51;
 
         this.animations.add({
             key: 'peasant',

@@ -15,6 +15,7 @@ class Units extends Sprite {
         if (!this.game.VAR.buildingPut.used) {
             this.selectedBorder();
             this.game.VAR.hudLeft.set(this.info);
+            this.game.VAR.hudLeft.creationBox.show();
             this.getRandomSelectedSound();
         }
     }

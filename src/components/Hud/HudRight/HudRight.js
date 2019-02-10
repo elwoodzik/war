@@ -1,4 +1,4 @@
-import Rect from "../../../lib/Rect";
+import Rect from "../../../../lib/Rect";
 
 class HudRight extends Rect {
     constructor(game, options) {

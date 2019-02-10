@@ -31,6 +31,7 @@ class Building extends Sprite {
         if (!this.game.VAR.buildingPut.used) {
             this.selectedBorder();
             this.game.VAR.hudLeft.set(this.info);
+            this.game.VAR.hudLeft.creationBox.show();
             this.getRandomSelectedSound();
         }
     }
@@ -66,46 +67,56 @@ class Building extends Sprite {
     //     })
     // }
 
-    onActionBuild = (action) => {
+    onActionClick = (action) => {
         if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
             if (this.game.VAR.settings.people.length < this.game.VAR.settings.homeMax) {
-                this.game.VAR.hudLeft.infoBox.hide();
+                this.game.VAR.hudLeft.infoBox.hideDescription();
                 this.game.VAR.hudLeft.actionBox.hide();
-                // this.game.VAR.settings.gold -= action.goldCost;
-                // this.game.VAR.settings.wood -= action.woodCost;
-                // this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
-                // this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
-                // this.game.VAR.hudLeft.trainIcon.animations.playOnce({ key: action.key });
-                // this.info.inProgress = true;
-                // this.info.inProgressTime = action.time;
-                // this.AssetManager.play('S_click');
-                // this.doInTime(action.time, () => {
-                //     this.info.inProgress = false;
-                //     this.game.VAR.hudLeft.showActions(this.info.actions);
-                //     this.game.VAR.hudLeft.showDescription(this.info.descriptios);
-                //     const unit = new action.create.class(this.game, {
-                //         key: action.create.key,
-                //         x: this.x - 32,
-                //         y: this.y
-                //     });
-                //     unit.AssetManager.play(unit.sounds.created[0]);
-                //     this.game.VAR.settings.people.push(unit)
-                //     this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
-                //     this.game.sortByIndex();
-                // })
+
+                this.info.inProgress = true;
+                this.info.inProgressTime = action.time;
+                this.game.VAR.settings.gold -= action.goldCost;
+                this.game.VAR.settings.wood -= action.woodCost;
+                this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
+                this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
+                this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: action.key });
+
+                // do zmiany
+                this.game.VAR.hudBottom.hide();
+
+                this.game.VAR.hudLeft.creationBox.show();
+
+                this.AssetManager.play('S_click');
+                //
+                this.doInTime(action.time, () => {
+                    this.info.inProgress = false;
+                    this.game.VAR.hudLeft.creationBox.hide();
+
+                    if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
+                        this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios);
+                        this.game.VAR.hudLeft.actionBox.set(this.info.actions);
+                    }
+
+                    const unit = new action.create.class(this.game, {
+                        key: action.create.key,
+                        x: this.x - 32,
+                        y: this.y
+                    });
+
+                    unit.AssetManager.play(unit.sounds.created[0]);
+                    this.game.VAR.settings.people.push(unit);
+                    this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
+                    this.game.sortByIndex();
+                })
             }
             else {
                 this.AssetManager.play('S_click');
-                this.game.VAR.textError.display('houses')
+                this.game.VAR.textError.display('houses');
             }
         } else {
             this.AssetManager.play('S_click');
-            this.game.VAR.textError.display('resources')
+            this.game.VAR.textError.display('resources');
         }
-    }
-
-    onActionHover = (action) => {
-        return `Trenuj ${action.create.name}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
     }
 
     selectedBorder() {

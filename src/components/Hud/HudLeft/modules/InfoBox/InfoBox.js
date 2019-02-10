@@ -1,7 +1,9 @@
-import Name from "./modules/Name";
-import Icon from "./modules/Icon";
-import Border from "./modules/Border";
+
+
+import Border from "../../../helpers/Border";
 import Description from "./modules/Description";
+import TextLine from "../../../helpers/TextLine";
+import Icon from "../../../helpers/Icon";
 
 
 class InfoBox {
@@ -9,7 +11,7 @@ class InfoBox {
     constructor(game) {
         this.group = game.add.group();
 
-        this.name = new Name(game, {});
+        this.name = new TextLine(game, {});
         this.icon = new Icon(game, { key: 'icons' });
         this.border = new Border(game, {});
 
@@ -45,6 +47,12 @@ class InfoBox {
     showDescription(_descriptions) {
         for (let i = 0; i < this.descriptions.length; i++) {
             this.descriptions[i].set(_descriptions[i] || ' ', i);
+        }
+    }
+
+    hideDescription() {
+        for (let i = 0; i < this.descriptions.length; i++) {
+            this.descriptions[i].hide();
         }
     }
 };

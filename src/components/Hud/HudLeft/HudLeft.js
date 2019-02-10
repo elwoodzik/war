@@ -1,10 +1,8 @@
 import Rect from "../../../../lib/Rect";
-import Icons from "../Icons";
-
 import InfoBox from "./modules/InfoBox/InfoBox";
-import Action from "../Action";
-import ActionBox from "./modules/ActionBox.js/ActionBox";
 
+import ActionBox from "./modules/ActionBox/ActionBox";
+import CreationBox from "./modules/CreationBox/CreationBox";
 
 class HudLeft extends Rect {
     constructor(game, options) {
@@ -21,6 +19,7 @@ class HudLeft extends Rect {
 
         this.infoBox = new InfoBox(game);
         this.actionBox = new ActionBox(game);
+        this.creationBox = new CreationBox(game);
 
         // this.infoName = this.game.add.text({
         //     text: ' ',
@@ -78,66 +77,64 @@ class HudLeft extends Rect {
         //     )
         // }
 
-        this.cancelIcon = new Action(this.game, {
-            key: 'icons',
-            used: false,
-            zIndex: 51,
-            x: 5,
-            y: 200
-        })
+        // this.cancelIcon = new Action(this.game, {
+        //     key: 'icons',
+        //     used: false,
+        //     zIndex: 51,
+        //     x: 5,
+        //     y: 200
+        // })
 
-        this.cancelIcon.animations.play({ key: 'cancel' });
-        this.cancelIcon.currentAction = {
-            onActionClick: () => {
-                this.game.VAR.buildingPut.used = false;
-                this.cancelIcon.used = false;
-                this.showActions(this.game.VAR.sellectedObj.info.actions);
-            }
-        }
+        // this.cancelIcon.animations.play({ key: 'cancel' });
+        // this.cancelIcon.currentAction = {
+        //     onActionClick: () => {
+        //         this.game.VAR.buildingPut.used = false;
+        //         this.cancelIcon.used = false;
+        //         this.showActions(this.game.VAR.sellectedObj.info.actions);
+        //     }
+        // }
 
-        this.creationBar = this.game.add.bar({
-            min: 0,
-            max: 100,
-            height: 25,
-            static: true,
-            x: 7,
-            y: 166,
-            used: true,
-            zIndex: 51,
-            width: 148
-        })
+        // this.creationBar = this.game.add.bar({
+        //     min: 0,
+        //     max: 100,
+        //     height: 25,
+        //     static: true,
+        //     x: 7,
+        //     y: 166,
+        //     used: true,
+        //     zIndex: 51,
+        //     width: 148
+        // })
 
-        this.creationBarText = this.game.add.text({
-            x: 33,
-            y: 185,
-            static: true,
-            fontSize: 18,
-            text: '% ukończone',
-            zIndex: 51,
-            // asImage: true,
-            used: true,
-        })
+        // this.creationBarText = this.game.add.text({
+        //     x: 33,
+        //     y: 185,
+        //     static: true,
+        //     fontSize: 18,
+        //     text: '% ukończone',
+        //     zIndex: 51,
+        //     // asImage: true,
+        //     used: true,
+        // })
 
-        console.log(this.creationBar)
+        // this.trainIcon = new Icons(this.game, {
+        //     key: 'icons',
+        //     used: false,
+        //     zIndex: 51,
+        //     x: 105,
+        //     y: 110,
+        // })
 
-        this.trainIcon = new Icons(this.game, {
-            key: 'icons',
-            used: false,
-            zIndex: 51,
-            x: 105,
-            y: 110,
-        })
-
-        this.trainText = this.game.add.text({
-            x: 28,
-            y: 125,
-            static: true,
-            fontSize: 18,
-            text: 'Trenuje:',
-            zIndex: 51,
-            // asImage: true,
-            used: false,
-        })
+        // this.trainText = this.game.add.text({
+        //     x: 28,
+        //     y: 125,
+        //     static: true,
+        //     fontSize: 18,
+        //     text: 'Trenuje:',
+        //     zIndex: 51,
+        //     // asImage: true,
+        //     used: false,
+        // })
     }
 
     update(dt) {
@@ -162,9 +159,9 @@ class HudLeft extends Rect {
     set(info) {
         this.infoBox.set(info);
 
-        if (!info.inProgress) {
-            this.actionBox.set(info.actions);
-        }
+        // if (!info.inProgress) {
+        this.actionBox.set(info.actions);
+        // }
     }
 
     onClick() {

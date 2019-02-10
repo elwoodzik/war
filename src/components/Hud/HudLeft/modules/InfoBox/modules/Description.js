@@ -1,6 +1,7 @@
-import Text from "../../../../../../../lib/Text";
 
-class Description extends Text {
+import TextLine from "../../../../helpers/TextLine";
+
+class Description extends TextLine {
 
     constructor(game, options) {
         super(game, options);
@@ -18,6 +19,13 @@ class Description extends Text {
         this.y = 85 + 22 * i;
         this.used = true;
         this.use(description);
+    }
+
+    update(dt) {
+        super.update(dt);
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.info.inProgress) {
+            this.used = false;
+        }
     }
 };
 
