@@ -8,13 +8,19 @@ class Units extends Sprite {
 
         this.currentPosition = null;
         this.nextPosition = null;
-        this.speed = 65
+        this.speed = 65;
+
+        this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y);
+        this.currentTile.type = 'solid';
+        console.log()
+         this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
     }
 
     onClick() {
-        if (!this.game.VAR.buildingPut.used) {
+        if (!this.buildingPut.used) {
             this.selectedBorder();
             this.game.VAR.hudLeft.set(this.info);
+            this.game.VAR.hudLeft.cancelBox.used = false;
             this.game.VAR.hudLeft.creationBox.show();
             this.getRandomSelectedSound();
         }
@@ -187,8 +193,8 @@ class Units extends Sprite {
                             if (newPath.length > 0) {
                                 this.move(_endPos ? endPos : null, building, index);
                             } else {
-
                                 this.nextTile.type = 'solid';
+                              
                                 this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                                 // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                                 // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);

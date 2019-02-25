@@ -12,7 +12,7 @@ import Farm from '../Buildings/Farm/Farm';
 import Barracks from '../Buildings/Barracks/Barracks';
 import LumberMill from '../Buildings/LumberMill/LumberMill';
 import Blacksmith from '../Buildings/Blacksmith/Blacksmith';
-import BuildingPut from '../Hud/BuildingPut';
+// import BuildingPut from '../Hud/BuildingPut';
 import HudLeft from '../Hud/HudLeft/HudLeft';
 
 
@@ -30,11 +30,11 @@ class Main {
             this.game.VAR.map = map;
 
             this.game.VAR.settings = {
-                gold: 5100,
+                gold: 15100,
                 goldUpdateBy: 100,
-                wood: 100,
+                wood: 1100,
                 woodUpdateBy: 100,
-                homeMax: 4,
+                homeMax: 44,
                 people: []
             }
 
@@ -43,7 +43,7 @@ class Main {
             this.game.VAR.hudBottom = new HudBottom(this.game, { zIndex: 50 });
             this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 });
             this.game.VAR.textError = new TextError(this.game, { zIndex: 50 });
-            this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
+            // this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
             this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
@@ -86,7 +86,7 @@ class Main {
                 key: 'gold',
                 x: 32 * 15,
                 y: 32 * 9,
-                // completed: true
+                completed: true
             })
 
             new Farm(this.game, {
@@ -200,32 +200,28 @@ class Main {
 
     leftMouseClick() {
         this.game.mouse.trigger((mouse) => {
-            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.buildingPut.used) {
-                const canPut = this.game.VAR.buildingPut.canPut();
+            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.buildingPut.used) {
+                const canPut = this.game.VAR.sellectedObj.buildingPut.canPut();
                 if (canPut) {
-                    this.game.VAR.buildingPut.used = false;
-                    this.game.VAR.buildingPut.border.used = false;
+                    this.game.VAR.sellectedObj.buildingPut.used = false;
+                    this.game.VAR.sellectedObj.buildingPut.border.used = false;
 
-                    this.game.VAR.hudLeft.cancelIcon.used = false;
-                    this.game.VAR.hudLeft.showActions(this.game.VAR.sellectedObj.info.actions);
+                    this.game.VAR.hudLeft.cancelBox.used = false;
+                    this.game.VAR.hudLeft.set(this.game.VAR.sellectedObj.info);
                     const endPos = this.game.VAR.map.getTileByMouse();
                     const tile = this.game.VAR.map.getTileByMouse();
                     //
                     this.game.VAR.sellectedObj.getRandomMoveSound();
                     this.game.VAR.sellectedObj.restartPosition();
+                    const worker = this.game.VAR.sellectedObj;
 
-                    this.game.VAR.sellectedObj.goAndCreateBuilding(endPos, () => {
-                        const canPut = this.game.VAR.buildingPut.canPut();
+                    this.game.VAR.sellectedObj.goAndCreateBuilding(endPos, (worker) => {
+                        const canPut = worker.buildingPut.canPut();
+                       
                         if (canPut) {
-                            this.game.VAR.sellectedObj.used = false;
-                            this.game.VAR.sellectedObj.unSelectedBorder();
-                            const building = new this.game.VAR.buildingPut.action.create.class(this.game, {
-                                key: 'gold',
-                                x: tile.row * 32,
-                                y: tile.column * 32,
-                                zIndex: 11
-                            });
-                            this.game.sortByIndex();
+                            worker.used = false;
+                            worker.unSelectedBorder();
+                            worker.buildingPut.building(tile, worker);
                         }
                     });
                 }

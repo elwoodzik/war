@@ -5,6 +5,7 @@ import Farm from "../../Buildings/Farm/Farm";
 import Barracks from "../../Buildings/Barracks/Barracks";
 import LumberMill from "../../Buildings/LumberMill/LumberMill";
 import Blacksmith from "../../Buildings/Blacksmith/Blacksmith";
+import BuildingPut from "../../Hud/BuildingPut";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -17,6 +18,7 @@ class Peasant extends Units {
         this.cargo = 'empty';
         this.inForestPos = {};
         this.speed = 60;
+        this.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
         this.info = {
             imageKey: 'peasant',
@@ -94,22 +96,19 @@ class Peasant extends Units {
         super.update(dt);
     }
 
-    onActionHover = (action) => {
-        return `Buduj ${action.create.name}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
-    }
+    // onActionHover = (action) => {
+    //     // return `Buduj ${action.create.name}.                                                                           ${action.goldCost}                              ${action.woodCost} `;
+    // }
 
     onActionBuild = (action) => {
         if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
-            this.game.VAR.buildingPut.dir = action.key;
-            this.game.VAR.buildingPut.used = true;
-            this.game.VAR.buildingPut.action = action;
-            this.game.VAR.hudLeft.cancelIcon.used = true;
-            this.game.VAR.buildingPut.border.used = true;
-            this.game.VAR.hudLeft.hideActions();
-            // this.game.VAR.hudLeft.hideDescription();
-            // this.info.inPut = true;
-            // this.cancelIcon
+            this.buildingPut.dir = action.key;
+            this.buildingPut.used = true;
+            this.buildingPut.action = action;
+            this.buildingPut.border.used = true;
 
+            this.game.VAR.hudLeft.cancelBox.used = true;
+            this.game.VAR.hudLeft.actionBox.hide();
 
             // this.game.VAR.settings.gold -= action.goldCost;
             // this.game.VAR.settings.wood -= action.woodCost;
@@ -164,7 +163,7 @@ class Peasant extends Units {
             // this.game.VAR.hudLeft.infoName.used = false;
             // this.game.VAR.hudLeft.infoIcon.used = false;
             // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
-            // this.game.VAR.buildingPut.hide();
+            this.buildingPut.hide();
         }
 
         this.unSelectedBorder();
@@ -194,7 +193,7 @@ class Peasant extends Units {
             // this.game.VAR.hudLeft.infoName.used = false;
             // this.game.VAR.hudLeft.infoIcon.used = false;
             // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
-            // this.game.VAR.buildingPut.hide();
+            this.buildingPut.hide();
         }
 
         this.unSelectedBorder();
@@ -320,15 +319,21 @@ class Peasant extends Units {
                         x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
                             this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
                             this.currentTile.type = 'empty';
-                            console.log(newPath.length)
                             if (newPath.length > 0) {
                                 this.goAndCreateBuilding(_endPos, callback);
                             } else {
                                 this.dir = `idle${this.dir.slice(4)}`;
                                 this.nextTile.type = 'empty';
-                                return callback();
-                                this.nextTile.type = 'solid';
-                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
+                                if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
+                                    this.game.VAR.hudLeft.infoBox.hide();
+                                    this.game.VAR.hudLeft.actionBox.hide();
+                                }
+                                // this.used = false;
+                                // this.unSelectedBorder();
+                                // this.unSelectedBorder();
+                                return callback(this);
+                                // this.nextTile.type = 'solid';
+                                // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                                 // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                                 // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
 

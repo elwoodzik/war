@@ -2,7 +2,7 @@
 class Animations {
     constructor(sprite) {
         sprite.animations.add({
-            key: 'lumber_mill',
+            key: 'complete',
             frames: [
                 { sx: 105, sy: 265, fW: 96, fH: 96 },
             ]

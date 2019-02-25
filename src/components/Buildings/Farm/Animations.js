@@ -11,7 +11,13 @@ class Animations {
         sprite.animations.add({
             key: 'start',
             frames: [
-                { sx: 585, sy: 200, fW: 64, fH: 64, },
+                { sx: 585, sy: 135, fW: 64, fH: 64, },
+            ]
+        });
+        sprite.animations.add({
+            key: 'half',
+            frames: [
+                { sx: 400, sy: 70, fW: 64, fH: 64, },
             ]
         });
 

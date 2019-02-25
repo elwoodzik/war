@@ -19,10 +19,15 @@ class Action extends Icon {
     }
 
     onHover() {
-        if (this.currentAction) {
+        if (this.currentAction && this.currentAction.cancel) {
+            this.game.VAR.hudBottom.hoverText.use(`${this.currentAction.create.prefix} ${this.currentAction.create.name}`);
+            this.game.VAR.hudBottom.hide();
+            this.game.VAR.hudBottom.showName();
+        }else if(this.currentAction){
             this.game.VAR.hudBottom.hoverText.use(`${this.currentAction.create.prefix} ${this.currentAction.create.name}`);
             this.game.VAR.hudBottom.goldText.use(`${this.currentAction.goldCost}`);
             this.game.VAR.hudBottom.woodText.use(`${this.currentAction.woodCost}`);
+            
             this.game.VAR.hudBottom.show();
         }
     }

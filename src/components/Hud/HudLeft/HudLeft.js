@@ -3,6 +3,7 @@ import InfoBox from "./modules/InfoBox/InfoBox";
 
 import ActionBox from "./modules/ActionBox/ActionBox";
 import CreationBox from "./modules/CreationBox/CreationBox";
+import CancelBox from "./modules/CancelBox/CancelBox";
 
 class HudLeft extends Rect {
     constructor(game, options) {
@@ -20,6 +21,9 @@ class HudLeft extends Rect {
         this.infoBox = new InfoBox(game);
         this.actionBox = new ActionBox(game);
         this.creationBox = new CreationBox(game);
+        this.cancelBox = new CancelBox(game, {
+            key: 'icons',
+        });
 
         // this.infoName = this.game.add.text({
         //     text: ' ',
@@ -139,29 +143,11 @@ class HudLeft extends Rect {
 
     update(dt) {
         super.update(dt);
-
-        // if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.info.inProgress) {
-        //     this.creationBar.used = true;
-        //     this.creationBarText.used = true;
-        //     this.trainIcon.used = true;
-        //     this.trainText.used = true;
-        //     this.hideActions();
-        //     this.hideDescription();
-        //     this.creationBar.setStatusX(this.game.VAR.sellectedObj.timeLocal / (this.game.VAR.sellectedObj.info.inProgressTime / 100));
-        // } else {
-        //     this.creationBar.used = false;
-        //     this.creationBarText.used = false;
-        //     this.trainIcon.used = false;
-        //     this.trainText.used = false;
-        // }
     }
 
     set(info) {
         this.infoBox.set(info);
-
-        // if (!info.inProgress) {
         this.actionBox.set(info.actions);
-        // }
     }
 
     onClick() {
@@ -171,72 +157,5 @@ class HudLeft extends Rect {
     onRightClick() {
         return false;
     }
-
-    setInfo(info) {
-        // this.infoName.use(info.name);
-        // this.infoName.used = true;
-        // this.infoIcon.used = true;
-        // this.descriptionsInfoBorder.used = true;
-        // this.infoIcon.animations.playOnce({ key: info.imageKey });
-        // this.hideDescription();
-        // this.hideActions();
-        // this.showDescription(info.descriptios);
-
-        // if (!info.inProgress) {
-        //     this.showActions(info.actions);
-        // }
-    }
-
-    // hideDescription() {
-    //     for (let i = 0; i < this.descriptionsInfo.length; i++) {
-    //         const text = this.descriptionsInfo[i];
-    //         text.used = false;
-    //     }
-    // }
-
-    // showDescription(descriptios) {
-    //     for (let i = 0; i < descriptios.length; i++) {
-    //         const text = this.descriptionsInfo[i];
-    //         text.x = 32;
-    //         text.y = 85 + 22 * i;
-    //         text.used = true;
-    //         text.use(descriptios[i]);
-    //     }
-    // }
-
-    // showActions(actions) {
-    //     if (actions && actions.length > 0) {
-    //         let x = 5;
-    //         let y = 200;
-    //         let index = 1;
-    //         for (let i = 0; i < actions.length; i++) {
-    //             const action = this.actions[i];
-    //             action.used = true;
-    //             action.animations.playOnce({ key: actions[i].key });
-    //             action.x = x;
-    //             action.y = y;
-    //             action.currentAction = actions[i];
-    //             x += 52;
-    //             if (index % 3 === 0) {
-    //                 y += 42;
-    //                 x = 5;
-    //             }
-    //             index++;
-    //         }
-    //     } else {
-    //         return false;
-    //     }
-    // }
-
-    // hideActions() {
-    //     for (let i = 0; i < this.actions.length; i++) {
-    //         const action = this.actions[i];
-    //         this.game.VAR.hudBottom.hoverText.use(' ');
-    //         this.game.VAR.hudBottom.goldIcon.used = false;
-    //         this.game.VAR.hudBottom.woodIcon.used = false;
-    //         action.used = false;
-    //     }
-    // }
-
 }
 export default HudLeft;

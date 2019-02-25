@@ -7,8 +7,6 @@ class Blacksmith extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'blacksmith';
-
         this.info = {
             imageKey: 'blacksmith',
             name: 'Kuźnia',

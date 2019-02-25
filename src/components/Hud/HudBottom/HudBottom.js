@@ -35,6 +35,10 @@ class HudBottom extends Rect {
         this.group.show();
     }
 
+    showName() {
+        this.hoverText.used = true;
+    }
+
     hide() {
         this.group.hide();
     }

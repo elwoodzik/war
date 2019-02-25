@@ -7,8 +7,6 @@ class LumberMill extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'lumber_mill';
-
         this.info = {
             imageKey: 'lumber_mill',
             name: 'Tartak',

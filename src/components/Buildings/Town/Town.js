@@ -8,7 +8,7 @@ class Town extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'idle';
+        this.dir = 'complete';
 
         this.info = {
             imageKey: 'town',
@@ -25,7 +25,7 @@ class Town extends Buildings {
                     key: 'peasant',
                     woodCost: 0,
                     goldCost: 400,
-                    time: 3000,
+                    time: 100,
                     onActionClick: this.onActionClick,
                     create: {
                         class: Peasant,

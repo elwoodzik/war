@@ -4,6 +4,7 @@ class BuildingPut extends Sprite {
     constructor(game, options) {
         super(game, options);
 
+        this.game = game;
         this.used = false;
         this.x = -500;
         this.y = -500;
@@ -21,13 +22,20 @@ class BuildingPut extends Sprite {
             ]
         });
 
+        this.animations.add({
+            key: 'barracks',
+            frames: [
+                { sx: 308, sy: 460, fW: 96, fH: 96, },
+            ]
+        });
+
         this.animations.playOnce({ key: this.dir })
     }
 
     hide() {
         this.border.used = false;
         this.used = false;
-        this.game.VAR.hudLeft.cancelIcon.used = false;
+        this.game.VAR.hudLeft.cancelBox.used = false;
     }
 
     updateBorder() {
@@ -57,7 +65,7 @@ class BuildingPut extends Sprite {
     update(dt) {
         super.update(dt);
 
-        this.x = this.game.mouse.mouseX - this.halfWidth + 10 + this.game.camera.xScroll;
+        this.x = this.game.mouse.mouseX + this.game.camera.xScroll;
         this.y = this.game.mouse.mouseY - 10 + this.game.camera.yScroll;
 
         this.canPut();
@@ -86,6 +94,44 @@ class BuildingPut extends Sprite {
             return false
         }
         return true;
+    }
+
+    building(tile, worker) {
+
+        const building = new this.action.create.class(this.game, {
+            key: 'gold',
+            x: tile.row * 32,
+            y: tile.column * 32,
+            zIndex: 11
+        });
+
+
+        this.game.sortByIndex();
+
+        building.info.inProgress = true;
+        building.info.inProgressTime = this.action.time;
+
+        this.game.VAR.settings.gold -= this.action.goldCost;
+        this.game.VAR.settings.wood -= this.action.woodCost;
+        this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
+        this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
+
+        this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });
+        this.game.VAR.hudLeft.creationBox.show(true);
+
+        building.doInTime(this.action.time, () => {
+            building.info.inProgress = false;
+            this.game.VAR.hudLeft.creationBox.hide();
+            building.completed = true;
+            building.isBuilt();
+            building.freePlace(building.x - 32, building.y, (place) => {
+                worker.x = place.x;
+                worker.y = place.y;
+                worker.used = true;
+                worker.startPos = null;
+                worker.nextStep = null;
+            })
+        })
     }
 }
 export default BuildingPut;

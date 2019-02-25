@@ -23,8 +23,8 @@ class HudTop extends Rect {
 
         this.homeIcon = this.game.add.image({ x: 750, y: 2, key: 'home_icon', static: true, zIndex: 51 });
         this.homeTextCurrent = new TextLine(game, { text: '0', x: 775, y: 16, used: true });
-        this.homeSlash = new TextLine(game, { text: '/', x: 788, y: 16, used: true });
-        this.homeTextMax = new TextLine(game, { text: 5, x: 795, y: 16, used: true });
+        this.homeSlash = new TextLine(game, { text: '/', x: 795, y: 16, used: true });
+        this.homeTextMax = new TextLine(game, { text: 5, x: 810, y: 16, used: true });
     }
 }
 export default HudTop;

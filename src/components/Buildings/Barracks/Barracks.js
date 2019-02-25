@@ -7,8 +7,6 @@ class Barracks extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'barracks';
-
         this.info = {
             imageKey: 'barracks',
             name: 'Koszary',

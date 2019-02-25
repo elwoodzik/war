@@ -2,7 +2,7 @@
 class Animations {
     constructor(sprite) {
         sprite.animations.add({
-            key: 'blacksmith',
+            key: 'complete',
             frames: [
                 { sx: 5, sy: 265, fW: 96, fH: 96 },
             ]

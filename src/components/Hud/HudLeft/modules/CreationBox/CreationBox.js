@@ -27,9 +27,14 @@ class CreationBox {
     }
 
     show() {
-        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.info.inProgress) {
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.info.inProgress && this.game.VAR.sellectedObj.dir === 'complete') {
             this.group.show();
-        } else {
+        } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.info.inProgress && (this.game.VAR.sellectedObj.dir === 'start' || this.game.VAR.sellectedObj.dir === 'half')) {
+            this.group.show();
+            this.trainingText.used = false;
+            this.icon.used = false;
+        }
+        else {
             this.hide();
         }
     }
