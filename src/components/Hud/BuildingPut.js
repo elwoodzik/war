@@ -14,6 +14,7 @@ class BuildingPut extends Sprite {
         this.dir = 'farm';
 
         this.border = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2, used: false, x: -100, y: -100 });
+        this.places = [];
 
         this.animations.add({
             key: 'farm',
@@ -26,6 +27,27 @@ class BuildingPut extends Sprite {
             key: 'barracks',
             frames: [
                 { sx: 308, sy: 460, fW: 96, fH: 96, },
+            ]
+        });
+
+        this.animations.add({
+            key: 'lumber_mill',
+            frames: [
+                { sx: 105, sy: 265, fW: 96, fH: 96 },
+            ]
+        });
+
+        this.animations.add({
+            key: 'blacksmith',
+            frames: [
+                { sx: 5, sy: 265, fW: 96, fH: 96 },
+            ]
+        });
+
+        this.animations.add({
+            key: 'tower',
+            frames: [
+                { sx: 465, sy: 5, fW: 64, fH: 64, },
             ]
         });
 
@@ -65,8 +87,8 @@ class BuildingPut extends Sprite {
     update(dt) {
         super.update(dt);
 
-        this.x = this.game.mouse.mouseX + this.game.camera.xScroll;
-        this.y = this.game.mouse.mouseY - 10 + this.game.camera.yScroll;
+        this.x = Math.floor((this.game.mouse.mouseX + this.game.camera.xScroll) / 32) * 32;
+        this.y = Math.floor((this.game.mouse.mouseY + this.game.camera.yScroll) / 32) * 32;
 
         this.canPut();
 
@@ -77,8 +99,8 @@ class BuildingPut extends Sprite {
     canPut() {
         this.places = [];
 
-        for (let i = 0; i < this.width + 32; i += 32) {
-            for (let j = 0; j < this.height + 32; j += 32) {
+        for (let i = 0; i < this.width; i += 32) {
+            for (let j = 0; j < this.height; j += 32) {
                 const tile = this.game.VAR.map.getTileByCords(this.x + i, this.y + j);
 
                 if (tile && (tile.type === 'solid' || tile.type === 'gold' || tile.type === 'town' || tile.type === 'forest')) {
@@ -105,7 +127,6 @@ class BuildingPut extends Sprite {
             zIndex: 11
         });
 
-
         this.game.sortByIndex();
 
         building.info.inProgress = true;
@@ -124,12 +145,20 @@ class BuildingPut extends Sprite {
             this.game.VAR.hudLeft.creationBox.hide();
             building.completed = true;
             building.isBuilt();
-            building.freePlace(building.x - 32, building.y, (place) => {
+
+            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === building.objID) {
+                this.game.VAR.hudLeft.set(building.info);
+            } else if (this.game.VAR.sellectedObj && !this.game.VAR.sellectedObj.buildingPut.used ) {
+                this.game.VAR.hudLeft.set(this.game.VAR.sellectedObj.info);
+            }
+
+            building.freePlace(building.x - 32, building.y, this.action.key, (place) => {
                 worker.x = place.x;
                 worker.y = place.y;
                 worker.used = true;
                 worker.startPos = null;
                 worker.nextStep = null;
+                this.AssetManager.play('S_workComplete');
             })
         })
     }

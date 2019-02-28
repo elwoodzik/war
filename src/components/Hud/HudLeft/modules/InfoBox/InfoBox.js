@@ -9,10 +9,22 @@ import Icon from "../../../helpers/Icon";
 class InfoBox {
 
     constructor(game) {
+        this.game = game;
         this.group = game.add.group();
 
         this.name = new TextLine(game, {});
         this.icon = new Icon(game, { key: 'icons' });
+        this.lifeBar = this.game.add.bar({
+            min: 10,
+            max: 30,
+            x: 4,
+            y: 60,
+            width: 46,
+            height: 8,
+            static: true,
+            zIndex: 51,
+            used: false
+        }).getProps();
         this.border = new Border(game, {});
 
         this.descriptions = [];
@@ -26,11 +38,15 @@ class InfoBox {
         this.group.add(this.icon);
         this.group.add(this.border);
         this.group.add(this.descriptions);
+        this.group.add(this.lifeBar);
     }
 
     set(info) {
         this.hide();
         this.name.use(info.name);
+        this.lifeBar.setMax(info.hitPointsMax);
+        this.lifeBar.setMin(info.currentHp);
+        this.lifeBar.setStatusX(info.currentHp)
         this.icon.animations.playOnce({ key: info.imageKey });
         this.showDescription(info.descriptios);
         this.show();

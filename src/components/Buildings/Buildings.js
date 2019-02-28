@@ -8,6 +8,8 @@ class Building extends Sprite {
 
         this.life = 0;
         this.maxLife = 1000;
+        
+        this.buildingPut = {};
 
         this.completed = options.completed || false;
 
@@ -28,15 +30,15 @@ class Building extends Sprite {
     }
 
     onClick() {
-        if(this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.buildingPut &&  this.game.VAR.sellectedObj.buildingPut.used){
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.buildingPut && this.game.VAR.sellectedObj.buildingPut.used) {
             return false;
         }
         // if (!this.game.VAR.sellectedObj.buildingPut.used) {
-            this.selectedBorder();
-            this.game.VAR.hudLeft.cancelBox.used = false;
-            this.game.VAR.hudLeft.set(this.info);
-            this.game.VAR.hudLeft.creationBox.show();
-            this.getRandomSelectedSound();
+        this.selectedBorder();
+        this.game.VAR.hudLeft.cancelBox.used = false;
+        this.game.VAR.hudLeft.set(this.info);
+        this.game.VAR.hudLeft.creationBox.show();
+        this.getRandomSelectedSound();
         // }
     }
 
@@ -93,8 +95,7 @@ class Building extends Sprite {
                 this.AssetManager.play('S_click');
                 //
                 this.doInTime(action.time, () => {
-
-                    this.freePlace(this.x - 32, this.y, (place) => {
+                    this.freePlace(this.x - 32, this.y, action.key, (place) => {
                         const unit = new action.create.class(this.game, {
                             key: action.create.key,
                             x: place.x,
@@ -113,7 +114,7 @@ class Building extends Sprite {
                         this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
                         this.game.sortByIndex();
                     });
-                })
+                });
             }
             else {
                 this.AssetManager.play('S_click');
@@ -134,32 +135,40 @@ class Building extends Sprite {
         this.game.VAR.sellectedBorder.height = this.height;
     }
 
-    freePlace(_x, _y, callback) {
+    freePlace(_x, _y, key, callback) {
         const place = this.game.VAR.map.getTileByCords(_x, _y);
         const buildingHeight = this.y + this.height;
         const buildingWidth = this.x + this.width;
 
-        if (place.type === 'solid' || place.type === 'gold' || place.type === 'tree' || place.type === 'town'  ) {
+        if (place.type === 'solid' || place.type === 'gold' || place.type === 'tree' || place.type === 'town') {
             if (_y < buildingHeight && _x < this.x) {
                 let y = _y + (32);
-                return this.freePlace(_x, y, callback);
+
+                return this.freePlace(_x, y, key, callback);
             } else if (_x < buildingWidth && _y > this.y) {
                 let x = _x + (32);
-                return this.freePlace(x, _y, callback);
+
+                return this.freePlace(x, _y, key, callback);
             } else if (_y >= this.y) {
                 let y = _y - (32);
-                return this.freePlace(_x, y, callback);
+
+                return this.freePlace(_x, y, key, callback);
             } else if (_x > this.x) {
                 let x = _x - (32);
-                return this.freePlace(x, _y, callback);
+                return this.freePlace(x, _y, key, callback);
             } else {
                 return setTimeout(() => {
-                    console.log('a')
-                    return this.freePlace(this.x - 32, this.y, callback);
+                    return this.freePlace(this.x - 32, this.y, key, callback);
                 }, 1000)
             }
         } else {
-            return callback(place);
+            let y = place.y;
+            if (key === 'warrior') {
+                y = place.y 
+            }
+
+            // return callback({ x: place.x, y: y });
+            return callback({ x: place.x, y: y });
         }
     }
 

@@ -3,6 +3,7 @@ import Sprite from "../../../lib/Sprite";
 class Units extends Sprite {
     constructor(game, options) {
         super(game, options);
+        this.game = game;
 
         this.objectType = 'unit';
 
@@ -10,10 +11,16 @@ class Units extends Sprite {
         this.nextPosition = null;
         this.speed = 65;
 
-        this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y);
-        this.currentTile.type = 'solid';
-        console.log()
-         this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
+     
+
+        // this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y);
+        //   
+        // this.currentTile.type = 'solid';
+
+
+        this.game.VAR.map.addToFog(this.x, this.y, 32)
+
+        // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
     }
 
     onClick() {
@@ -76,25 +83,31 @@ class Units extends Sprite {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === this.objID) {
             this.game.VAR.sellectedBorder.x = this.x; //+ this.width / 4
             // this.game.VAR.sellectedBorder.y = this.y + 8//+ this.height / 2
-            this.game.VAR.sellectedBorder.y = this.y + (this.height - 30)//+ this.height / 2
+            this.game.VAR.sellectedBorder.y = this.y + (this.height - 32)//+ this.height / 2
             this.game.VAR.sellectedBorder.width = 32//this.width;
             this.game.VAR.sellectedBorder.height = 32//this.height;
         }
     }
 
-    // draw(dt) {
-    //     super.draw(dt);
+    draw(dt) {
 
-    //     if (this.path) {
-    //         this.path.forEach((path) => {
-    //             this.context.beginPath();
-    //             this.context.strokeStyle = 'red';
-    //             this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
-    //             this.context.stroke()
-    //             this.context.closePath();
-    //         })
-    //     }
-    // }
+        // this.context.globalCompositeOperation = 'source-over';
+
+        super.draw(dt);
+
+
+        // this.context.globalCompositeOperation = 'source-atop';
+
+        // if (this.path) {
+        //     this.path.forEach((path) => {
+        //         this.context.beginPath();
+        //         this.context.strokeStyle = 'red';
+        //         this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
+        //         this.context.stroke()
+        //         this.context.closePath();
+        //     })
+        // }
+    }
 
 
     update(dt) {
@@ -184,7 +197,7 @@ class Units extends Sprite {
 
 
                     this.moveToPoint({
-                        x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
+                        x: this.nextStep.x * 32, y: this.nextStep.y * 32 - this.height + 32, speed: this.speed, callback: () => {
                             // console.log(this.myCurrentPath)
                             // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                             this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
@@ -194,7 +207,7 @@ class Units extends Sprite {
                                 this.move(_endPos ? endPos : null, building, index);
                             } else {
                                 this.nextTile.type = 'solid';
-                              
+
                                 this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
                                 // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                                 // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
@@ -249,9 +262,9 @@ class Units extends Sprite {
     getAnimationInMove(startPos, nextStep) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
         // console.log(this.key, this.inWooding)
-        // if (this.key === 'chop') {
-        this.image = this.AssetManager.get('peasant');
-        // }
+        if (this.type === 'worker') {
+            this.image = this.AssetManager.get('peasant');
+        }
         // this.image = this.AssetManager.get('chop')
 
         if (_nextStep.x > startPos.x && _nextStep.y > startPos.y) {

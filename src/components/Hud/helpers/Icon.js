@@ -4,10 +4,10 @@ import Sprite from "../../../../lib/Sprite";
 class Icon extends Sprite {
     constructor(game, options) {
         super(game, options);
-        
+
         this.immovable = true;
         this.x = options.x || 5;
-        this.y = options.y || 20;
+        this.y = options.y || 21;
         this.static = true;
         this.used = false;
         this.zIndex = options.zIndex || 51;
@@ -18,6 +18,21 @@ class Icon extends Sprite {
                 { sx: 3, sy: 3, fW: 46, fH: 38, },
             ]
         });
+
+        this.animations.add({
+            key: 'warrior',
+            frames: [
+                { sx: (46 * 2 + 3 * 2) + 3, sy: (38 * 0 + 3 * 0) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
+        this.animations.add({
+            key: 'archer',
+            frames: [
+                { sx: (46 * 4 + 3 * 4) + 3, sy: (38 * 0 + 3 * 0) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
 
         this.animations.add({
             key: 'peon',
@@ -65,6 +80,27 @@ class Icon extends Sprite {
             key: 'blacksmith',
             frames: [
                 { sx: (46 * 6 + 3 * 6) + 3, sy: (38 * 4 + 3 * 4) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
+        this.animations.add({
+            key: 'tower',
+            frames: [
+                { sx: (46 * 0 + 3 * 0) + 3, sy: (38 * 6 + 3 * 6) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
+        this.animations.add({
+            key: 'tower_arrow',
+            frames: [
+                { sx: (46 * 5 + 3 * 5) + 3, sy: (38 * 7 + 3 * 7) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
+        this.animations.add({
+            key: 'tower_cannon',
+            frames: [
+                { sx: (46 * 6 + 3 * 6) + 3, sy: (38 * 7 + 3 * 7) + 3, fW: 46, fH: 38, },
             ]
         });
 

@@ -6,6 +6,7 @@ class LumberMill extends Buildings {
 
     constructor(game, options) {
         super(game, options);
+        this.game = game;
 
         this.info = {
             imageKey: 'lumber_mill',
@@ -26,7 +27,7 @@ class LumberMill extends Buildings {
 
     isBuilt() {
         if (this.completed) {
-
+            this.game.VAR.settings.requirements.lumbermill = true;
         }
     }
 }

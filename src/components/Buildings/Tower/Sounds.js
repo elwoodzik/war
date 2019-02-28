@@ -1,8 +1,7 @@
-
 class Sounds {
     constructor() {
         this.selected = [
-            'S_farm'
+            'S_click'
         ]
         this.move = [
 

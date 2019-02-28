@@ -4,21 +4,22 @@ class Animations {
         sprite.animations.add({
             key: 'complete',
             frames: [
-                { sx: 105, sy: 265, fW: 96, fH: 96 },
+                { sx: 465, sy: 5, fW: 64, fH: 64, },
             ]
         });
 
         sprite.animations.add({
             key: 'half',
             frames: [
-                { sx: 105, sy: 361, fW: 96, fH: 96 },
+                { sx: 465, sy: 70, fW: 64, fH: 64, },
             ]
         });
+
 
         sprite.animations.add({
             key: 'start',
             frames: [
-                { sx: 570, sy: 185, fW: 96, fH: 96, },
+                { sx: 585, sy: 135, fW: 64, fH: 64, },
             ]
         });
 

@@ -6,6 +6,7 @@ import Barracks from "../../Buildings/Barracks/Barracks";
 import LumberMill from "../../Buildings/LumberMill/LumberMill";
 import Blacksmith from "../../Buildings/Blacksmith/Blacksmith";
 import BuildingPut from "../../Hud/BuildingPut";
+import Tower from "../../Buildings/Tower/Tower";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -17,26 +18,38 @@ class Peasant extends Units {
         this.dir = 'idle_up';
         this.cargo = 'empty';
         this.inForestPos = {};
-        this.speed = 60;
         this.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
+        this.dmg = [2, 9];
+        this.armor = 0;
+        this.speed = 60;
+        this.range = 1;
+        this.hitPointsMax = 30;
+        this.currentHp = this.hitPointsMax;
+
+
         this.info = {
+            dmg: this.dmg,
+            armor: this.armor,
+            speed: this.speed,
+            range: this.range,
+            hitPointsMax: this.hitPointsMax,
+            currentHp: this.currentHp,
             imageKey: 'peasant',
             name: 'Chłop',
             descriptios: [
-                'opis',
-                'opis',
-                'opis'
+                `Obrażenia: ${this.dmg[0]} - ${this.dmg[1]}`,
+                `Armor: ${this.armor}`,
+                `Zasięg: ${this.range}`
             ],
-            // inPut: false,
             inProgress: false,
             inProgressTime: 0,
             actions: [
                 {
                     key: 'farm',
-                    woodCost: 100,
+                    woodCost: 250,
                     goldCost: 500,
-                    time: 13000,
+                    time: 100000 / this.game.VAR.settings.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Farm,
@@ -47,9 +60,9 @@ class Peasant extends Units {
                 },
                 {
                     key: 'barracks',
-                    woodCost: 0,
-                    goldCost: 400,
-                    time: 13000,
+                    woodCost: 450,
+                    goldCost: 700,
+                    time: 200000 / this.game.VAR.settings.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Barracks,
@@ -60,9 +73,9 @@ class Peasant extends Units {
                 },
                 {
                     key: 'lumber_mill',
-                    woodCost: 0,
-                    goldCost: 400,
-                    time: 13000,
+                    woodCost: 450,
+                    goldCost: 600,
+                    time: 150000 / this.game.VAR.settings.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: LumberMill,
@@ -73,14 +86,27 @@ class Peasant extends Units {
                 },
                 {
                     key: 'blacksmith',
-                    woodCost: 0,
-                    goldCost: 400,
-                    time: 13000,
+                    woodCost: 450,
+                    goldCost: 800,
+                    time: 200000 / this.game.VAR.settings.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Blacksmith,
                         key: 'buildings',
                         name: 'Kuźnia',
+                        prefix: 'Buduj'
+                    },
+                },
+                {
+                    key: 'tower',
+                    woodCost: 200,
+                    goldCost: 550,
+                    time: 60000 / this.game.VAR.settings.buildSpeed,
+                    onActionClick: this.onActionBuild,
+                    create: {
+                        class: Tower,
+                        key: 'buildings',
+                        name: 'Wieżę',
                         prefix: 'Buduj'
                     },
                 },
@@ -90,6 +116,8 @@ class Peasant extends Units {
 
         new Animations(this);
         this.sounds = new Sounds();
+        this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+        this.currentTile.type = 'solid';
     }
 
     update(dt) {

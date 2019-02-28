@@ -25,7 +25,7 @@ class Town extends Buildings {
                     key: 'peasant',
                     woodCost: 0,
                     goldCost: 400,
-                    time: 100,
+                    time: 45000 / this.game.VAR.settings.buildSpeed,
                     onActionClick: this.onActionClick,
                     create: {
                         class: Peasant,

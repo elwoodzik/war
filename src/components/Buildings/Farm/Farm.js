@@ -13,8 +13,8 @@ class Farm extends Buildings {
             imageKey: 'farm',
             name: 'Farma',
             descriptios: [
-                'Budynek',
-                'mieszkalny',
+                'Zwiększa',
+                'populacje',
                 // 'Wood: 100'
             ],
         }

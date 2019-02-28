@@ -14,6 +14,8 @@ import LumberMill from '../Buildings/LumberMill/LumberMill';
 import Blacksmith from '../Buildings/Blacksmith/Blacksmith';
 // import BuildingPut from '../Hud/BuildingPut';
 import HudLeft from '../Hud/HudLeft/HudLeft';
+import Warrior from '../Units/Warrior/Warrior';
+import Archer from '../Units/Archer/Archer';
 
 
 class Main {
@@ -35,7 +37,11 @@ class Main {
                 wood: 1100,
                 woodUpdateBy: 100,
                 homeMax: 44,
-                people: []
+                people: [],
+                requirements: {
+                    lumbermill: false,
+                },
+                buildSpeed: 50,
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -76,6 +82,18 @@ class Main {
                 y: 32 * 10
             }));
 
+            this.game.VAR.settings.people.push(new Warrior(this.game, {
+                key: 'warrior',
+                x: 32 * 14,
+                y: 32 * 12
+            }));
+
+            this.game.VAR.settings.people.push(new Archer(this.game, {
+                key: 'archer',
+                x: 32 * 7,
+                y: 32 * 12
+            }));
+
             this.game.VAR.town = new Town(this.game, {
                 key: 'buildings',
                 x: 32 * 15,
@@ -99,16 +117,16 @@ class Main {
             new Barracks(this.game, {
                 key: 'buildings',
                 x: 32 * 14,
-                y: 32 * 5,
+                y: 32 * 17,
                 completed: true
             })
 
-            new LumberMill(this.game, {
-                key: 'buildings',
-                x: 32 * 18,
-                y: 32 * 5,
-                completed: true
-            })
+            // new LumberMill(this.game, {
+            //     key: 'buildings',
+            //     x: 32 * 18,
+            //     y: 32 * 5,
+            //     completed: true
+            // })
 
             new Blacksmith(this.game, {
                 key: 'buildings',
@@ -162,6 +180,7 @@ class Main {
         if (this.game.VAR.cameraMan) {
             if ((this.game.keyboard.trigger('D') || this.game.keyboard.trigger('right')) && this.game.VAR.cameraMan.x <= this.game.portViewWidth - this.game.width / 2 + 21) {
                 this.game.VAR.cameraMan.body.velocity.x = this.game.VAR.cameraMan.cameraSpeed;
+                console.log(this.game.gameObjects.length)
             } else if ((this.game.keyboard.trigger('A') || this.game.keyboard.trigger('left')) && this.game.VAR.cameraMan.x >= this.game.width / 2 - 32 * 5 + 1) {
                 this.game.VAR.cameraMan.body.velocity.x = -this.game.VAR.cameraMan.cameraSpeed;
             } else {
@@ -217,7 +236,7 @@ class Main {
 
                     this.game.VAR.sellectedObj.goAndCreateBuilding(endPos, (worker) => {
                         const canPut = worker.buildingPut.canPut();
-                       
+
                         if (canPut) {
                             worker.used = false;
                             worker.unSelectedBorder();

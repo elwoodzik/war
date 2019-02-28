@@ -8,12 +8,14 @@ class Game {
         const gameWidth = 960;
         const gameHeight = 540;
         const orientation = false; //false -> vertical, true -> horizontal (obecnie 'horizontal' jest nie obslugiwany!!!)
-        const scallable = true;
+        const scallable = false;
         const mobile = false;
         const assets = {
             // world: 'images/world_summer.png',
             world: 'images/world_summer.png',
             peasant: 'images/peasant.png',
+            warrior: 'images/warrior.png',
+            archer: 'images/archer.png',
             chop: 'images/chop.png',
             buildings: 'images/buildings.png',
             gold: 'images/gold.png',
@@ -36,6 +38,30 @@ class Game {
             S_chopTree2: 'sounds/tree2.wav',
             S_chopTree3: 'sounds/tree3.wav',
             S_chopTree4: 'sounds/tree4.wav',
+            S_farm: 'sounds/farm.wav',
+            S_lumbermill: 'sounds/lumber-mill.wav',
+            S_blacksmith: 'sounds/blacksmith.wav',
+            S_workComplete: 'sounds/work-complete.wav',
+            S_warriorSelected1: 'sounds/warrior_select1.wav',
+            S_warriorSelected2: 'sounds/warrior_select2.wav',
+            S_warriorSelected3: 'sounds/warrior_select3.wav',
+            S_warriorSelected4: 'sounds/warrior_select4.wav',
+            S_warriorSelected5: 'sounds/warrior_select5.wav',
+            S_warriorSelected6: 'sounds/warrior_select6.wav',
+            S_warriorMove1: 'sounds/warrior_move1.wav',
+            S_warriorMove2: 'sounds/warrior_move2.wav',
+            S_warriorMove3: 'sounds/warrior_move3.wav',
+            S_warriorMove4: 'sounds/warrior_move4.wav',
+            S_warrior_created: 'sounds/warrior_created.wav',
+            S_archerSelected1: 'sounds/archer_select1.wav',
+            S_archerSelected2: 'sounds/archer_select2.wav',
+            S_archerSelected3: 'sounds/archer_select3.wav',
+            S_archerSelected4: 'sounds/archer_select4.wav',
+            S_archerMove1: 'sounds/archer_move1.wav',
+            S_archerMove2: 'sounds/archer_move2.wav',
+            S_archerMove3: 'sounds/archer_move3.wav',
+            S_archerMove4: 'sounds/archer_move4.wav',
+            S_archer_created: 'sounds/archer_created.wav',
         }
 
         new Leya(gameWidth, gameHeight, orientation, scallable, mobile, assets)

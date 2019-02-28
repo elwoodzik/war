@@ -25,17 +25,25 @@ class ActionBox {
                 let index = 1;
                 for (let i = 0; i < actions.length; i++) {
                     const action = this.actions[i];
-                    action.used = true;
-                    action.animations.playOnce({ key: actions[i].key });
-                    action.x = x;
-                    action.y = y;
                     action.currentAction = actions[i];
-                    x += 52;
-                    if (index % 3 === 0) {
-                        y += 42;
-                        x = 5;
+                    let req = true;
+
+                    if (action.currentAction.requirements) {
+                        req = action.currentAction.requirements.every((req) => this.game.VAR.settings.requirements[req])
                     }
-                    index++;
+                    if (req) {
+                        action.used = true;
+                        action.animations.playOnce({ key: actions[i].key });
+                        action.x = x;
+                        action.y = y;
+
+                        x += 52;
+                        if (index % 3 === 0) {
+                            y += 42;
+                            x = 5;
+                        }
+                        index++;
+                    }
                 }
             } else {
                 return false;
