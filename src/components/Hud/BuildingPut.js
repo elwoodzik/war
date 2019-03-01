@@ -137,18 +137,22 @@ class BuildingPut extends Sprite {
         this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
         this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
 
-        this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });
-        this.game.VAR.hudLeft.creationBox.show(true);
-
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === building.objID) {
+            this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });
+            this.game.VAR.hudLeft.creationBox.show(true);
+        }
+        
         building.doInTime(this.action.time, () => {
             building.info.inProgress = false;
-            this.game.VAR.hudLeft.creationBox.hide();
+
             building.completed = true;
             building.isBuilt();
 
             if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === building.objID) {
+                this.game.VAR.hudLeft.creationBox.hide();
                 this.game.VAR.hudLeft.set(building.info);
-            } else if (this.game.VAR.sellectedObj && !this.game.VAR.sellectedObj.buildingPut.used ) {
+
+            } else if (this.game.VAR.sellectedObj && !this.game.VAR.sellectedObj.buildingPut.used && !this.game.VAR.hudLeft.creationBox.bar.used) {
                 this.game.VAR.hudLeft.set(this.game.VAR.sellectedObj.info);
             }
 

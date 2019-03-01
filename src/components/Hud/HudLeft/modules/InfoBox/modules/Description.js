@@ -15,7 +15,7 @@ class Description extends TextLine {
     }
 
     set(description, i) {
-        this.x = 15;
+        this.x = 8;
         this.y = 95 + 22 * i;
         this.used = true;
         this.use(description);

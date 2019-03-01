@@ -1,4 +1,4 @@
-import Sprite from "../../../lib/Sprite";
+import Sprite from "../../../../lib/Sprite";
 
 class Units extends Sprite {
     constructor(game, options) {
@@ -13,17 +13,24 @@ class Units extends Sprite {
 
         this.game.VAR.map.addToFog(this.x, this.y, 32);
 
+        
 
         // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
     }
 
     onClick() {
-        if (!this.buildingPut.used) {
-            this.selectedBorder();
-            this.game.VAR.hudLeft.set(this.info);
-            this.game.VAR.hudLeft.cancelBox.used = false;
-            this.game.VAR.hudLeft.creationBox.show();
-            this.getRandomSelectedSound();
+        // if (!this.buildingPut.used) {
+        //     this.selectedBorder();
+        //     this.game.VAR.hudLeft.set(this.info);
+        //     this.game.VAR.hudLeft.cancelBox.used = false;
+        //     this.game.VAR.hudLeft.creationBox.show();
+        //     this.getRandomSelectedSound();
+        // }
+    }
+
+    onRightClick() {
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
+            this.game.VAR.sellectedObj.findAttackPath(this);
         }
     }
 
@@ -115,16 +122,11 @@ class Units extends Sprite {
 
     move(_endPos, building, index = 1) {
         let endPos = _endPos;
-
         if (!endPos) {
             if (!building) {
                 return false;
             } else {
-                if (building.objectType === 'unit') {
-                    endPos = this.game.VAR.map.getTileBySprite(building);
-                } else {
-                    endPos = this.findShortPathToBuilding(building, index);
-                }
+                endPos = this.findShortPathToBuilding(building, index);
             }
         }
         // this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
@@ -139,7 +141,6 @@ class Units extends Sprite {
 
                     newPath.shift();
                     this.nextStep = newPath.shift();
-
                     // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
 
                     this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
@@ -171,7 +172,6 @@ class Units extends Sprite {
                     if (this.nextTile.type === 'solid') {
                         this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
                         this.dir = `idle${this.dir.slice(4)}`;
-
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';
                             this.nextTile = null;
@@ -207,19 +207,12 @@ class Units extends Sprite {
                             if (newPath.length > 0) {
                                 this.move(_endPos ? endPos : null, building, index);
                             } else {
-                                if (endPos.enemy) {
+                                this.nextTile.type = 'solid';
 
-                                    // this.getAnimationInMove(this.startPos, { x: endPos.row, y: endPos.column });
-
-                                } else {
-                                    this.nextTile.type = 'solid';
-
-                                    this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
-                                    // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
-                                    // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
-                                    this.dir = `idle${this.dir.slice(4)}`;
-                                }
-
+                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
+                                // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
+                                // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
+                                this.dir = `idle${this.dir.slice(4)}`;
                             }
                         }
                     })
@@ -227,91 +220,6 @@ class Units extends Sprite {
             }
         })
         this.game.easystar.calculate();
-    }
-
-    findAttackPath(enemy) {
-
-        if (enemy && enemy.currentHp > 0) {
-            const startPos = this.game.VAR.map.getTileBySprite(this);
-            const endPos = this.game.VAR.map.getTileBySprite(enemy);// this.game.mapPathfinder.getTileByMouse();
-            this.move(null, enemy, 1);
-
-        }
-        //  else {
-        //     const startPos = this.game.mapPathfinder.getTileBySprite(this);
-        //     const endPos = this.game.mapPathfinder.getTileByMouse();
-        //     if (endPos.row < 0 || endPos.column < 0 || endPos.row > 39 || endPos.column > 39) {
-        //         return false
-        //     }
-        //     this.mapGrid(1);
-        //     this.game.easystar.findPath(startPos.row, startPos.column, endPos.row, endPos.column, (newPath) => {
-        //         if (newPath === null) {
-        //             console.log("Path was not found.");
-        //             this.mapGrid(2);
-        //         } else {
-        //             newPath.reverse();
-        //             newPath.pop();
-        //             const currentPos = newPath.pop();
-        //             this.move(newPath, currentPos);
-        //         }
-        //     })
-        //     this.game.easystar.calculate();
-        // }
-    }
-
-    moveAndAttack(newPath, startPos, endPos, enemy) {
-        if (newPath.length > 2) {
-
-            newPath.shift();
-            this.nextStep = newPath.shift();
-            // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
-
-            this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
-            this.currentTile = this.game.VAR.map.getTile(startPos.row, startPos.column);
-
-            this.getAnimationInMove(startPos, this.nextStep);
-
-            this.moveToPoint({
-                x: this.nextTile.x, y: this.nextTile.y, speed: 60, callback: () => {
-                    this.findAttackPath(enemy);
-                }
-            })
-        } else {
-            console.log('stop')
-            // this.moveToPointBreak(1);
-            // const path = newPath.pop();
-
-            // if (newPath.length === 0) {
-            //     console.log('to miejsce')
-            //     const posMouse = this.game.mapPathfinder.getTileByMouse();
-
-            //     const pos = this.game.mapPathfinder.getPosition(posMouse.row, posMouse.column);
-            //     const currentPos = this.game.mapPathfinder.getPosition(_currentPos.x, _currentPos.y);
-
-            //     this.getAnimationInMove(currentPos, pos);
-            //     this.mapGrid(2);
-            //     this.dir = `atck${this.dir.slice(4)}`;
-
-            //     if (enemy) {
-            //         this.attackedEnemy = enemy;
-            //     } else {
-            //         this.attackedEnemy = null;
-            //     }
-            // } else {
-            //     const pos = this.game.mapPathfinder.getPosition(path.x, path.y);
-            //     const currentPos = this.game.mapPathfinder.getPosition(_currentPos.x, _currentPos.y);
-
-            //     this.getAnimationInMove(currentPos, pos);
-            //     this.mapGrid(2);
-            //     this.dir = `atck${this.dir.slice(4)}`;
-
-            //     if (enemy) {
-            //         this.attackedEnemy = enemy;
-            //     } else {
-            //         this.attackedEnemy = null;
-            //     }
-            // }
-        }
     }
 
     restartPosition() {
@@ -354,7 +262,7 @@ class Units extends Sprite {
 
     getAnimationInMove(startPos, nextStep) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
-        
+        // console.log(this.key, this.inWooding)
         if (this.type === 'worker') {
             this.image = this.AssetManager.get('peasant');
         }

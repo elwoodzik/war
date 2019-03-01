@@ -28,6 +28,8 @@ class Peasant extends Units {
         this.currentHp = this.hitPointsMax;
 
 
+
+
         this.info = {
             dmg: this.dmg,
             armor: this.armor,
@@ -113,9 +115,9 @@ class Peasant extends Units {
             ],
         }
 
-
         new Animations(this);
         this.sounds = new Sounds();
+        this.y = this.y - this.height + 32;
         this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
         this.currentTile.type = 'solid';
     }
@@ -205,7 +207,7 @@ class Peasant extends Units {
 
         this.game.VAR.goldMine.addUserToMine();
 
-        this.doInTime(4500, () => {
+        this.doInTime(this.game.VAR.settings.timeInMine, () => {
             this.cargo = 'gold';
             this.game.VAR.goldMine.removeUserFromMine();
             this.leaveBuilding(this.game.VAR.town, 2, startPos, 0, 800);
@@ -241,7 +243,7 @@ class Peasant extends Units {
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
         }
 
-        this.doInTime(2500, () => {
+        this.doInTime(this.game.VAR.settings.timeInTown, () => {
             if (this.cargo === 'gold') {
                 this.cargo = 'empty';
                 this.leaveBuilding(this.game.VAR.goldMine, 1, startPos, 0, 800);
@@ -271,6 +273,7 @@ class Peasant extends Units {
             // this.showBorder();
             this.goToBuilding(this.game.VAR.town, 2);
         } else {
+
             if (this.chopSound) {
                 this.chopSound.destroy();
             }
@@ -278,7 +281,12 @@ class Peasant extends Units {
             this.inWooding = true;
             this.getAnimationInMove(startPos, nextStep);
 
-            this.doInTime(13000, () => {
+            this.y = this.y - this.height + 32;
+            this.currentTile.type = 'empty';
+            this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+            this.currentTile.type = 'solid';
+
+            this.doInTime(this.game.VAR.settings.timeInForest, () => {
                 this.cargo = 'wood';
                 this.inWooding = false;
                 this.goToBuilding(this.game.VAR.town, 2);
@@ -308,22 +316,22 @@ class Peasant extends Units {
 
                     if (this.nextTile.type === 'town' && this.cargo === 'empty') {
                         this.nextTile.type = 'town';
-                        return this.move(endPos);
+                        return this.goAndCreateBuilding(endPos, callback);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'town' && this.cargo === 'empty') {
                         this.currentTile.type = 'town';
-                        return this.move(endPos);
+                        return this.goAndCreateBuilding(endPos, callback);
                     }
 
                     if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
                         this.nextTile.type = 'gold';
-                        return this.move(endPos);
+                        return this.goAndCreateBuilding(endPos, callback);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
                         this.currentTile.type = 'gold';
-                        return this.move(endPos);
+                        return this.goAndCreateBuilding(endPos, callback);
                     }
 
                     this.currentTile.type = 'solid';
@@ -338,13 +346,13 @@ class Peasant extends Units {
 
                             return false;
                         }
-                        return this.move(endPos);
+                        return this.goAndCreateBuilding(endPos, callback);
                     }
 
                     this.nextTile.type = 'solid';
 
                     this.moveToPoint({
-                        x: this.nextStep.x * 32, y: this.nextStep.y * 32, speed: this.speed, callback: () => {
+                        x: this.nextStep.x * 32, y: this.nextStep.y * 32 - this.height + 32, speed: this.speed, callback: () => {
                             this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
                             this.currentTile.type = 'empty';
                             if (newPath.length > 0) {

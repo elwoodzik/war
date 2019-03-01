@@ -15,6 +15,7 @@ import Blacksmith from '../Buildings/Blacksmith/Blacksmith';
 // import BuildingPut from '../Hud/BuildingPut';
 import HudLeft from '../Hud/HudLeft/HudLeft';
 import Warrior from '../Units/Warrior/Warrior';
+import Grunt from '../AI/Units/Warrior/Warrior';
 import Archer from '../Units/Archer/Archer';
 
 
@@ -32,16 +33,19 @@ class Main {
             this.game.VAR.map = map;
 
             this.game.VAR.settings = {
-                gold: 15100,
+                gold: 1500,
                 goldUpdateBy: 100,
-                wood: 1100,
+                wood: 500,
                 woodUpdateBy: 100,
-                homeMax: 44,
+                homeMax: 4,
                 people: [],
                 requirements: {
                     lumbermill: false,
                 },
-                buildSpeed: 50,
+                buildSpeed: 50, //default 1
+                timeInMine: 4500,
+                timeInTown: 2500,
+                timeInForest: 15000
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -49,7 +53,6 @@ class Main {
             this.game.VAR.hudBottom = new HudBottom(this.game, { zIndex: 50 });
             this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 });
             this.game.VAR.textError = new TextError(this.game, { zIndex: 50 });
-            // this.game.VAR.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
             this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
             this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
@@ -78,21 +81,37 @@ class Main {
 
             this.game.VAR.settings.people.push(new Peasant(this.game, {
                 key: 'peasant',
-                x: 32 * 5,
-                y: 32 * 10
+                x: 32 * 3,
+                y: 32 * 12
             }));
 
-            this.game.VAR.settings.people.push(new Warrior(this.game, {
-                key: 'warrior',
+            this.game.VAR.settings.people.push(new Peasant(this.game, {
+                key: 'peasant',
                 x: 32 * 14,
-                y: 32 * 12
+                y: 32 * 13
             }));
 
-            this.game.VAR.settings.people.push(new Archer(this.game, {
-                key: 'archer',
-                x: 32 * 7,
-                y: 32 * 12
+            this.game.VAR.settings.people.push(new Peasant(this.game, {
+                key: 'peasant',
+                x: 32 * 14,
+                y: 32 * 14
             }));
+
+            // this.game.VAR.settings.people.push(new Warrior(this.game, {
+            //     key: 'warrior',
+            //     x: 32 * 14,
+            //     y: 32 * 12
+            // }));
+            const grunt = new Grunt(this.game, {
+                key: 'warrior',
+                x: 32 * 9,
+                y: 32 * 12
+            });
+            // this.game.VAR.settings.people.push(new Archer(this.game, {
+            //     key: 'archer',
+            //     x: 32 * 7,
+            //     y: 32 * 12
+            // }));
 
             this.game.VAR.town = new Town(this.game, {
                 key: 'buildings',
@@ -100,26 +119,26 @@ class Main {
                 y: 32 * 12
             })
 
-            new Farm(this.game, {
-                key: 'gold',
-                x: 32 * 15,
-                y: 32 * 9,
-                completed: true
-            })
+            // new Farm(this.game, {
+            //     key: 'gold',
+            //     x: 32 * 15,
+            //     y: 32 * 9,
+            //     completed: true
+            // })
 
-            new Farm(this.game, {
-                key: 'buildings',
-                x: 32 * 18,
-                y: 32 * 9,
-                completed: true
-            })
+            // new Farm(this.game, {
+            //     key: 'buildings',
+            //     x: 32 * 18,
+            //     y: 32 * 9,
+            //     completed: true
+            // })
 
-            new Barracks(this.game, {
-                key: 'buildings',
-                x: 32 * 14,
-                y: 32 * 17,
-                completed: true
-            })
+            // new Barracks(this.game, {
+            //     key: 'buildings',
+            //     x: 32 * 14,
+            //     y: 32 * 17,
+            //     completed: true
+            // })
 
             // new LumberMill(this.game, {
             //     key: 'buildings',
@@ -128,12 +147,12 @@ class Main {
             //     completed: true
             // })
 
-            new Blacksmith(this.game, {
-                key: 'buildings',
-                x: 32 * 21,
-                y: 32 * 5,
-                completed: true
-            })
+            // new Blacksmith(this.game, {
+            //     key: 'buildings',
+            //     x: 32 * 21,
+            //     y: 32 * 5,
+            //     completed: true
+            // })
 
             this.game.VAR.goldMine = new GoldMine(this.game, {
                 key: 'gold',
@@ -143,6 +162,7 @@ class Main {
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
 
+            // grunt.move({ row: 5, column: 25 })
             // for (let i = 0; i < 15; i++) {
             //     const pes = new Peasant(this.game, {
             //         key: 'peasant',
@@ -234,13 +254,13 @@ class Main {
                     this.game.VAR.sellectedObj.restartPosition();
                     const worker = this.game.VAR.sellectedObj;
 
-                    this.game.VAR.sellectedObj.goAndCreateBuilding(endPos, (worker) => {
-                        const canPut = worker.buildingPut.canPut();
+                    worker.goAndCreateBuilding(endPos, (peaseant) => {
+                        const canPut = peaseant.buildingPut.canPut();
 
                         if (canPut) {
-                            worker.used = false;
-                            worker.unSelectedBorder();
-                            worker.buildingPut.building(tile, worker);
+                            peaseant.used = false;
+                            peaseant.unSelectedBorder();
+                            peaseant.buildingPut.building(tile, peaseant);
                         }
                     });
                 }
