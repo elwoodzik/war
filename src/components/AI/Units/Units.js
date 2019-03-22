@@ -13,7 +13,7 @@ class Units extends Sprite {
 
         this.game.VAR.map.addToFog(this.x, this.y, 32);
 
-        
+
 
         // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
     }
@@ -30,6 +30,7 @@ class Units extends Sprite {
 
     onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
+            this.game.VAR.sellectedObj.restartPosition();
             this.game.VAR.sellectedObj.findAttackPath(this);
         }
     }
@@ -148,30 +149,35 @@ class Units extends Sprite {
 
                     this.getAnimationInMove(this.startPos, this.nextStep);
 
-                    if (this.nextTile.type === 'town' && this.cargo === 'empty') {
+                    if (this.nextTile.type === 'town') {
                         this.nextTile.type = 'town';
-                        return this.move(endPos);
+                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
+                        this.dir = `idle${this.dir.slice(4)}`;
+                        return
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
-                    if (this.currentTile.type === 'town' && this.cargo === 'empty') {
+                    if (this.currentTile.type === 'town') {
                         this.currentTile.type = 'town';
                         return this.move(endPos);
                     }
-                    if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
+                    if (this.nextTile.type === 'gold') {
                         this.nextTile.type = 'gold';
                         return this.move(endPos);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
-                    if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
+                    if (this.currentTile.type === 'gold') {
                         this.currentTile.type = 'gold';
                         return this.move(endPos);
                     }
 
                     this.currentTile.type = 'solid';
-
+                 
+                   
+                    console.log(this.nextTile.type)
                     if (this.nextTile.type === 'solid') {
                         this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
                         this.dir = `idle${this.dir.slice(4)}`;
+
                         if (newPath.length === 0) {
                             this.currentTile.type = 'solid';
                             this.nextTile = null;
@@ -192,6 +198,7 @@ class Units extends Sprite {
 
                     // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
                     this.nextTile.type = 'solid';
+                    this.nextTile.enemy = true;
                     // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     // this.nextPosition = { x: this.nextStep.x * 32, y: this.nextStep.y * 32 } //this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
                     // console.log(this.startPos)
@@ -203,7 +210,7 @@ class Units extends Sprite {
                             // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                             this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
                             this.currentTile.type = 'empty';
-
+                            this.currentTile.enemy = false;
                             if (newPath.length > 0) {
                                 this.move(_endPos ? endPos : null, building, index);
                             } else {

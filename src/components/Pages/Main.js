@@ -42,7 +42,7 @@ class Main {
                 requirements: {
                     lumbermill: false,
                 },
-                buildSpeed: 50, //default 1
+                buildSpeed: 4, //default 1
                 timeInMine: 4500,
                 timeInTown: 2500,
                 timeInForest: 15000
@@ -79,17 +79,17 @@ class Main {
                 followed: this.game.VAR.cameraMan
             })
 
-            this.game.VAR.settings.people.push(new Peasant(this.game, {
-                key: 'peasant',
-                x: 32 * 3,
-                y: 32 * 12
-            }));
+            // this.game.VAR.settings.people.push(new Peasant(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 3,
+            //     y: 32 * 12
+            // }));
 
-            this.game.VAR.settings.people.push(new Peasant(this.game, {
-                key: 'peasant',
-                x: 32 * 14,
-                y: 32 * 13
-            }));
+            // this.game.VAR.settings.people.push(new Peasant(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 14,
+            //     y: 32 * 13
+            // }));
 
             this.game.VAR.settings.people.push(new Peasant(this.game, {
                 key: 'peasant',
@@ -107,6 +107,7 @@ class Main {
                 x: 32 * 9,
                 y: 32 * 12
             });
+          
             // this.game.VAR.settings.people.push(new Archer(this.game, {
             //     key: 'archer',
             //     x: 32 * 7,
@@ -118,6 +119,7 @@ class Main {
                 x: 32 * 15,
                 y: 32 * 12
             })
+         
 
             // new Farm(this.game, {
             //     key: 'gold',
@@ -161,7 +163,7 @@ class Main {
             })
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
-
+            // grunt.move(null, this.game.VAR.town)
             // grunt.move({ row: 5, column: 25 })
             // for (let i = 0; i < 15; i++) {
             //     const pes = new Peasant(this.game, {

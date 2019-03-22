@@ -113,7 +113,7 @@ class Units extends Sprite {
 
     }
 
-    move(_endPos, building, index = 1) {
+    move(_endPos, building, index = 1, callback) {
         let endPos = _endPos;
 
         if (!endPos) {
@@ -149,21 +149,21 @@ class Units extends Sprite {
 
                     if (this.nextTile.type === 'town' && this.cargo === 'empty') {
                         this.nextTile.type = 'town';
-                        return this.move(endPos);
+                        return this.move(_endPos ? endPos : null, building, index, callback);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'town' && this.cargo === 'empty') {
                         this.currentTile.type = 'town';
-                        return this.move(endPos);
+                        return this.move(_endPos ? endPos : null, building, index, callback);
                     }
                     if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
                         this.nextTile.type = 'gold';
-                        return this.move(endPos);
+                        return this.move(_endPos ? endPos : null, building, index, callback);
                         // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
                     }
                     if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
                         this.currentTile.type = 'gold';
-                        return this.move(endPos);
+                        return this.move(_endPos ? endPos : null, building, index, callback);
                     }
 
                     this.currentTile.type = 'solid';
@@ -173,13 +173,23 @@ class Units extends Sprite {
                         this.dir = `idle${this.dir.slice(4)}`;
 
                         if (newPath.length === 0) {
-                            this.currentTile.type = 'solid';
-                            this.nextTile = null;
-                            this.dir = `idle${this.dir.slice(4)}`;
+                            // console.log(endPos.enemy, callback)
+                            if (endPos.enemy) {
+                                if (callback && typeof callback === 'function') {
+                                    return callback();
+                                }
+                                // this.getAnimationInMove(this.startPos, { x: endPos.row, y: endPos.column });
 
-                            return false;
+                            } else {
+                                this.currentTile.type = 'solid';
+                                this.nextTile = null;
+                                this.dir = `idle${this.dir.slice(4)}`;
+
+                                return false;
+                            }
+
                         }
-                        return this.move(endPos);
+                        return this.move(_endPos ? endPos : null, building, index, callback);
                     }
 
 
@@ -205,10 +215,15 @@ class Units extends Sprite {
                             this.currentTile.type = 'empty';
 
                             if (newPath.length > 0) {
-                                this.move(_endPos ? endPos : null, building, index);
-                            } else {
-                                if (endPos.enemy) {
+                                this.move(_endPos ? endPos : null, building, index, callback);
 
+                            } else {
+                                console.log(endPos.enemy)
+                                if (endPos.enemy) {
+                                    console.log('ccc')
+                                    if (callback && typeof callback === 'function') {
+                                        return callback();
+                                    }
                                     // this.getAnimationInMove(this.startPos, { x: endPos.row, y: endPos.column });
 
                                 } else {
@@ -232,9 +247,42 @@ class Units extends Sprite {
     findAttackPath(enemy) {
 
         if (enemy && enemy.currentHp > 0) {
+            // this.game.VAR.sellectedObj.restartPosition();
             const startPos = this.game.VAR.map.getTileBySprite(this);
             const endPos = this.game.VAR.map.getTileBySprite(enemy);// this.game.mapPathfinder.getTileByMouse();
-            this.move(null, enemy, 1);
+
+            // console.log(bb)
+            this.move(null, enemy, 1, () => {
+                this.game.easystar.cancelPath(this.myCurrentPath);
+                const lastHeight = this.height;
+                console.log(this.height)
+                if (this.type === 'worker') {
+                    this.image = this.AssetManager.get('chop');
+                    this.dir = `chop${this.dir.slice(4)}`;
+
+                   
+                    this.width = this.states[this.state].frames[this.current_f].fW;
+                    this.height = this.states[this.state].frames[this.current_f].fH;
+                }
+                this.animations.play({
+                    key: this.dir,
+                    delay: 2111,
+                    callback: () => this.findAttackPath(enemy)
+                })
+                if (this.height != lastHeight) {
+                    this.y = this.y - this.height + 32;
+                }
+
+                this.currentTile.type = 'empty';
+                this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+                this.currentTile.type = 'solid';
+
+
+                // this.animations.play({
+                //     key: this.dir,
+                //     delay:2111
+                // })
+            });
 
         }
         //  else {
@@ -325,7 +373,7 @@ class Units extends Sprite {
         if (this.nextStep && !this.inBuilding) {
             // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 1);
             this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 1);
-            if (this.nextTile && this.nextTile.type === 'solid') {
+            if (this.nextTile && this.nextTile.type === 'solid' && !this.nextTile.enemy) {
                 this.nextTile.type = 'empty';
             }
         }
@@ -354,7 +402,7 @@ class Units extends Sprite {
 
     getAnimationInMove(startPos, nextStep) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
-        
+
         if (this.type === 'worker') {
             this.image = this.AssetManager.get('peasant');
         }
