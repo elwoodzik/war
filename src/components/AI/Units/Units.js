@@ -30,8 +30,11 @@ class Units extends Sprite {
 
     onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
-            this.game.VAR.sellectedObj.restartPosition();
-            this.game.VAR.sellectedObj.findAttackPath(this);
+            this.game.VAR.sellectedObj.pathMove.restartPosition();
+            const endPos = this.game.VAR.map.getTileBySprite(this);
+            this.game.VAR.sellectedObj.pathMove.move(endPos, (path, player) => {
+                player.attackEnemy(this);
+            });
         }
     }
 
@@ -171,8 +174,8 @@ class Units extends Sprite {
                     }
 
                     this.currentTile.type = 'solid';
-                 
-                   
+
+
                     console.log(this.nextTile.type)
                     if (this.nextTile.type === 'solid') {
                         this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);

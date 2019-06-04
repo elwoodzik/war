@@ -141,7 +141,7 @@ class BuildingPut extends Sprite {
             this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });
             this.game.VAR.hudLeft.creationBox.show(true);
         }
-        
+
         building.doInTime(this.action.time, () => {
             building.info.inProgress = false;
 
@@ -160,8 +160,11 @@ class BuildingPut extends Sprite {
                 worker.x = place.x;
                 worker.y = place.y;
                 worker.used = true;
-                worker.startPos = null;
-                worker.nextStep = null;
+                worker.pathMove.startPos = this.game.VAR.map.getTileBySprite(worker);
+                worker.pathMove.currentTile = this.game.VAR.map.getTile(worker.pathMove.startPos.row, worker.pathMove.startPos.column);
+                worker.pathMove.currentTile.type = 'solid';
+                // worker.pathMove.startPos = null;
+                // worker.pathMove.nextStep = null;
                 this.AssetManager.play('S_workComplete');
             })
         })

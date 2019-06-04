@@ -511,6 +511,121 @@ class Animations {
             speed: 9
         });
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        sprite.animations.add({
+            key: 'atck_up',
+            frames: [
+                { sx: 8, sy: -6, fW: 32, fH: 42, },
+                { sx: 7, sy: 4 + 38 * 1, fW: 32, fH: 42, },
+                { sx: 5, sy: 24 + 38 * 2, fW: 32, fH: 42, },
+                { sx: 6, sy: 51 + 38 * 3, fW: 32, fH: 42, },
+                { sx: 5, sy: 75 + 38 * 4, fW: 32, fH: 42, },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_right_up',
+            frames: [
+                { sx: 8 + 36 * 1, sy: -6, fW: 32, fH: 42, },
+                { sx: 7 + 36 * 1, sy: 4 + 38 * 1, fW: 32, fH: 42, },
+                { sx: 5 + 36 * 1, sy: 24 + 38 * 2, fW: 32, fH: 42, },
+                { sx: 6 + 36 * 1, sy: 51 + 38 * 3, fW: 32, fH: 42, },
+                { sx: 5 + 36 * 1, sy: 75 + 38 * 4, fW: 32, fH: 42, },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_right',
+            frames: [
+                { sx: 14 + 36 * 2, sy: -6, fW: 30, fH: 42, },
+                { sx: 13 + 36 * 2, sy: 4 + 38 * 1, fW: 26, fH: 42, },
+                { sx: 11 + 36 * 2, sy: 24 + 38 * 2, fW: 36, fH: 42, },
+                { sx: 12 + 36 * 2, sy: 51 + 38 * 3, fW: 40, fH: 42, },
+                { sx: 11 + 36 * 2, sy: 75 + 38 * 4, fW: 40, fH: 42, },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_right_down',
+            frames: [
+                { sx: 11 + 36 * 3, sy: -6, fW: 32, fH: 44, },
+                { sx: 10 + 36 * 3, sy: 4 + 38 * 1, fW: 31, fH: 44, },
+                { sx: 8 + 36 * 3, sy: 24 + 38 * 2, fW: 32, fH: 44, },
+                { sx: 13 + 36 * 3, sy: 51 + 38 * 3, fW: 38, fH: 44, },
+                { sx: 12 + 36 * 3, sy: 75 + 38 * 4, fW: 36, fH: 44, },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_down',
+            frames: [
+                { sx: 14 + 36 * 4, sy: -6, fW: 32, fH: 44, },
+                { sx: 13 + 36 * 4, sy: 4 + 38 * 1, fW: 31, fH: 44, },
+                { sx: 11 + 36 * 4, sy: 24 + 38 * 2, fW: 32, fH: 44, },
+                { sx: 16 + 36 * 4, sy: 51 + 38 * 3, fW: 38, fH: 44, },
+                { sx: 15 + 36 * 4, sy: 75 + 38 * 4, fW: 36, fH: 44, },
+            ],
+            speed: 9
+        });
+        sprite.animations.add({
+            key: 'atck_left_down',
+            frames: [
+                { sx: 11 + 36 * 3, sy: -6, fW: 32, fH: 44, flip: true },
+                { sx: 10 + 36 * 3, sy: 4 + 38 * 1, fW: 31, fH: 44, flip: true },
+                { sx: 8 + 36 * 3, sy: 24 + 38 * 2, fW: 32, fH: 44, flip: true },
+                { sx: 13 + 36 * 3, sy: 51 + 38 * 3, fW: 38, fH: 44, flip: true },
+                { sx: 12 + 36 * 3, sy: 75 + 38 * 4, fW: 36, fH: 44, flip: true },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_left',
+            frames: [
+                { sx: 16 + 36 * 2, sy: 2, fW: 30, fH: 34, flip: true },
+                { sx: 12 + 36 * 2, sy: 10 + 38 * 1, fW: 30, fH: 34, flip: true },
+                { sx: 5 + 36 * 2, sy: 30 + 38 * 2, fW: 36, fH: 34, flip: true },
+                { sx: 4 + 36 * 2, sy: 57 + 38 * 3, fW: 40, fH: 34, flip: true },
+                { sx: 2 + 36 * 2, sy: 81 + 38 * 4, fW: 40, fH: 34, flip: true },
+            ],
+            speed: 9
+        });
+
+        sprite.animations.add({
+            key: 'atck_left_up',
+            frames: [
+                { sx: 8 + 36 * 1, sy: -6, fW: 32, fH: 42, flip: true },
+                { sx: 7 + 36 * 1, sy: 4 + 38 * 1, fW: 32, fH: 42, flip: true },
+                { sx: 5 + 36 * 1, sy: 24 + 38 * 2, fW: 32, fH: 42, flip: true },
+                { sx: 6 + 36 * 1, sy: 51 + 38 * 3, fW: 32, fH: 42, flip: true },
+                { sx: 5 + 36 * 1, sy: 75 + 38 * 4, fW: 32, fH: 42, flip: true },
+            ],
+            speed: 9
+        });
+
         sprite.animations.play({ key: sprite.dir, delay: 16 })
     }
 

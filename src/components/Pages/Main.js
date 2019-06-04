@@ -42,7 +42,7 @@ class Main {
                 requirements: {
                     lumbermill: false,
                 },
-                buildSpeed: 4, //default 1
+                buildSpeed: 44, //default 1
                 timeInMine: 4500,
                 timeInTown: 2500,
                 timeInForest: 15000
@@ -107,7 +107,7 @@ class Main {
                 x: 32 * 9,
                 y: 32 * 12
             });
-          
+
             // this.game.VAR.settings.people.push(new Archer(this.game, {
             //     key: 'archer',
             //     x: 32 * 7,
@@ -119,7 +119,7 @@ class Main {
                 x: 32 * 15,
                 y: 32 * 12
             })
-         
+
 
             // new Farm(this.game, {
             //     key: 'gold',
@@ -165,16 +165,16 @@ class Main {
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
             // grunt.move(null, this.game.VAR.town)
             // grunt.move({ row: 5, column: 25 })
-            // for (let i = 0; i < 15; i++) {
-            //     const pes = new Peasant(this.game, {
-            //         key: 'peasant',
-            //         x: 32 * (i + 3),
-            //         y: 32 * 19
-            //     });
-            //     pes.move(null, this.game.VAR.goldMine, 1);
-            //     this.game.VAR.settings.people.push(pes);
+            for (let i = 0; i < 15; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 3),
+                    y: 32 * 19
+                });
+                // pes.move(null, this.game.VAR.goldMine, 1);
+                this.game.VAR.settings.people.push(pes);
 
-            // }
+            }
 
             // for (let i = 0; i < 15; i++) {
             //     const pes = new Peasant(this.game, {
@@ -233,8 +233,8 @@ class Main {
                 }
 
                 this.game.VAR.sellectedObj.getRandomMoveSound();
-                this.game.VAR.sellectedObj.restartPosition();
-                this.game.VAR.sellectedObj.move(endPos);
+                this.game.VAR.sellectedObj.pathMove.restartPosition();
+                this.game.VAR.sellectedObj.pathMove.move(endPos);
             }
         }, false)
     }
@@ -253,16 +253,29 @@ class Main {
                     const tile = this.game.VAR.map.getTileByMouse();
                     //
                     this.game.VAR.sellectedObj.getRandomMoveSound();
-                    this.game.VAR.sellectedObj.restartPosition();
+                    this.game.VAR.sellectedObj.pathMove.restartPosition();
                     const worker = this.game.VAR.sellectedObj;
 
-                    worker.goAndCreateBuilding(endPos, (peaseant) => {
-                        const canPut = peaseant.buildingPut.canPut();
+                    worker.pathMove.move(endPos, (pathMove, peaseant) => {
+                        if (this.game.VAR.settings.gold >= peaseant.buildingPut.action.goldCost && this.game.VAR.settings.wood >= peaseant.buildingPut.action.woodCost) {
 
-                        if (canPut) {
-                            peaseant.used = false;
-                            peaseant.unSelectedBorder();
-                            peaseant.buildingPut.building(tile, peaseant);
+                            peaseant.dir = `idle${peaseant.dir.slice(4)}`;
+                            pathMove.nextTile.type = 'empty';
+
+                            if (this.game.VAR.sellectedObj && peaseant.objID === this.game.VAR.sellectedObj.objID) {
+                                peaseant.buildingPut.hide();
+                                this.game.VAR.hudLeft.infoBox.hide();
+                                this.game.VAR.hudLeft.actionBox.hide();
+                            }
+
+                            const canPut = peaseant.buildingPut.canPut();
+                            if (canPut) {
+                                peaseant.used = false;
+                                peaseant.unSelectedBorder();
+                                peaseant.buildingPut.building(tile, peaseant);
+                            }
+                        } else {
+                            this.game.VAR.textError.display('resources');
                         }
                     });
                 }

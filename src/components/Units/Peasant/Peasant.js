@@ -27,9 +27,6 @@ class Peasant extends Units {
         this.hitPointsMax = 30;
         this.currentHp = this.hitPointsMax;
 
-
-
-
         this.info = {
             dmg: this.dmg,
             armor: this.armor,
@@ -132,6 +129,7 @@ class Peasant extends Units {
 
     onActionBuild = (action) => {
         if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
+
             this.buildingPut.dir = action.key;
             this.buildingPut.used = true;
             this.buildingPut.action = action;
@@ -139,49 +137,41 @@ class Peasant extends Units {
 
             this.game.VAR.hudLeft.cancelBox.used = true;
             this.game.VAR.hudLeft.actionBox.hide();
-
-            // this.game.VAR.settings.gold -= action.goldCost;
-            // this.game.VAR.settings.wood -= action.woodCost;
-            // this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
-            // this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
-            // this.game.VAR.hudLeft.trainIcon.animations.playOnce({ key: action.key });
-            // this.info.inProgress = true;
-            // this.info.inProgressTime = action.time;
-            // this.AssetManager.play('S_click');
-            // this.doInTime(action.time, () => {
-            //     this.info.inProgress = false;
-            //     this.game.VAR.hudLeft.showActions(this.info.actions);
-            //     this.game.VAR.hudLeft.showDescription(this.info.descriptios);
-            // const building = new action.create.class(this.game, {
-            //     key: action.create.key,
-            //     x: -100,
-            //     y: -100,
-            //     buildingState: 'putting'
-            // });
-            //     unit.AssetManager.play(unit.sounds.created[0]);
-            //     this.game.VAR.settings.people.push(unit)
-            //     this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
-            //     this.game.sortByIndex();
-            // })
         } else {
             this.AssetManager.play('S_click');
-            this.game.VAR.textError.display('resources')
+            this.game.VAR.textError.display('resources');
         }
     }
 
-    extendsMove(nextTile, nextStep, startPos) {
-        // nextTile 4 === kopalnia
+    extendsMove(nextTile, currentTile, nextStep, startPos) {
+        if (nextTile.type === 'town' && this.cargo === 'empty') {
+            console.log('town 1');
+            return 'restart';
+        }
+        if (currentTile.type === 'town' && this.cargo === 'empty') {
+            console.log('town 2');
+            return 'restart';
+        }
+        if (nextTile.type === 'gold' && this.cargo === 'gold') {
+            console.log('gold 1');
+            return 'restart';
+        }
+        if (currentTile.type === 'gold' && this.cargo === 'gold') {
+            console.log('gold 2');
+            return 'restart';
+        }
+
         if (nextTile.type === 'gold' && this.cargo === 'empty' && !this.inBuilding) {
             this.inMine(nextStep, startPos);
-            return true;
+            return 'stop';
         }
         else if (nextTile.type === 'town' && (this.cargo === 'gold' || this.cargo === 'wood') && !this.inBuilding) {
             this.inTown(nextStep, startPos);
-            return true;
+            return 'stop';
         }
         else if (nextTile.type === 'forest' && !this.inBuilding) {
             this.inForest(nextStep, startPos);
-            return true;
+            return 'stop';
         }
     }
 
@@ -189,10 +179,6 @@ class Peasant extends Units {
         if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
             this.game.VAR.hudLeft.infoBox.hide();
             this.game.VAR.hudLeft.actionBox.hide();
-            // this.game.VAR.hudLeft.hideDescription();
-            // this.game.VAR.hudLeft.infoName.used = false;
-            // this.game.VAR.hudLeft.infoIcon.used = false;
-            // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
             this.buildingPut.hide();
         }
 
@@ -203,7 +189,7 @@ class Peasant extends Units {
 
         this.x = startPos.x;
         this.y = startPos.y;
-        this.restartPosition();
+        this.pathMove.restartPosition();
 
         this.game.VAR.goldMine.addUserToMine();
 
@@ -218,11 +204,6 @@ class Peasant extends Units {
         if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
             this.game.VAR.hudLeft.infoBox.hide();
             this.game.VAR.hudLeft.actionBox.hide();
-            // this.game.VAR.hudLeft.hideActions();
-            // this.game.VAR.hudLeft.hideDescription();
-            // this.game.VAR.hudLeft.infoName.used = false;
-            // this.game.VAR.hudLeft.infoIcon.used = false;
-            // this.game.VAR.hudLeft.descriptionsInfoBorder.used = false;
             this.buildingPut.hide();
         }
 
@@ -233,7 +214,7 @@ class Peasant extends Units {
 
         this.x = startPos.x;
         this.y = startPos.y;
-        this.restartPosition();
+        this.pathMove.restartPosition();
 
         if (this.cargo === 'gold') {
             this.game.VAR.settings.gold += this.game.VAR.settings.goldUpdateBy;
@@ -250,30 +231,17 @@ class Peasant extends Units {
             } else if (this.cargo === 'wood') {
                 this.cargo = 'empty';
                 this.leaveBuilding(this.inForestPos, 1, startPos, 0, 800);
-                // endPos = this.inForestPos;
             }
         })
     }
 
     inForest(nextStep, startPos) {
-        // this.game.VAR.map.reRenderTile(startPos.row, startPos.column, 2);
+
         this.inForestPos = { x: this.x, y: this.y, column: nextStep.y, row: nextStep.x };
 
         if (this.cargo === 'wood' || this.cargo === 'gold') {
-            // let endPos = this.game.VAR.map.getTileBySprite(this.game.VAR.town);
-            // const currentPos = this.game.VAR.map.getTileBySprite(this);
-
-            // if (endPos.column >= currentPos.column) {
-            //     endPos = { ...endPos, column: endPos.column - 1 }
-            // }
-            // if (endPos.row > currentPos.row) {
-            //     endPos = { ...endPos, row: endPos.row - 1 }
-            // }
-            // this.move(endPos);
-            // this.showBorder();
             this.goToBuilding(this.game.VAR.town, 2);
         } else {
-
             if (this.chopSound) {
                 this.chopSound.destroy();
             }
@@ -294,94 +262,6 @@ class Peasant extends Units {
         }
     }
 
-    goAndCreateBuilding(_endPos, callback) {
-        let endPos = _endPos;
-        this.startPos = this.game.VAR.map.getTileBySprite(this);
-
-        this.myCurrentPath = this.game.easystar.findPath(this.startPos.row, this.startPos.column, endPos.row, endPos.column, (newPath) => {
-            this.path = newPath;
-            if (newPath === null) {
-                console.log("Path was not found.");
-            } else {
-                if (newPath.length > 0) {
-
-                    newPath.shift();
-                    this.nextStep = newPath.shift();
-                    // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
-
-                    this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
-                    this.currentTile = this.game.VAR.map.getTile(this.startPos.row, this.startPos.column);
-
-                    this.getAnimationInMove(this.startPos, this.nextStep);
-
-                    if (this.nextTile.type === 'town' && this.cargo === 'empty') {
-                        this.nextTile.type = 'town';
-                        return this.goAndCreateBuilding(endPos, callback);
-                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                    }
-                    if (this.currentTile.type === 'town' && this.cargo === 'empty') {
-                        this.currentTile.type = 'town';
-                        return this.goAndCreateBuilding(endPos, callback);
-                    }
-
-                    if (this.nextTile.type === 'gold' && this.cargo === 'gold') {
-                        this.nextTile.type = 'gold';
-                        return this.goAndCreateBuilding(endPos, callback);
-                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                    }
-                    if (this.currentTile.type === 'gold' && this.cargo === 'gold') {
-                        this.currentTile.type = 'gold';
-                        return this.goAndCreateBuilding(endPos, callback);
-                    }
-
-                    this.currentTile.type = 'solid';
-
-                    if (this.nextTile.type === 'solid') {
-                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
-                        this.dir = `idle${this.dir.slice(4)}`;
-                        if (newPath.length === 0) {
-                            this.currentTile.type = 'solid';
-                            this.nextTile = null;
-                            this.dir = `idle${this.dir.slice(4)}`;
-
-                            return false;
-                        }
-                        return this.goAndCreateBuilding(endPos, callback);
-                    }
-
-                    this.nextTile.type = 'solid';
-
-                    this.moveToPoint({
-                        x: this.nextStep.x * 32, y: this.nextStep.y * 32 - this.height + 32, speed: this.speed, callback: () => {
-                            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
-                            this.currentTile.type = 'empty';
-                            if (newPath.length > 0) {
-                                this.goAndCreateBuilding(_endPos, callback);
-                            } else {
-                                this.dir = `idle${this.dir.slice(4)}`;
-                                this.nextTile.type = 'empty';
-                                if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
-                                    this.game.VAR.hudLeft.infoBox.hide();
-                                    this.game.VAR.hudLeft.actionBox.hide();
-                                }
-                                // this.used = false;
-                                // this.unSelectedBorder();
-                                // this.unSelectedBorder();
-                                return callback(this);
-                                // this.nextTile.type = 'solid';
-                                // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
-                                // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
-                                // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
-
-                            }
-                        }
-                    })
-                }
-            }
-        })
-        this.game.easystar.calculate();
-    }
-
     treeSound(index) {
         if (!this.AssetManager.getSrc(`S_chopTree${index}`)) {
             index = 1;
@@ -396,12 +276,14 @@ class Peasant extends Units {
     }
 
     goToBuilding(building, index = 1) {
-        // this.restartPosition();
+        let endPos = null;
         if (building.update) {
-            this.move(null, building, index);
+            endPos = this.pathMove.findShortPathToBuilding(building, index);
         } else {
-            this.move(building);
+            endPos = building;
         }
+
+        this.pathMove.move(endPos);
     }
 
     leaveBuilding(building, index = 1, startPos, firstTime, nextTime) {
