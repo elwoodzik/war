@@ -11,7 +11,7 @@ class Units extends Sprite {
         this.nextPosition = null;
         this.speed = 65;
 
-        this.game.VAR.map.addToFog(this.x, this.y, 32);
+        // this.game.VAR.map.addToFog(this.x, this.y, 32);
 
 
 

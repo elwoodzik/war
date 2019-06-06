@@ -11,8 +11,9 @@ class Units extends Sprite {
         this.currentPosition = null;
         this.nextPosition = null;
         this.speed = 65;
+        this.isAttacking = false;
 
-        this.game.VAR.map.addToFog(this.x, this.y, 32);
+        // this.game.VAR.map.addToFog(this.x, this.y, 32);
 
         this.pathMove = new PathMove(this.game, {
             sprite: this,
@@ -52,9 +53,11 @@ class Units extends Sprite {
         if (this.type === 'worker') {
             this.image = this.AssetManager.get('chop');
         }
+        this.isAttacking = true;
         this.dir = `atck${this.dir.slice(4)}`;
         this.animations.play({
-            key: this.dir
+            key: this.dir,
+            callback: this.onHitEnemy.bind(this, enemy)
         })
 
         this.width = this.states[this.state].frames[this.current_f].fW;
@@ -63,10 +66,20 @@ class Units extends Sprite {
         this.currentTile.type = 'empty';
         this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
         this.currentTile.type = 'solid';
+    }
 
-        console.log(this.dir)
+    onHitEnemy(enemy) {
+        const dmg = this.game.rand(this.dmg[0], this.dmg[1]);
 
-
+        enemy.currentHp -= dmg - enemy.armor;
+        console.log(dmg - enemy.armor, enemy.currentHp)
+        if (enemy.currentHp <= 0) {
+            enemy.used = false;
+            if (this.type === 'worker') {
+                this.image = this.AssetManager.get('peasant');
+            }
+            this.dir = `idle${this.dir.slice(4)}`;
+        }
     }
 
 

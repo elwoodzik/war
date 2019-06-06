@@ -249,9 +249,10 @@ class Peasant extends Units {
             this.inWooding = true;
             this.getAnimationInMove(startPos, nextStep);
 
-            this.y = this.y - this.height + 32;
+
             this.currentTile.type = 'empty';
             this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+            this.y = this.currentTile.y - this.height + 32;
             this.currentTile.type = 'solid';
 
             this.doInTime(this.game.VAR.settings.timeInForest, () => {

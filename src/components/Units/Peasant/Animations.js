@@ -212,10 +212,10 @@ class Animations {
         sprite.animations.add({
             key: 'move_gold_right',
             frames: [
-                { sx: (24 + 35 * 2), sy: 47 + 36 * 17, fW: 32, fH: 38, },
-                { sx: (24 + 35 * 2), sy: 40 + 36 * 16, fW: 32, fH: 38, },
-                { sx: (24 + 35 * 2), sy: 33 + 36 * 15, fW: 32, fH: 38, },
-                { sx: (24 + 35 * 2), sy: 26 + 36 * 14, fW: 32, fH: 38, },
+                { sx: (24 + 35 * 2), sy: 47 + 36 * 17, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 40 + 36 * 16, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 33 + 36 * 15, fW: 32, fH: 32, },
+                { sx: (24 + 35 * 2), sy: 26 + 36 * 14, fW: 32, fH: 32, },
             ]
         });
 
@@ -540,7 +540,7 @@ class Animations {
                 { sx: 6, sy: 51 + 38 * 3, fW: 32, fH: 42, },
                 { sx: 5, sy: 75 + 38 * 4, fW: 32, fH: 42, },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -552,7 +552,7 @@ class Animations {
                 { sx: 6 + 36 * 1, sy: 51 + 38 * 3, fW: 32, fH: 42, },
                 { sx: 5 + 36 * 1, sy: 75 + 38 * 4, fW: 32, fH: 42, },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -564,7 +564,7 @@ class Animations {
                 { sx: 12 + 36 * 2, sy: 51 + 38 * 3, fW: 40, fH: 42, },
                 { sx: 11 + 36 * 2, sy: 75 + 38 * 4, fW: 40, fH: 42, },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -576,7 +576,7 @@ class Animations {
                 { sx: 13 + 36 * 3, sy: 51 + 38 * 3, fW: 38, fH: 44, },
                 { sx: 12 + 36 * 3, sy: 75 + 38 * 4, fW: 36, fH: 44, },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -588,7 +588,7 @@ class Animations {
                 { sx: 16 + 36 * 4, sy: 51 + 38 * 3, fW: 38, fH: 44, },
                 { sx: 15 + 36 * 4, sy: 75 + 38 * 4, fW: 36, fH: 44, },
             ],
-            speed: 9
+            speed: 12
         });
         sprite.animations.add({
             key: 'atck_left_down',
@@ -599,7 +599,7 @@ class Animations {
                 { sx: 13 + 36 * 3, sy: 51 + 38 * 3, fW: 38, fH: 44, flip: true },
                 { sx: 12 + 36 * 3, sy: 75 + 38 * 4, fW: 36, fH: 44, flip: true },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -611,7 +611,7 @@ class Animations {
                 { sx: 4 + 36 * 2, sy: 57 + 38 * 3, fW: 40, fH: 34, flip: true },
                 { sx: 2 + 36 * 2, sy: 81 + 38 * 4, fW: 40, fH: 34, flip: true },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.add({
@@ -623,7 +623,7 @@ class Animations {
                 { sx: 6 + 36 * 1, sy: 51 + 38 * 3, fW: 32, fH: 42, flip: true },
                 { sx: 5 + 36 * 1, sy: 75 + 38 * 4, fW: 32, fH: 42, flip: true },
             ],
-            speed: 9
+            speed: 12
         });
 
         sprite.animations.play({ key: sprite.dir, delay: 16 })

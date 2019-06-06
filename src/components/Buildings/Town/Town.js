@@ -38,7 +38,7 @@ class Town extends Buildings {
         }
         new Animations(this);
         this.sounds = new Sounds();
-        this.unWalkable(5, 'town', 30);
+        this.unWalkable(5, 'town');
     }
 
     update(dt) {

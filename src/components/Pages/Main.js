@@ -33,11 +33,11 @@ class Main {
             this.game.VAR.map = map;
 
             this.game.VAR.settings = {
-                gold: 1500,
+                gold: 200000, //1500,
                 goldUpdateBy: 100,
-                wood: 500,
+                wood: 500000,
                 woodUpdateBy: 100,
-                homeMax: 4,
+                homeMax: 400,
                 people: [],
                 requirements: {
                     lumbermill: false,
@@ -45,7 +45,7 @@ class Main {
                 buildSpeed: 44, //default 1
                 timeInMine: 4500,
                 timeInTown: 2500,
-                timeInForest: 15000
+                timeInForest: 1000//15000
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -273,9 +273,12 @@ class Main {
                                 peaseant.used = false;
                                 peaseant.unSelectedBorder();
                                 peaseant.buildingPut.building(tile, peaseant);
+                            } else {
+                                pathMove.nextTile.type = 'solid';
                             }
                         } else {
                             this.game.VAR.textError.display('resources');
+
                         }
                     });
                 }
