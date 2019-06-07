@@ -104,8 +104,8 @@ class Main {
             // }));
             const grunt = new Grunt(this.game, {
                 key: 'warrior',
-                x: 32 * 9,
-                y: 32 * 12
+                x: 32 * 12,
+                y: 32 * 8
             });
 
             // this.game.VAR.settings.people.push(new Archer(this.game, {
@@ -165,11 +165,31 @@ class Main {
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
             // grunt.move(null, this.game.VAR.town)
             // grunt.move({ row: 5, column: 25 })
-            for (let i = 0; i < 15; i++) {
+            for (let i = 0; i < 5; i++) {
                 const pes = new Peasant(this.game, {
                     key: 'peasant',
-                    x: 32 * (i + 3),
-                    y: 32 * 19
+                    x: 32 * (i + 6),
+                    y: 32 * 13
+                });
+                // pes.move(null, this.game.VAR.goldMine, 1);
+                this.game.VAR.settings.people.push(pes);
+
+            }
+            for (let i = 0; i < 5; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 6),
+                    y: 32 * 14
+                });
+                // pes.move(null, this.game.VAR.goldMine, 1);
+                this.game.VAR.settings.people.push(pes);
+
+            }
+            for (let i = 0; i < 5; i++) {
+                const pes = new Peasant(this.game, {
+                    key: 'peasant',
+                    x: 32 * (i + 6),
+                    y: 32 * 15
                 });
                 // pes.move(null, this.game.VAR.goldMine, 1);
                 this.game.VAR.settings.people.push(pes);

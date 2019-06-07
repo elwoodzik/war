@@ -1,4 +1,5 @@
 import Sprite from "../../../../lib/Sprite";
+import PathMove from "../../../../lib/PathMove";
 
 class Units extends Sprite {
     constructor(game, options) {
@@ -6,26 +7,19 @@ class Units extends Sprite {
         this.game = game;
 
         this.objectType = 'unit';
+        this.speed = 35;
+        this.attackTarget = null;
 
-        this.currentPosition = null;
-        this.nextPosition = null;
-        this.speed = 65;
+        this.pathMove = new PathMove(this.game, {
+            sprite: this,
+            spriteAnimation: this.getAnimationInMove,
+            extendsMove: this.extendsMove
+        })
 
-        // this.game.VAR.map.addToFog(this.x, this.y, 32);
-
-
-
-        // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 500);
     }
 
     onClick() {
-        // if (!this.buildingPut.used) {
-        //     this.selectedBorder();
-        //     this.game.VAR.hudLeft.set(this.info);
-        //     this.game.VAR.hudLeft.cancelBox.used = false;
-        //     this.game.VAR.hudLeft.creationBox.show();
-        //     this.getRandomSelectedSound();
-        // }
+        return false;
     }
 
     onRightClick() {
@@ -58,11 +52,6 @@ class Units extends Sprite {
             this.game.VAR.sellectedObj = this;
             this.game.VAR.sellectedBorder.show();
         }
-
-        // this.game.VAR.sellectedBorder.x = this.x; //+ this.width / 4
-        // this.game.VAR.sellectedBorder.y = this.y; //+ this.height / 2
-        // this.game.VAR.sellectedBorder.width = this.width;
-        // this.game.VAR.sellectedBorder.height = this.height;
     }
 
     unSelectedBorder() {
@@ -95,23 +84,7 @@ class Units extends Sprite {
     }
 
     draw(dt) {
-
-        // this.context.globalCompositeOperation = 'source-over';
-
         super.draw(dt);
-
-
-        // this.context.globalCompositeOperation = 'source-atop';
-
-        // if (this.path) {
-        //     this.path.forEach((path) => {
-        //         this.context.beginPath();
-        //         this.context.strokeStyle = 'red';
-        //         this.context.rect((path.x * 32) - this.game.camera.xScroll, (path.y * 32) - this.game.camera.yScroll, 32, 32)
-        //         this.context.stroke()
-        //         this.context.closePath();
-        //     })
-        // }
     }
 
 
@@ -122,152 +95,6 @@ class Units extends Sprite {
         super.update(dt);
         this.updateBorder();
 
-    }
-
-    move(_endPos, building, index = 1) {
-        let endPos = _endPos;
-        if (!endPos) {
-            if (!building) {
-                return false;
-            } else {
-                endPos = this.findShortPathToBuilding(building, index);
-            }
-        }
-        // this.game.easystar.setGrid(this.game.VAR.pathfinder.paths);
-        this.startPos = this.game.VAR.map.getTileBySprite(this);
-
-        this.myCurrentPath = this.game.easystar.findPath(this.startPos.row, this.startPos.column, endPos.row, endPos.column, (newPath) => {
-            this.path = newPath;
-            if (newPath === null) {
-                console.log("Path was not found.");
-            } else {
-                if (newPath.length > 0) {
-
-                    newPath.shift();
-                    this.nextStep = newPath.shift();
-                    // this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 20);
-
-                    this.nextTile = this.game.VAR.map.getTile(this.nextStep.x, this.nextStep.y);
-                    this.currentTile = this.game.VAR.map.getTile(this.startPos.row, this.startPos.column);
-
-                    this.getAnimationInMove(this.startPos, this.nextStep);
-
-                    if (this.nextTile.type === 'town') {
-                        this.nextTile.type = 'town';
-                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
-                        this.dir = `idle${this.dir.slice(4)}`;
-                        return
-                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                    }
-                    if (this.currentTile.type === 'town') {
-                        this.currentTile.type = 'town';
-                        return this.move(endPos);
-                    }
-                    if (this.nextTile.type === 'gold') {
-                        this.nextTile.type = 'gold';
-                        return this.move(endPos);
-                        // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                    }
-                    if (this.currentTile.type === 'gold') {
-                        this.currentTile.type = 'gold';
-                        return this.move(endPos);
-                    }
-
-                    this.currentTile.type = 'solid';
-
-
-                    console.log(this.nextTile.type)
-                    if (this.nextTile.type === 'solid') {
-                        this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 200);
-                        this.dir = `idle${this.dir.slice(4)}`;
-
-                        if (newPath.length === 0) {
-                            this.currentTile.type = 'solid';
-                            this.nextTile = null;
-                            this.dir = `idle${this.dir.slice(4)}`;
-
-                            return false;
-                        }
-                        return this.move(endPos);
-                    }
-
-
-                    if (this.extendsMove && typeof this.extendsMove === 'function') {
-                        const bool = this.extendsMove(this.nextTile, this.nextStep, this.startPos);
-                        if (bool) {
-                            return false;
-                        }
-                    }
-
-                    // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
-                    this.nextTile.type = 'solid';
-                    this.nextTile.enemy = true;
-                    // this.currentPosition = this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                    // this.nextPosition = { x: this.nextStep.x * 32, y: this.nextStep.y * 32 } //this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
-                    // console.log(this.startPos)
-
-
-                    this.moveToPoint({
-                        x: this.nextStep.x * 32, y: this.nextStep.y * 32 - this.height + 32, speed: this.speed, callback: () => {
-                            // console.log(this.myCurrentPath)
-                            // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-                            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
-                            this.currentTile.type = 'empty';
-                            this.currentTile.enemy = false;
-                            if (newPath.length > 0) {
-                                this.move(_endPos ? endPos : null, building, index);
-                            } else {
-                                this.nextTile.type = 'solid';
-
-                                this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 500);
-                                // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 3);
-                                // this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 20);
-                                this.dir = `idle${this.dir.slice(4)}`;
-                            }
-                        }
-                    })
-                }
-            }
-        })
-        this.game.easystar.calculate();
-    }
-
-    restartPosition() {
-        if (this.startPos) {
-            // this.game.VAR.pathfinder.reRenderTile(this.startPos.row, this.startPos.column, 1);
-            this.game.easystar.setAdditionalPointCost(this.startPos.row, this.startPos.column, 1);
-            if (this.currentTile && this.currentTile.type === 'solid') {
-                this.currentTile.type = 'empty';
-            }
-        }
-        if (this.nextStep && !this.inBuilding) {
-            // this.game.VAR.pathfinder.reRenderTile(this.nextStep.x, this.nextStep.y, 1);
-            this.game.easystar.setAdditionalPointCost(this.nextStep.x, this.nextStep.y, 1);
-            if (this.nextTile && this.nextTile.type === 'solid') {
-                this.nextTile.type = 'empty';
-            }
-        }
-    }
-
-    findShortPathToBuilding(building, index = 1) {
-        let endPos = this.game.VAR.map.getTileBySprite(building);
-        const currentPos = this.game.VAR.map.getTileBySprite(this);
-        if (endPos.column === currentPos.column) {
-            endPos = { ...endPos, column: endPos.column }
-        } else if (endPos.column > currentPos.column) {
-            endPos = { ...endPos, column: endPos.column - index }
-        } else if (endPos.column < currentPos.column) {
-            endPos = { ...endPos, column: endPos.column + 1 }
-        }
-
-        if (endPos.row === currentPos.row) {
-            endPos = { ...endPos, row: endPos.row }
-        } else if (endPos.row > currentPos.row) {
-            endPos = { ...endPos, row: endPos.row - index }
-        } else if (endPos.row < currentPos.row) {
-            endPos = { ...endPos, row: endPos.row + 1 }
-        }
-        return endPos;
     }
 
     getAnimationInMove(startPos, nextStep) {

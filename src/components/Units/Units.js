@@ -63,9 +63,9 @@ class Units extends Sprite {
         this.width = this.states[this.state].frames[this.current_f].fW;
         this.height = this.states[this.state].frames[this.current_f].fH;
         this.y = this.y - this.height + 32;
-        this.currentTile.type = 'empty';
-        this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-        this.currentTile.type = 'solid';
+        this.pathMove.currentTile.type = 'empty';
+        this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+        this.pathMove.currentTile.type = 'solid';
     }
 
     onHitEnemy(enemy) {
@@ -75,10 +75,24 @@ class Units extends Sprite {
         console.log(dmg - enemy.armor, enemy.currentHp)
         if (enemy.currentHp <= 0) {
             enemy.used = false;
+
             if (this.type === 'worker') {
                 this.image = this.AssetManager.get('peasant');
             }
             this.dir = `idle${this.dir.slice(4)}`;
+            this.current_f = 0;
+            this.animations.play({
+                key: this.dir,
+            })
+
+            this.width = this.states[this.state].frames[this.current_f].fW;
+            this.height = this.states[this.state].frames[this.current_f].fH;
+
+            this.y = this.pathMove.currentTile.y - this.height + 32;
+            this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+            // 
+            this.pathMove.currentTile.type = 'solid';
+
         }
     }
 
