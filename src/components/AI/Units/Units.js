@@ -18,19 +18,49 @@ class Units extends Sprite {
 
     }
 
+    draw(dt) {
+        super.draw(dt);
+    }
+
+
+    update(dt) {
+        this.animations.play({
+            key: this.dir
+        })
+        // if (!this.attackTarget) {
+        //     this.inRange.rectCircleColliding(this.pathMove.followEnemy)
+        // }
+        super.update(dt);
+
+        this.updateBorder();
+
+    }
+
+
     onClick() {
         return false;
     }
 
     onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
-            this.game.VAR.sellectedObj.pathMove.restartPosition();
-            const endPos = this.game.VAR.map.getTileBySprite(this);
-            this.game.VAR.sellectedObj.pathMove.move(endPos, (path, player) => {
-                player.attackEnemy(this);
-            });
+            // this.game.VAR.sellectedObj.pathMove.restartPosition();
+            // const endPos = this.game.VAR.map.getTileBySprite(this);
+            // this.game.easystar.stopAvoidingAdditionalPoint(endPos.row, endPos.column);
+            this.game.VAR.sellectedObj.pathMove.followEnemy(this);
+            // this.game.easystar.avoidAdditionalPoint(endPos.row, endPos.column);
+            // this.game.VAR.sellectedObj.pathMove.move(null, (path, player) => {
+
+            // }, this);
         }
     }
+
+    // this.pathMove.move(null, (path, player) => {
+    //     console.log('atakuj')
+    //     console.log(enemy.pathMove.isMoving)
+    //     if (enemy.pathMove.isMoving) {
+    //         this.followEnemy(enemy);
+    //     }
+    // }, enemy);
 
 
     getRandomSelectedSound() {
@@ -83,19 +113,7 @@ class Units extends Sprite {
         }
     }
 
-    draw(dt) {
-        super.draw(dt);
-    }
 
-
-    update(dt) {
-        this.animations.play({
-            key: this.dir
-        })
-        super.update(dt);
-        this.updateBorder();
-
-    }
 
     getAnimationInMove(startPos, nextStep) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };

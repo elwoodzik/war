@@ -15,7 +15,7 @@ import Blacksmith from '../Buildings/Blacksmith/Blacksmith';
 // import BuildingPut from '../Hud/BuildingPut';
 import HudLeft from '../Hud/HudLeft/HudLeft';
 import Warrior from '../Units/Warrior/Warrior';
-import Grunt from '../AI/Units/Warrior/Warrior';
+import Grunt from '../AI/Units/Peasant/Peasant';
 import Archer from '../Units/Archer/Archer';
 
 
@@ -45,7 +45,8 @@ class Main {
                 buildSpeed: 44, //default 1
                 timeInMine: 4500,
                 timeInTown: 2500,
-                timeInForest: 1000//15000
+                timeInForest: 1000,//15000
+                unitsSpeed: 1.5
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -103,7 +104,7 @@ class Main {
             //     y: 32 * 12
             // }));
             const grunt = new Grunt(this.game, {
-                key: 'warrior',
+                key: 'peasant',
                 x: 32 * 12,
                 y: 32 * 8
             });
@@ -171,7 +172,7 @@ class Main {
                     x: 32 * (i + 6),
                     y: 32 * 13
                 });
-                // pes.move(null, this.game.VAR.goldMine, 1);
+                // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
                 this.game.VAR.settings.people.push(pes);
 
             }
@@ -181,7 +182,7 @@ class Main {
                     x: 32 * (i + 6),
                     y: 32 * 14
                 });
-                // pes.move(null, this.game.VAR.goldMine, 1);
+                // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
                 this.game.VAR.settings.people.push(pes);
 
             }
@@ -191,7 +192,7 @@ class Main {
                     x: 32 * (i + 6),
                     y: 32 * 15
                 });
-                // pes.move(null, this.game.VAR.goldMine, 1);
+                // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
                 this.game.VAR.settings.people.push(pes);
 
             }
@@ -253,7 +254,8 @@ class Main {
                 }
 
                 this.game.VAR.sellectedObj.getRandomMoveSound();
-                this.game.VAR.sellectedObj.pathMove.restartPosition();
+                this.game.VAR.sellectedObj.isAttacking = false;
+                // this.game.VAR.sellectedObj.pathMove.restartPosition();
                 this.game.VAR.sellectedObj.pathMove.move(endPos);
             }
         }, false)

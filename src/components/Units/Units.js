@@ -34,67 +34,83 @@ class Units extends Sprite {
 
     onRightClick() {
         return false;
-        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.objID !== this.objID) {
-            const endPos = this.game.VAR.map.getTileBySprite(this);
+        // if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.objID !== this.objID) {
+        //     const endPos = this.game.VAR.map.getTileBySprite(this);
 
-            if (this.game.VAR.sellectedObj.inWooding) {
-                this.game.VAR.sellectedObj.doInTimeStop();
-                this.game.VAR.sellectedObj.inWooding = false;
-            }
+        //     if (this.game.VAR.sellectedObj.inWooding) {
+        //         this.game.VAR.sellectedObj.doInTimeStop();
+        //         this.game.VAR.sellectedObj.inWooding = false;
+        //     }
 
-            this.game.VAR.sellectedObj.getRandomMoveSound();
-            this.game.VAR.sellectedObj.pathMove.restartPosition();
-            this.game.VAR.sellectedObj.pathMove.move(endPos);
-        }
+        //     this.game.VAR.sellectedObj.getRandomMoveSound();
+        //     this.game.VAR.sellectedObj.pathMove.restartPosition();
+        //     this.game.VAR.sellectedObj.pathMove.move(endPos);
+        // }
     }
 
 
-    attackEnemy(enemy) {
-        if (this.type === 'worker') {
-            this.image = this.AssetManager.get('chop');
-        }
-        this.isAttacking = true;
-        this.dir = `atck${this.dir.slice(4)}`;
-        this.animations.play({
-            key: this.dir,
-            callback: this.onHitEnemy.bind(this, enemy)
-        })
+    // followEnemy = (enemy) => {
+    //     // console.log('ffff', enemy)
+    //     // this.attackTarget = true;
 
-        this.width = this.states[this.state].frames[this.current_f].fW;
-        this.height = this.states[this.state].frames[this.current_f].fH;
-        this.y = this.y - this.height + 32;
-        this.pathMove.currentTile.type = 'empty';
-        this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-        this.pathMove.currentTile.type = 'solid';
-    }
+    //     this.pathMove.move(null, (path, player) => {
+    //         // console.log(enemy.pathMove.isMoving)
+    //         if (enemy.pathMove.isMoving) {
+    //             this.followEnemy(enemy);
+    //         } else {
+    //             this.attackEnemy(enemy)
+    //         }
+    //     }, enemy);
+    // }
 
-    onHitEnemy(enemy) {
-        const dmg = this.game.rand(this.dmg[0], this.dmg[1]);
+    // attackEnemy(enemy) {
+    //     if (this.type === 'worker') {
+    //         this.image = this.AssetManager.get('chop');
+    //     }
+    //     this.isAttacking = true;
+    //     this.dir = `atck${this.dir.slice(4)}`;
+    //     this.animations.play({
+    //         key: this.dir,
+    //         callback: this.onHitEnemy.bind(this, enemy)
+    //     })
 
-        enemy.currentHp -= dmg - enemy.armor;
-        console.log(dmg - enemy.armor, enemy.currentHp)
-        if (enemy.currentHp <= 0) {
-            enemy.used = false;
+    //     this.width = this.states[this.state].frames[this.current_f].fW;
+    //     this.height = this.states[this.state].frames[this.current_f].fH;
+    //     this.y = this.y - this.height + 32;
+    //     this.pathMove.currentTile.type = 'empty';
+    //     this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+    //     this.pathMove.currentTile.type = 'solid';
+    // }
 
-            if (this.type === 'worker') {
-                this.image = this.AssetManager.get('peasant');
-            }
-            this.dir = `idle${this.dir.slice(4)}`;
-            this.current_f = 0;
-            this.animations.play({
-                key: this.dir,
-            })
+    // onHitEnemy(enemy) {
+    //     const dmg = this.game.rand(this.dmg[0], this.dmg[1]);
 
-            this.width = this.states[this.state].frames[this.current_f].fW;
-            this.height = this.states[this.state].frames[this.current_f].fH;
+    //     enemy.currentHp -= dmg - enemy.armor;
+    //     if (enemy.currentHp <= 0) {
+    //         enemy.used = false;
+    //         this.current_f = 0;
+    //         if (this.type === 'worker') {
+    //             this.image = this.AssetManager.get('peasant');
+    //         }
+    //         this.dir = `idle${this.dir.slice(4)}`;
 
-            this.y = this.pathMove.currentTile.y - this.height + 32;
-            this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-            // 
-            this.pathMove.currentTile.type = 'solid';
+    //         this.animations.play({
+    //             key: this.dir,
+    //         })
 
-        }
-    }
+    //         this.width = this.states[this.state].frames[this.current_f].fW;
+    //         this.height = this.states[this.state].frames[this.current_f].fH;
+
+    //         this.y = this.pathMove.currentTile.y - this.height + 32;
+    //         this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+    //         // 
+    //         this.pathMove.currentTile.type = 'solid';
+
+    //     }
+    //     else {
+    //         this.followEnemy(enemy);
+    //     }
+    // }
 
 
     getRandomSelectedSound() {

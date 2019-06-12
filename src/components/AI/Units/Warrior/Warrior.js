@@ -45,6 +45,7 @@ class Warrior extends Units {
             target: this.game.VAR.settings.people,
             isRender: true,
             zIndex: 2,
+            radius: 120
         })
 
         this.y = this.y - this.height + 32;
@@ -68,18 +69,27 @@ class Warrior extends Units {
         // }
     }
 
-    followEnemy = (enemy) => {
-        console.log('ffff', enemy)
-        this.attackTarget = true;
+    // followEnemy = (enemy) => {
+    //     // console.log('ffff', enemy)
+    //     this.attackTarget = true;
 
-        this.pathMove.move(null, (path, player) => {
-            console.log('atakuj')
-            console.log(enemy.pathMove.isMoving)
-            if (enemy.pathMove.isMoving) {
-                this.followEnemy(enemy);
-            }
-        }, enemy);
-    }
+    //     this.pathMove.move(null, (path, player) => {
+    //         // console.log(enemy.pathMove.isMoving)
+    //         if (this.pathMove.isMoving) {
+    //             this.followEnemy(enemy);
+    //         } else {
+    //             this.dir = `move_up`;
+
+    //             this.animations.play({
+    //                 key: this.dir,
+    //                 callback: (() => {
+    //                     console.log('zaatakowal')
+    //                     this.followEnemy(enemy);
+    //                 })
+    //             })
+    //         }
+    //     }, enemy);
+    // }
 
     extendsMove(nextTile, nextStep, startPos) {
         return false;

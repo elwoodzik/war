@@ -1,12 +1,12 @@
 import Units from "../Units";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
-import Farm from "../../Buildings/Farm/Farm";
-import Barracks from "../../Buildings/Barracks/Barracks";
-import LumberMill from "../../Buildings/LumberMill/LumberMill";
-import Blacksmith from "../../Buildings/Blacksmith/Blacksmith";
-import BuildingPut from "../../Hud/BuildingPut";
-import Tower from "../../Buildings/Tower/Tower";
+import Farm from "../../../Buildings/Farm/Farm";
+import Barracks from "../../../Buildings/Barracks/Barracks";
+import LumberMill from "../../../Buildings/LumberMill/LumberMill";
+import Blacksmith from "../../../Buildings/Blacksmith/Blacksmith";
+import BuildingPut from "../../../Hud/BuildingPut";
+import Tower from "../../../Buildings/Tower/Tower";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -24,7 +24,7 @@ class Peasant extends Units {
         this.armor = 0;
         this.speed = 60;
         this.range = 1;
-        this.hitPointsMax = 30;
+        this.hitPointsMax = 1030;
         this.currentHp = this.hitPointsMax;
 
         this.info = {
@@ -114,8 +114,21 @@ class Peasant extends Units {
 
         new Animations(this);
         this.sounds = new Sounds();
+
+        this.inRange = this.game.add.inRange({
+            element: this,
+            target: this.game.VAR.settings.people,
+            isRender: true,
+            zIndex: 2,
+            radius: 120,
+            diffX: -this.width / 2,
+
+        })
+
         this.y = this.y - this.height + 32;
         this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+        this.game.easystar.avoidAdditionalPoint(this.pathMove.currentTile.row, this.pathMove.currentTile.column);
+
         this.pathMove.currentTile.type = 'solid';
     }
 

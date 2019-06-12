@@ -22,9 +22,9 @@ class Peasant extends Units {
 
         this.dmg = [2, 9];
         this.armor = 0;
-        this.speed = 60;
+        this.speed = 60 * this.game.VAR.settings.unitsSpeed;
         this.range = 1;
-        this.hitPointsMax = 30;
+        this.hitPointsMax = 1130;
         this.currentHp = this.hitPointsMax;
 
         this.info = {
@@ -116,6 +116,11 @@ class Peasant extends Units {
         this.sounds = new Sounds();
         this.y = this.y - this.height + 32;
         this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+
+        // this.game.easystar.avoidAdditionalPoint(this.pathMove.currentTile.row, this.pathMove.currentTile.column);
+
+        // this.game.easystar.stopAvoidingAdditionalPoint(this.pathMove.currentTile.row, this.pathMove.currentTile.column);
+        this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 300);
         this.pathMove.currentTile.type = 'solid';
     }
 
@@ -183,13 +188,15 @@ class Peasant extends Units {
         }
 
         this.unSelectedBorder();
+        this.pathMove.currentTile.type = 'empty';
+        this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 0);
 
         this.inBuilding = true;
         this.isRender = false;
 
         this.x = startPos.x;
         this.y = startPos.y;
-        this.pathMove.restartPosition();
+
 
         this.game.VAR.goldMine.addUserToMine();
 
@@ -208,6 +215,8 @@ class Peasant extends Units {
         }
 
         this.unSelectedBorder();
+        this.pathMove.currentTile.type = 'empty';
+        this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 0);
 
         this.inBuilding = true;
         this.isRender = false;
@@ -293,9 +302,11 @@ class Peasant extends Units {
 
     leaveBuilding(building, index = 1, startPos, firstTime, nextTime) {
         this.doInTime(firstTime, () => {
-            if (this.game.VAR.map.getTile(startPos.row, startPos.column).type !== 'solid') {
+            if (this.game.VAR.map.getTile(this.pathMove.currentTile.row, this.pathMove.currentTile.column).type !== 'solid') {
                 this.isRender = true;
                 this.inBuilding = false;
+                this.pathMove.currentTile.type = 'solid';
+                this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 200);
 
                 this.goToBuilding(building, index);
             } else {
