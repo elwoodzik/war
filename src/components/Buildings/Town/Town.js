@@ -9,10 +9,15 @@ class Town extends Buildings {
         super(game, options);
 
         this.dir = 'complete';
+        this.armor = 0;
+        this.hitPointsMax = 2230;
+        this.currentHp = this.hitPointsMax;
 
         this.info = {
             imageKey: 'town',
             name: 'Ratusz',
+            hitPointsMax: this.hitPointsMax,
+            currentHp: this.currentHp,
             descriptios: [
                 'Produkuja:',
                 'Złoto: 100',

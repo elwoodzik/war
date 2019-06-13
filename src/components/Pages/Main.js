@@ -97,6 +97,11 @@ class Main {
                 x: 32 * 14,
                 y: 32 * 14
             }));
+            this.game.VAR.town = new Town(this.game, {
+                key: 'buildings',
+                x: 32 * 15,
+                y: 32 * 12
+            })
 
             // this.game.VAR.settings.people.push(new Warrior(this.game, {
             //     key: 'warrior',
@@ -106,22 +111,22 @@ class Main {
             const grunt = new Grunt(this.game, {
                 key: 'peasant',
                 x: 32 * 12,
-                y: 32 * 8
+                y: 32 * 11
             });
             new Grunt(this.game, {
                 key: 'peasant',
-                x: 32 * 13,
-                y: 32 * 8
+                x: 32 * 12,
+                y: 32 * 12
             });
             new Grunt(this.game, {
                 key: 'peasant',
-                x: 32 * 14,
-                y: 32 * 8
+                x: 32 * 12,
+                y: 32 * 13
             });
             new Grunt(this.game, {
                 key: 'peasant',
-                x: 32 * 15,
-                y: 32 * 8
+                x: 32 * 12,
+                y: 32 * 15
             });
 
             // this.game.VAR.settings.people.push(new Archer(this.game, {
@@ -130,12 +135,7 @@ class Main {
             //     y: 32 * 12
             // }));
 
-            this.game.VAR.town = new Town(this.game, {
-                key: 'buildings',
-                x: 32 * 15,
-                y: 32 * 12
-            })
-
+           
 
             // new Farm(this.game, {
             //     key: 'gold',

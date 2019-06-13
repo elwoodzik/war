@@ -24,7 +24,7 @@ class Peasant extends Units {
         this.armor = 0;
         this.speed = 60 * this.game.VAR.settings.unitsSpeed;
         this.range = 1;
-        this.hitPointsMax = 1030;
+        this.hitPointsMax = 1130;
         this.currentHp = this.hitPointsMax;
 
         this.info = {
@@ -117,12 +117,11 @@ class Peasant extends Units {
 
         this.inRange = this.game.add.inRange({
             element: this,
-            target: this.game.VAR.settings.people,
-            isRender: true,
+            target: this.game.VAR.town,
+            isRender: false,
             zIndex: 2,
             radius: 120,
             diffX: -this.width / 2,
-
         })
 
         this.y = this.y - this.height + 32;
@@ -156,11 +155,11 @@ class Peasant extends Units {
     }
 
     extendsMove(nextTile, currentTile, nextStep, startPos) {
-        if (nextTile.type === 'town' && this.cargo === 'empty') {
+        if (!this.attackTarget && nextTile.type === 'town' && this.cargo === 'empty') {
             console.log('town 1');
             return 'restart';
         }
-        if (currentTile.type === 'town' && this.cargo === 'empty') {
+        if (!this.attackTarget && currentTile.type === 'town' && this.cargo === 'empty') {
             console.log('town 2');
             return 'restart';
         }
