@@ -46,7 +46,7 @@ class Main {
                 timeInMine: 4500,
                 timeInTown: 2500,
                 timeInForest: 1000,//15000
-                unitsSpeed: 1.5
+                unitsSpeed: 1
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -106,6 +106,21 @@ class Main {
             const grunt = new Grunt(this.game, {
                 key: 'peasant',
                 x: 32 * 12,
+                y: 32 * 8
+            });
+            new Grunt(this.game, {
+                key: 'peasant',
+                x: 32 * 13,
+                y: 32 * 8
+            });
+            new Grunt(this.game, {
+                key: 'peasant',
+                x: 32 * 14,
+                y: 32 * 8
+            });
+            new Grunt(this.game, {
+                key: 'peasant',
+                x: 32 * 15,
                 y: 32 * 8
             });
 

@@ -22,7 +22,7 @@ class Peasant extends Units {
 
         this.dmg = [2, 9];
         this.armor = 0;
-        this.speed = 60;
+        this.speed = 60 * this.game.VAR.settings.unitsSpeed;
         this.range = 1;
         this.hitPointsMax = 1030;
         this.currentHp = this.hitPointsMax;
@@ -127,8 +127,7 @@ class Peasant extends Units {
 
         this.y = this.y - this.height + 32;
         this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-        this.game.easystar.avoidAdditionalPoint(this.pathMove.currentTile.row, this.pathMove.currentTile.column);
-
+        this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 300);
         this.pathMove.currentTile.type = 'solid';
     }
 

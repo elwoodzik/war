@@ -9,13 +9,13 @@ class Units extends Sprite {
         this.objectType = 'unit';
         this.speed = 35;
         this.attackTarget = null;
+        this.isAttacking = false;
 
         this.pathMove = new PathMove(this.game, {
             sprite: this,
             spriteAnimation: this.getAnimationInMove,
             extendsMove: this.extendsMove
         })
-
     }
 
     draw(dt) {
@@ -27,9 +27,9 @@ class Units extends Sprite {
         this.animations.play({
             key: this.dir
         })
-        // if (!this.attackTarget) {
-        //     this.inRange.rectCircleColliding(this.pathMove.followEnemy)
-        // }
+        if (!this.attackTarget) {
+            this.inRange.rectCircleColliding(this.pathMove.followEnemy)
+        }
         super.update(dt);
 
         this.updateBorder();
@@ -115,9 +115,9 @@ class Units extends Sprite {
 
 
 
-    getAnimationInMove(startPos, nextStep) {
+    getAnimationInMove(startPos, nextStep, callback) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
-        // console.log(this.key, this.inWooding)
+
         if (this.type === 'worker') {
             this.image = this.AssetManager.get('peasant');
         }
@@ -131,8 +131,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_right_down';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_right_down';
+            } else if (this.isMoving) {
                 this.dir = 'move_right_down';
+            } else {
+                this.dir = 'idle_right_down';
             }
         } else if (_nextStep.x === startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
@@ -142,8 +147,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_down';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_down';
+            } else if (this.isMoving) {
                 this.dir = 'move_down';
+            } else {
+                this.dir = 'idle_down';
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold') {
@@ -153,8 +163,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_left_down';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_left_down';
+            } else if (this.isMoving) {
                 this.dir = 'move_left_down';
+            } else {
+                this.dir = 'idle_left_down';
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y === startPos.y) {
             if (this.cargo === 'gold') {
@@ -164,8 +179,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_left';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_left';
+            } else if (this.isMoving) {
                 this.dir = 'move_left';
+            } else {
+                this.dir = 'idle_left';
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
@@ -175,8 +195,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_left_up';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_left_up';
+            } else if (this.isMoving) {
                 this.dir = 'move_left_up';
+            } else {
+                this.dir = 'idle_left_up';
             }
         } else if (_nextStep.x === startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
@@ -186,8 +211,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_up';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_up';
+            } else if (this.isMoving) {
                 this.dir = 'move_up';
+            } else {
+                this.dir = 'idle_up';
             }
         } else if (_nextStep.x > startPos.x && _nextStep.y < startPos.y) {
             if (this.cargo === 'gold') {
@@ -197,8 +227,13 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_right_up';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_right_up';
+            } else if (this.isMoving) {
                 this.dir = 'move_right_up';
+            } else {
+                this.dir = 'idle_right_up';
             }
         } else if (_nextStep.x > startPos.x && _nextStep.y === startPos.y) {
             if (this.cargo === 'gold') {
@@ -208,15 +243,26 @@ class Units extends Sprite {
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
                 this.dir = 'chop_right';
-            } else {
+            } else if (this.isAttacking) {
+                this.image = this.AssetManager.get('chop');
+                this.dir = 'atck_right';
+            } else if (this.isMoving) {
                 this.dir = 'move_right';
+            } else {
+                this.dir = 'idle_right';
             }
         }
+
         this.animations.play({
-            key: this.dir
+            key: this.dir,
+            callback: callback ? callback : null
         })
+
         this.width = this.states[this.state].frames[this.current_f].fW;
         this.height = this.states[this.state].frames[this.current_f].fH;
+
+        this.pathMove.currentTile = this.game.VAR.map.getTileBySprite(this);
+        this.y = this.pathMove.currentTile.y - this.height + 32;
     }
 }
 export default Units;
