@@ -46,7 +46,7 @@ class Main {
                 timeInMine: 4500,
                 timeInTown: 2500,
                 timeInForest: 1000,//15000
-                unitsSpeed: 1
+                unitsSpeed: 1 * 1.5
             }
 
             this.game.VAR.hudTop = new HudTop(this.game, { zIndex: 50 });
@@ -108,26 +108,26 @@ class Main {
             //     x: 32 * 14,
             //     y: 32 * 12
             // }));
-            const grunt = new Grunt(this.game, {
-                key: 'peasant',
-                x: 32 * 12,
-                y: 32 * 11
-            });
-            new Grunt(this.game, {
-                key: 'peasant',
-                x: 32 * 12,
-                y: 32 * 12
-            });
-            new Grunt(this.game, {
-                key: 'peasant',
-                x: 32 * 12,
-                y: 32 * 13
-            });
-            new Grunt(this.game, {
-                key: 'peasant',
-                x: 32 * 12,
-                y: 32 * 15
-            });
+            // const grunt = new Grunt(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 12,
+            //     y: 32 * 11
+            // });
+            // new Grunt(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 12,
+            //     y: 32 * 12
+            // });
+            // new Grunt(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 12,
+            //     y: 32 * 13
+            // });
+            // new Grunt(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 12,
+            //     y: 32 * 15
+            // });
 
             // this.game.VAR.settings.people.push(new Archer(this.game, {
             //     key: 'archer',
@@ -135,7 +135,7 @@ class Main {
             //     y: 32 * 12
             // }));
 
-           
+
 
             // new Farm(this.game, {
             //     key: 'gold',

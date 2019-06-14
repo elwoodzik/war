@@ -24,7 +24,7 @@ class Peasant extends Units {
         this.armor = 0;
         this.speed = 60 * this.game.VAR.settings.unitsSpeed;
         this.range = 1;
-        this.hitPointsMax = 30;
+        this.hitPointsMax = 1130;
         this.currentHp = this.hitPointsMax;
 
         this.info = {

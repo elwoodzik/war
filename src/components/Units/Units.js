@@ -33,6 +33,7 @@ class Units extends Sprite {
     }
 
     onRightClick() {
+        this.game.VAR.sellectedObj.pathMove.followEnemy(this);
         return false;
         // if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.objID !== this.objID) {
         //     const endPos = this.game.VAR.map.getTileBySprite(this);
@@ -333,6 +334,8 @@ class Units extends Sprite {
             } else {
                 this.dir = 'idle_right';
             }
+        } else {
+            this.dir = `idle${this.dir.slice(4)}`;
         }
 
         this.animations.play({

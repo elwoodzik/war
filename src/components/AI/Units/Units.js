@@ -28,7 +28,7 @@ class Units extends Sprite {
             key: this.dir
         })
         if (!this.attackTarget) {
-            this.inRange.rectCircleColliding(this.pathMove.followBuilding)
+            this.inRange.rectCircleColliding(this.pathMove.followEnemy)
         }
         super.update(dt);
 
