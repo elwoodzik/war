@@ -12,8 +12,9 @@ class Farm extends Buildings {
 
         this.armor = 0;
         this.hitPointsMax = 2230;
-        this.currentHp = this.hitPointsMax;
-
+        
+        this.isBuilt();
+        
         this.info = {
             imageKey: 'farm',
             name: 'Farma',
@@ -29,10 +30,11 @@ class Farm extends Buildings {
         new Animations(this);
         this.sounds = new Sounds();
         this.unWalkable(4, null);
-        this.isBuilt();
+        
     }
 
     isBuilt() {
+        super.isBuilt();
         if (this.completed) {
             Main.SETTINGS.homeMax += Farm.addPeople;
             this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.homeMax);

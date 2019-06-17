@@ -24,7 +24,7 @@ class InfoBox {
             static: true,
             zIndex: 51,
             used: false
-        }).getProps();
+        })
         this.border = new Border(game, {});
 
         this.descriptions = [];
@@ -45,7 +45,7 @@ class InfoBox {
         this.hide();
         this.name.use(info.name);
         this.lifeBar.setMax(info.hitPointsMax);
-        this.lifeBar.setMin(info.currentHp);
+        this.lifeBar.setMin(0);
         this.lifeBar.setStatusX(info.currentHp)
         this.icon.animations.playOnce({ key: info.imageKey });
         this.showDescription(info.descriptios());

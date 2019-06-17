@@ -11,7 +11,8 @@ class LumberMill extends Buildings {
 
         this.armor = 0;
         this.hitPointsMax = 2230;
-        this.currentHp = this.hitPointsMax;
+      
+        this.isBuilt();
 
         this.info = {
             imageKey: 'lumber_mill',
@@ -84,10 +85,12 @@ class LumberMill extends Buildings {
         new Animations(this);
         this.sounds = new Sounds();
         this.unWalkable(4, null);
-        this.isBuilt();
+       
     }
 
     isBuilt() {
+        super.isBuilt();
+
         if (this.completed) {
             Main.SETTINGS.requirements.lumbermill = true;
         }

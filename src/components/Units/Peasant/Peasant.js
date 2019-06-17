@@ -46,7 +46,7 @@ class Peasant extends Units {
                     key: 'farm',
                     woodCost: 250,
                     goldCost: 500,
-                    time: 100000,
+                    time: 100000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     used: true,
                     create: {

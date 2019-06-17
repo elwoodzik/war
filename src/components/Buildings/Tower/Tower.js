@@ -10,8 +10,8 @@ class Tower extends Buildings {
 
         this.armor = 0;
         this.hitPointsMax = 2230;
-        this.currentHp = this.hitPointsMax;
-
+      
+        this.isBuilt();
 
         this.info = {
             imageKey: 'tower',
@@ -62,17 +62,9 @@ class Tower extends Buildings {
             ],
         }
 
-
         new Animations(this);
         this.sounds = new Sounds();
         this.unWalkable(4, null);
-        this.isBuilt();
-    }
-
-    isBuilt() {
-        if (this.completed) {
-
-        }
     }
 }
 export default Tower;

@@ -7,9 +7,8 @@ class Building extends Sprite {
 
         this.objectType = 'building';
 
-        this.life = 0;
-        this.maxLife = 1000;
-
+        this.currentHp = 1;
+    
         this.buildingPut = {};
 
         this.completed = options.completed || false;
@@ -41,6 +40,13 @@ class Building extends Sprite {
         this.game.VAR.hudLeft.creationBox.show();
         this.getRandomSelectedSound();
         // }
+    }
+
+    isBuilt() {
+        console.log(this.completed)
+        if (this.completed) {
+            this.currentHp = this.hitPointsMax;
+        }
     }
 
     onRightClick() {
@@ -212,11 +218,14 @@ class Building extends Sprite {
     update(dt) {
         super.update(dt);
 
+
         if (this.info.inProgress && this.dir !== 'complete') {
-
+            this.currentHp = Math.ceil(this.timeLocal / (this.info.inProgressTime / this.hitPointsMax));
+            this.info.currentHp = this.currentHp;
             const percent = Math.ceil(this.timeLocal / (this.info.inProgressTime / 100));
-
-
+            if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === this.objID) {
+                this.game.VAR.hudLeft.infoBox.lifeBar.setStatusX(this.currentHp)
+            }
             if (!this.completed) {
                 if (percent < 50) {
                     this.dir = 'start';

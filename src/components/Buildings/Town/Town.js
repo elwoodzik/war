@@ -12,7 +12,8 @@ class Town extends Buildings {
         this.dir = 'complete';
         this.armor = 0;
         this.hitPointsMax = 2230;
-        this.currentHp = this.hitPointsMax;
+        
+        this.isBuilt();
 
         this.info = {
             imageKey: 'town',
@@ -46,6 +47,7 @@ class Town extends Buildings {
         new Animations(this);
         this.sounds = new Sounds();
         this.unWalkable(5, 'town');
+        
     }
 
     update(dt) {

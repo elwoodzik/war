@@ -134,7 +134,8 @@ class Main {
             this.game.VAR.town = new Town(this.game, {
                 key: 'buildings',
                 x: 32 * 15,
-                y: 32 * 12
+                y: 32 * 12,
+                completed: true
             })
 
             // Main.SETTINGS.people.push(new Warrior(this.game, {
@@ -319,7 +320,6 @@ class Main {
 
     leftMouseClick() {
         this.game.mouse.trigger((mouse) => {
-            console.log('aaaa')
             if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.buildingPut.used) {
                 const canPut = this.game.VAR.sellectedObj.buildingPut.canPut();
                 if (canPut) {
