@@ -1,4 +1,5 @@
 import Action from "../../../helpers/Action";
+import Main from "../../../../Pages/Main";
 
 class ActionBox {
 
@@ -29,10 +30,10 @@ class ActionBox {
                     let req = true;
 
                     if (action.currentAction.requirements) {
-                        req = action.currentAction.requirements.every((req) => this.game.VAR.settings.requirements[req])
+                        req = action.currentAction.requirements.every((req) => Main.SETTINGS.requirements[req])
                     }
-                    if (req) {
-                        action.used = true;
+                    if (req && action.currentAction.used) {
+                        action.used = action.currentAction.used;
                         action.animations.playOnce({ key: actions[i].key });
                         action.x = x;
                         action.y = y;

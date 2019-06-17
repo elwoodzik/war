@@ -1,4 +1,5 @@
 import Sprite from "../../../lib/Sprite";
+import Main from "../Pages/Main";
 
 class BuildingPut extends Sprite {
     constructor(game, options) {
@@ -132,10 +133,10 @@ class BuildingPut extends Sprite {
         building.info.inProgress = true;
         building.info.inProgressTime = this.action.time;
 
-        this.game.VAR.settings.gold -= this.action.goldCost;
-        this.game.VAR.settings.wood -= this.action.woodCost;
-        this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
-        this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
+        Main.SETTINGS.gold -= this.action.goldCost;
+        Main.SETTINGS.wood -= this.action.woodCost;
+        this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold);
+        this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood);
 
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === building.objID) {
             this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });
@@ -162,6 +163,7 @@ class BuildingPut extends Sprite {
                 worker.used = true;
                 worker.pathMove.startPos = this.game.VAR.map.getTileBySprite(worker);
                 worker.pathMove.currentTile = this.game.VAR.map.getTile(worker.pathMove.startPos.row, worker.pathMove.startPos.column);
+                this.game.easystar.setAdditionalPointCost(worker.pathMove.startPos.row, worker.pathMove.startPos.column, 200);
                 worker.pathMove.currentTile.type = 'solid';
                 // worker.pathMove.startPos = null;
                 // worker.pathMove.nextStep = null;

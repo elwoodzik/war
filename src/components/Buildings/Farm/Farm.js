@@ -1,6 +1,7 @@
 import Buildings from "../Buildings";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
+import Main from "../../Pages/Main";
 
 class Farm extends Buildings {
 
@@ -9,10 +10,16 @@ class Farm extends Buildings {
     constructor(game, options) {
         super(game, options);
 
+        this.armor = 0;
+        this.hitPointsMax = 2230;
+        this.currentHp = this.hitPointsMax;
+
         this.info = {
             imageKey: 'farm',
             name: 'Farma',
-            descriptios: [
+            hitPointsMax: this.hitPointsMax,
+            currentHp: this.currentHp,
+            descriptios: () => [
                 'Zwiększa populacje',
                 'o 4',
                 // 'Wood: 100'
@@ -27,8 +34,8 @@ class Farm extends Buildings {
 
     isBuilt() {
         if (this.completed) {
-            this.game.VAR.settings.homeMax += Farm.addPeople;
-            this.game.VAR.hudTop.homeTextMax.use(this.game.VAR.settings.homeMax);
+            Main.SETTINGS.homeMax += Farm.addPeople;
+            this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.homeMax);
         }
     }
 }

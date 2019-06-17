@@ -1,4 +1,5 @@
 import Sprite from "../../../lib/Sprite";
+import Main from "../Pages/Main";
 
 class Building extends Sprite {
     constructor(game, options) {
@@ -8,7 +9,7 @@ class Building extends Sprite {
 
         this.life = 0;
         this.maxLife = 1000;
-        
+
         this.buildingPut = {};
 
         this.completed = options.completed || false;
@@ -74,18 +75,23 @@ class Building extends Sprite {
     // }
 
     onActionClick = (action) => {
-        if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
-            if (this.game.VAR.settings.people.length < this.game.VAR.settings.homeMax) {
+        if (Main.SETTINGS.gold >= action.goldCost && Main.SETTINGS.wood >= action.woodCost) {
+            if (Main.SETTINGS.people.length < Main.SETTINGS.homeMax) {
                 this.game.VAR.hudLeft.infoBox.hideDescription();
                 this.game.VAR.hudLeft.actionBox.hide();
 
                 this.info.inProgress = true;
                 this.info.inProgressTime = action.time;
-                this.game.VAR.settings.gold -= action.goldCost;
-                this.game.VAR.settings.wood -= action.woodCost;
-                this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold)
-                this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood)
+                Main.SETTINGS.gold -= action.goldCost;
+                Main.SETTINGS.wood -= action.woodCost;
+                this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold)
+                this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood)
                 this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: action.key });
+
+
+                if (action.create.upgradeDir) {
+                    this.dir = action.create.upgradeDir
+                }
 
                 // do zmiany
                 this.game.VAR.hudBottom.hide();
@@ -95,25 +101,47 @@ class Building extends Sprite {
                 this.AssetManager.play('S_click');
                 //
                 this.doInTime(action.time, () => {
-                    this.freePlace(this.x - 32, this.y, action.key, (place) => {
-                        const unit = new action.create.class(this.game, {
-                            key: action.create.key,
-                            x: place.x,
-                            y: place.y
-                        });
-                        this.info.inProgress = false;
-                        this.game.VAR.hudLeft.creationBox.hide();
+                    if (action.create.class) {
+                        this.freePlace(this.x - 32, this.y, action.key, (place) => {
+                            const unit = new action.create.class(this.game, {
+                                key: action.create.key,
+                                x: place.x,
+                                y: place.y
+                            });
+                            this.info.inProgress = false;
+                            this.game.VAR.hudLeft.creationBox.hide();
 
-                        if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
-                            this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios);
-                            this.game.VAR.hudLeft.actionBox.set(this.info.actions);
+                            if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
+                                this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios());
+                                this.game.VAR.hudLeft.actionBox.set(this.info.actions);
+                            }
+
+                            unit.AssetManager.play(unit.sounds.created[0]);
+                            Main.SETTINGS.people.push(unit);
+                            this.game.VAR.hudTop.homeTextCurrent.use(Main.SETTINGS.people.length);
+                            this.game.sortByIndex();
+                        });
+                    } else if (action.create.upgrade) {
+                        Main.SETTINGS.upgrade[action.create.upgrade] += action.create.upgradeValue;
+
+                        if (typeof Main.SETTINGS.requirements[action.key] !== 'undefined') {
+                            Main.SETTINGS.requirements[action.key] = true;
                         }
 
-                        unit.AssetManager.play(unit.sounds.created[0]);
-                        this.game.VAR.settings.people.push(unit);
-                        this.game.VAR.hudTop.homeTextCurrent.use(this.game.VAR.settings.people.length);
-                        this.game.sortByIndex();
-                    });
+                        if (action.create.upgradeFinishDir) {
+                            this.dir = action.create.upgradeFinishDir
+                        }
+
+                        this.info.inProgress = false;
+                        action.used = false;
+                        this.game.VAR.hudLeft.creationBox.hide();
+
+                        this.game.VAR.hudLeft.infoBox.showDescription(this.game.VAR.sellectedObj.info.descriptios());
+                        if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
+
+                            this.game.VAR.hudLeft.actionBox.set(this.info.actions);
+                        }
+                    }
                 });
             }
             else {
@@ -164,7 +192,7 @@ class Building extends Sprite {
         } else {
             let y = place.y;
             if (key === 'warrior') {
-                y = place.y 
+                y = place.y
             }
 
             // return callback({ x: place.x, y: y });
@@ -185,15 +213,20 @@ class Building extends Sprite {
         super.update(dt);
 
         if (this.info.inProgress && this.dir !== 'complete') {
+
             const percent = Math.ceil(this.timeLocal / (this.info.inProgressTime / 100));
 
-            if (percent < 50) {
-                this.dir = 'start';
-            } else if (percent >= 50 && percent < 100) {
-                this.image = this.AssetManager.get('buildings');
-                this.dir = 'half';
-            } else if (percent >= 100) {
-                this.dir = 'complete';
+
+            if (!this.completed) {
+                if (percent < 50) {
+                    this.dir = 'start';
+                } else if (percent >= 50 && percent < 100) {
+                    this.image = this.AssetManager.get('buildings');
+                    this.dir = 'half';
+                } else if (percent >= 100) {
+                    this.dir = 'complete';
+                    this.completed = true;
+                }
             }
         }
 

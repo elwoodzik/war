@@ -15,8 +15,8 @@ class InfoBox {
         this.name = new TextLine(game, {});
         this.icon = new Icon(game, { key: 'icons' });
         this.lifeBar = this.game.add.bar({
-            min: 10,
-            max: 30,
+            min: 0,
+            max: 100,
             x: 4,
             y: 60,
             width: 46,
@@ -48,7 +48,7 @@ class InfoBox {
         this.lifeBar.setMin(info.currentHp);
         this.lifeBar.setStatusX(info.currentHp)
         this.icon.animations.playOnce({ key: info.imageKey });
-        this.showDescription(info.descriptios);
+        this.showDescription(info.descriptios());
         this.show();
     }
 

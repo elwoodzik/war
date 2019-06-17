@@ -1,6 +1,7 @@
 import Units from "../Units";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
+import Main from "../../../Pages/Main";
 
 class Warrior extends Units {
     constructor(game, options) {
@@ -42,7 +43,7 @@ class Warrior extends Units {
 
         this.inRange = this.game.add.inRange({
             element: this,
-            target: this.game.VAR.settings.people,
+            target: Main.SETTINGS.people,
             isRender: true,
             zIndex: 2,
             radius: 120

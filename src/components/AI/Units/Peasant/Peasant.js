@@ -7,6 +7,7 @@ import LumberMill from "../../../Buildings/LumberMill/LumberMill";
 import Blacksmith from "../../../Buildings/Blacksmith/Blacksmith";
 import BuildingPut from "../../../Hud/BuildingPut";
 import Tower from "../../../Buildings/Tower/Tower";
+import Main from "../../../Pages/Main";
 
 class Peasant extends Units {
     constructor(game, options) {
@@ -20,9 +21,9 @@ class Peasant extends Units {
         this.inForestPos = {};
         this.buildingPut = new BuildingPut(this.game, { key: 'buildings', zIndex: 49 });
 
-        this.dmg = [2, 9];
+        this.dmg = [2 + Main.SETTINGS.sword, 9 + Main.SETTINGS.sword];
         this.armor = 0;
-        this.speed = 60 * this.game.VAR.settings.unitsSpeed;
+        this.speed = 60 * Main.SETTINGS.unitsSpeed;
         this.range = 1;
         this.hitPointsMax = 30;
         this.currentHp = this.hitPointsMax;
@@ -48,7 +49,7 @@ class Peasant extends Units {
                     key: 'farm',
                     woodCost: 250,
                     goldCost: 500,
-                    time: 100000 / this.game.VAR.settings.buildSpeed,
+                    time: 100000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Farm,
@@ -61,7 +62,7 @@ class Peasant extends Units {
                     key: 'barracks',
                     woodCost: 450,
                     goldCost: 700,
-                    time: 200000 / this.game.VAR.settings.buildSpeed,
+                    time: 200000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Barracks,
@@ -74,7 +75,7 @@ class Peasant extends Units {
                     key: 'lumber_mill',
                     woodCost: 450,
                     goldCost: 600,
-                    time: 150000 / this.game.VAR.settings.buildSpeed,
+                    time: 150000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: LumberMill,
@@ -87,7 +88,7 @@ class Peasant extends Units {
                     key: 'blacksmith',
                     woodCost: 450,
                     goldCost: 800,
-                    time: 200000 / this.game.VAR.settings.buildSpeed,
+                    time: 200000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Blacksmith,
@@ -100,7 +101,7 @@ class Peasant extends Units {
                     key: 'tower',
                     woodCost: 200,
                     goldCost: 550,
-                    time: 60000 / this.game.VAR.settings.buildSpeed,
+                    time: 60000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionBuild,
                     create: {
                         class: Tower,
@@ -117,7 +118,7 @@ class Peasant extends Units {
 
         this.inRange = this.game.add.inRange({
             element: this,
-            target: this.game.VAR.settings.people,
+            target: Main.SETTINGS.people,
             isRender: false,
             zIndex: 2,
             radius: 120,
@@ -139,7 +140,7 @@ class Peasant extends Units {
     // }
 
     onActionBuild = (action) => {
-        if (this.game.VAR.settings.gold >= action.goldCost && this.game.VAR.settings.wood >= action.woodCost) {
+        if (Main.SETTINGS.gold >= action.goldCost && Main.SETTINGS.wood >= action.woodCost) {
 
             this.buildingPut.dir = action.key;
             this.buildingPut.used = true;
@@ -204,7 +205,7 @@ class Peasant extends Units {
 
         this.game.VAR.goldMine.addUserToMine();
 
-        this.doInTime(this.game.VAR.settings.timeInMine, () => {
+        this.doInTime(Main.SETTINGS.timeInMine, () => {
             this.cargo = 'gold';
             this.game.VAR.goldMine.removeUserFromMine();
             this.leaveBuilding(this.game.VAR.town, 2, startPos, 0, 800);
@@ -228,14 +229,14 @@ class Peasant extends Units {
         this.pathMove.restartPosition();
 
         if (this.cargo === 'gold') {
-            this.game.VAR.settings.gold += this.game.VAR.settings.goldUpdateBy;
-            this.game.VAR.hudTop.goldText.use(this.game.VAR.settings.gold);
+            Main.SETTINGS.gold += Main.SETTINGS.goldUpdateBy;
+            this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold);
         } else if (this.cargo === 'wood') {
-            this.game.VAR.settings.wood += this.game.VAR.settings.woodUpdateBy;
-            this.game.VAR.hudTop.woodText.use(this.game.VAR.settings.wood);
+            Main.SETTINGS.wood += Main.SETTINGS.woodUpdateBy;
+            this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood);
         }
 
-        this.doInTime(this.game.VAR.settings.timeInTown, () => {
+        this.doInTime(Main.SETTINGS.timeInTown, () => {
             if (this.cargo === 'gold') {
                 this.cargo = 'empty';
                 this.leaveBuilding(this.game.VAR.goldMine, 1, startPos, 0, 800);
@@ -269,7 +270,7 @@ class Peasant extends Units {
                 this.y = this.pathMove.currentTile.y - this.height + 32;
                 this.pathMove.currentTile.type = 'solid';
 
-                this.doInTime(this.game.VAR.settings.timeInForest, () => {
+                this.doInTime(Main.SETTINGS.timeInForest, () => {
                     this.cargo = 'wood';
                     this.inWooding = false;
                     this.goToBuilding(this.game.VAR.town, 2);

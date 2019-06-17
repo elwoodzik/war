@@ -1,5 +1,7 @@
 import Sprite from "../../../lib/Sprite";
 import PathMove from "../../../lib/PathMove";
+import Main from "../Pages/Main";
+import Peasant from "./Peasant/Peasant";
 
 class Units extends Sprite {
     constructor(game, options) {
@@ -10,8 +12,9 @@ class Units extends Sprite {
 
         this.currentPosition = null;
         this.nextPosition = null;
-        this.speed = 65;
+        this.speed = 60 * Main.SETTINGS.unitsSpeed;
         this.isAttacking = false;
+        this.enemy = options.enemy || false;
 
         // this.game.VAR.map.addToFog(this.x, this.y, 32);
 
@@ -19,100 +22,50 @@ class Units extends Sprite {
             sprite: this,
             spriteAnimation: this.getAnimationInMove,
             extendsMove: this.extendsMove
+        });
+
+        this.inRange = this.game.add.inRange({
+            element: this,
+            target: Main.SETTINGS.people,
+            isRender: false,
+            zIndex: 2,
+            radius: 120,
+            diffX: -32 / 2,
         })
     }
 
     onClick() {
-        if (!this.buildingPut.used) {
-            this.selectedBorder();
-            this.game.VAR.hudLeft.set(this.info);
-            this.game.VAR.hudLeft.cancelBox.used = false;
-            this.game.VAR.hudLeft.creationBox.show();
-            this.getRandomSelectedSound();
+        if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.buildingPut.used || this.enemy) {
+            return false;
         }
+
+        this.selectedBorder();
+
+        this.game.VAR.hudLeft.set(this.info);
+        this.game.VAR.hudLeft.cancelBox.used = false;
+        this.game.VAR.hudLeft.creationBox.show();
+        this.getRandomSelectedSound();
+
     }
 
     onRightClick() {
-        this.game.VAR.sellectedObj.pathMove.followEnemy(this);
+        if (this.enemy && this.game.VAR.sellectedObj) {
+            this.game.VAR.sellectedObj.pathMove.followEnemy(this);
+        }
         return false;
-        // if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit' && this.game.VAR.sellectedObj.objID !== this.objID) {
-        //     const endPos = this.game.VAR.map.getTileBySprite(this);
-
-        //     if (this.game.VAR.sellectedObj.inWooding) {
-        //         this.game.VAR.sellectedObj.doInTimeStop();
-        //         this.game.VAR.sellectedObj.inWooding = false;
-        //     }
-
-        //     this.game.VAR.sellectedObj.getRandomMoveSound();
-        //     this.game.VAR.sellectedObj.pathMove.restartPosition();
-        //     this.game.VAR.sellectedObj.pathMove.move(endPos);
-        // }
     }
 
+    setDmg(min, max) {
+        return () => [min + Main.SETTINGS.upgrade.sword, max + Main.SETTINGS.upgrade.sword];
+    }
 
-    // followEnemy = (enemy) => {
-    //     // console.log('ffff', enemy)
-    //     // this.attackTarget = true;
+    setRangeDmg(min, max) {
+        return () => [min + Main.SETTINGS.upgrade.arrow, max + Main.SETTINGS.upgrade.arrow];
+    }
 
-    //     this.pathMove.move(null, (path, player) => {
-    //         // console.log(enemy.pathMove.isMoving)
-    //         if (enemy.pathMove.isMoving) {
-    //             this.followEnemy(enemy);
-    //         } else {
-    //             this.attackEnemy(enemy)
-    //         }
-    //     }, enemy);
-    // }
-
-    // attackEnemy(enemy) {
-    //     if (this.type === 'worker') {
-    //         this.image = this.AssetManager.get('chop');
-    //     }
-    //     this.isAttacking = true;
-    //     this.dir = `atck${this.dir.slice(4)}`;
-    //     this.animations.play({
-    //         key: this.dir,
-    //         callback: this.onHitEnemy.bind(this, enemy)
-    //     })
-
-    //     this.width = this.states[this.state].frames[this.current_f].fW;
-    //     this.height = this.states[this.state].frames[this.current_f].fH;
-    //     this.y = this.y - this.height + 32;
-    //     this.pathMove.currentTile.type = 'empty';
-    //     this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-    //     this.pathMove.currentTile.type = 'solid';
-    // }
-
-    // onHitEnemy(enemy) {
-    //     const dmg = this.game.rand(this.dmg[0], this.dmg[1]);
-
-    //     enemy.currentHp -= dmg - enemy.armor;
-    //     if (enemy.currentHp <= 0) {
-    //         enemy.used = false;
-    //         this.current_f = 0;
-    //         if (this.type === 'worker') {
-    //             this.image = this.AssetManager.get('peasant');
-    //         }
-    //         this.dir = `idle${this.dir.slice(4)}`;
-
-    //         this.animations.play({
-    //             key: this.dir,
-    //         })
-
-    //         this.width = this.states[this.state].frames[this.current_f].fW;
-    //         this.height = this.states[this.state].frames[this.current_f].fH;
-
-    //         this.y = this.pathMove.currentTile.y - this.height + 32;
-    //         this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-    //         // 
-    //         this.pathMove.currentTile.type = 'solid';
-
-    //     }
-    //     else {
-    //         this.followEnemy(enemy);
-    //     }
-    // }
-
+    setArmor(val) {
+        return () => val + Main.SETTINGS.upgrade.armor;
+    }
 
     getRandomSelectedSound() {
         if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
@@ -194,9 +147,56 @@ class Units extends Sprite {
         this.animations.play({
             key: this.dir
         })
+        if (!this.attackTarget && this.enemy) {
+            this.inRange.rectCircleColliding(this.pathMove.followEnemy)
+        }
         super.update(dt);
         this.updateBorder();
     }
+
+    // onHitEnemy(enemy) {
+    //     if (enemy.used) {
+    //         const dmg = this.game.rand(this.sprite.dmg[0], this.sprite.dmg[1]);
+    //         enemy.currentHp -= dmg - enemy.armor;
+
+    //         if (enemy.currentHp <= 0) {
+    //             enemy.used = false;
+    //             this.sprite.isAttacking = false;
+    //             this.sprite.isMoving = false;
+    //             if (this.spriteAnimation && typeof this.spriteAnimation === 'function') {
+    //                 this.spriteAnimation(this.currentTile, this.nextStep);
+    //             }
+
+    //             if (enemy.pathMove.nextTile) {
+    //                 enemy.pathMove.nextTile.type = 'empty';
+    //                 this.game.easystar.setAdditionalPointCost(enemy.pathMove.nextTile.row, enemy.pathMove.nextTile.column, 0);
+    //             }
+    //             if (enemy.pathMove.currentTile) {
+    //                 enemy.pathMove.currentTile.type = 'empty';
+    //                 this.game.easystar.setAdditionalPointCost(enemy.pathMove.currentTile.row, enemy.pathMove.currentTile.column, 0);
+    //             }
+    //             // this.currentTile.type = 'solid';
+    //             // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 200);
+
+    //             enemy.unSelectedBorder();
+    //             this.sprite.attackTarget = null;
+    //         } else {
+    //             this.followEnemy(enemy);
+    //         }
+    //     } else {
+    //         this.sprite.attackTarget = null;
+    //         this.sprite.isAttacking = false;
+    //         this.sprite.isMoving = false;
+    //         if (this.spriteAnimation && typeof this.spriteAnimation === 'function') {
+    //             this.spriteAnimation(this.currentTile, this.nextStep);
+    //         }
+    //     }
+    // }
+    // upgrade(type) {
+    //     if (type === 'sword') {
+    //         this.
+    //     }
+    // }
 
     getAnimationInMove(startPos, nextStep, callback) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };

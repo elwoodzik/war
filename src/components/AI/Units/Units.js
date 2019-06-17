@@ -33,7 +33,6 @@ class Units extends Sprite {
         super.update(dt);
 
         this.updateBorder();
-
     }
 
 

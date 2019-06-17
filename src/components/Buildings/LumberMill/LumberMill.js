@@ -1,6 +1,7 @@
 import Buildings from "../Buildings";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
+import Main from "../../Pages/Main";
 
 class LumberMill extends Buildings {
 
@@ -8,14 +9,75 @@ class LumberMill extends Buildings {
         super(game, options);
         this.game = game;
 
+        this.armor = 0;
+        this.hitPointsMax = 2230;
+        this.currentHp = this.hitPointsMax;
+
         this.info = {
             imageKey: 'lumber_mill',
             name: 'Tartak',
-            descriptios: [
+            descriptios: () => [
                 'Zwiększa',
                 'produkcję',
                 'drewna o 10%',
                 // 'Wood: 100'
+            ],
+            hitPointsMax: this.hitPointsMax,
+            currentHp: this.currentHp,
+            inProgress: false,
+            inProgressTime: 0,
+            actions: [
+                {
+                    key: 'arrowUpgrade1',
+                    woodCost: 400,
+                    goldCost: 800,
+
+                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    onActionClick: this.onActionClick,
+                    used: true,
+                    create: {
+                        class: null,
+                        key: null,
+                        name: 'Łuk + 2',
+                        prefix: 'Ulepsz',
+                        upgrade: 'arrow',
+                        upgradeValue: 2
+                    },
+                },
+                {
+                    key: 'arrowUpgrade2',
+                    woodCost: 400,
+                    goldCost: 800,
+                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    onActionClick: this.onActionClick,
+                    requirements: ['arrowUpgrade1'],
+                    used: true,
+                    create: {
+                        class: null,
+                        key: null,
+                        name: 'Łuk + 2',
+                        prefix: 'Ulepsz',
+                        upgrade: 'arrow',
+                        upgradeValue: 2
+                    },
+                },
+                {
+                    key: 'arrowUpgrade3',
+                    woodCost: 400,
+                    goldCost: 800,
+                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    onActionClick: this.onActionClick,
+                    requirements: ['arrowUpgrade2'],
+                    used: true,
+                    create: {
+                        class: null,
+                        key: null,
+                        name: 'Łuk + 2',
+                        prefix: 'Ulepsz',
+                        upgrade: 'arrow',
+                        upgradeValue: 2
+                    },
+                }
             ],
         }
 
@@ -27,7 +89,7 @@ class LumberMill extends Buildings {
 
     isBuilt() {
         if (this.completed) {
-            this.game.VAR.settings.requirements.lumbermill = true;
+            Main.SETTINGS.requirements.lumbermill = true;
         }
     }
 }

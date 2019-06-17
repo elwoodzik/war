@@ -12,7 +12,7 @@ class GoldMine extends Buildings {
         this.info = {
             imageKey: 'goldmine',
             name: 'Kopalnia',
-            descriptios: [
+            descriptios: () => [
                 'Zasoby:',
                 'Nieskończone',
                 // 'Wood: 100'

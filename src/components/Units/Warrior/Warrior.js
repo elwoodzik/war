@@ -10,25 +10,21 @@ class Warrior extends Units {
         this.dir = 'idle_down';
         this.buildingPut = {};
 
-        this.dmg = [6, 6];
-        this.armor = 2;
-        this.speed = 60;
+        this.dmg = this.setDmg(6, 6);
+        this.armor = this.setArmor(2);
+
         this.range = 1;
         this.hitPointsMax = 60;
         this.currentHp = this.hitPointsMax;
 
         this.info = {
-            dmg: this.dmg,
-            armor: this.armor,
-            speed: this.speed,
-            range: this.range,
             hitPointsMax: this.hitPointsMax,
             currentHp: this.currentHp,
             imageKey: 'warrior',
             name: 'Wojownik',
-            descriptios: [
-                `Obrażenia: ${this.dmg[0]} - ${this.dmg[1]}`,
-                `Armor: ${this.armor}`,
+            descriptios: () => [
+                `Obrażenia: ${this.dmg()[0]} - ${this.dmg()[1]}`,
+                `Armor: ${this.armor()}`,
                 `Zasięg: ${this.range}`
             ],
             actions: [
@@ -40,8 +36,9 @@ class Warrior extends Units {
         this.sounds = new Sounds();
 
         this.y = this.y - this.height + 32;
-        this.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
-        this.currentTile.type = 'solid';
+        this.pathMove.currentTile = this.game.VAR.map.getTileByCords(this.x, this.y + this.height - 32);
+        this.pathMove.currentTile.type = 'solid';
+        this.game.easystar.setAdditionalPointCost(this.pathMove.currentTile.row, this.pathMove.currentTile.column, 300);
     }
 
     update(dt) {

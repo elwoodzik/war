@@ -111,6 +111,62 @@ class Icon extends Sprite {
             ]
         });
 
+        this.animations.add({
+            key: 'swordUpgrade1',
+            frames: [
+                { sx: (46 * 6 + 3 * 6) + 3, sy: (38 * 11 + 3 * 11) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'swordUpgrade2',
+            frames: [
+                { sx: (46 * 7 + 3 * 7) + 3, sy: (38 * 11 + 3 * 11) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'swordUpgrade3',
+            frames: [
+                { sx: (46 * 8 + 3 * 8) + 3, sy: (38 * 11 + 3 * 11) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'shieldUpgrade1',
+            frames: [
+                { sx: (46 * 4 + 3 * 4) + 3, sy: (38 * 16 + 3 * 16) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'shieldUpgrade2',
+            frames: [
+                { sx: (46 * 5 + 3 * 5) + 3, sy: (38 * 16 + 3 * 16) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'shieldUpgrade3',
+            frames: [
+                { sx: (46 * 6 + 3 * 6) + 3, sy: (38 * 16 + 3 * 16) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'arrowUpgrade1',
+            frames: [
+                { sx: (46 * 4 + 3 * 4) + 3, sy: (38 * 12 + 3 * 12) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'arrowUpgrade2',
+            frames: [
+                { sx: (46 * 5 + 3 * 5) + 3, sy: (38 * 12 + 3 * 12) + 3, fW: 46, fH: 38, },
+            ]
+        });
+        this.animations.add({
+            key: 'arrowUpgrade3',
+            frames: [
+                { sx: (46 * 6 + 3 * 6) + 3, sy: (38 * 12 + 3 * 12) + 3, fW: 46, fH: 38, },
+            ]
+        });
+
+
 
         this.animations.playOnce({ key: 'town', delay: 16 })
     }

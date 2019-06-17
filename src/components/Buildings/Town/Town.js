@@ -2,6 +2,7 @@ import Buildings from "../Buildings";
 import Peasant from "../../Units/Peasant/Peasant";
 import Animations from "./Animations";
 import Sounds from "./Sounds";
+import Main from "../../Pages/Main";
 
 
 class Town extends Buildings {
@@ -18,7 +19,7 @@ class Town extends Buildings {
             name: 'Ratusz',
             hitPointsMax: this.hitPointsMax,
             currentHp: this.currentHp,
-            descriptios: [
+            descriptios: () => [
                 'Produkuja:',
                 'Złoto: 100',
                 'Drewno: 100'
@@ -30,8 +31,9 @@ class Town extends Buildings {
                     key: 'peasant',
                     woodCost: 0,
                     goldCost: 400,
-                    time: 45000 / this.game.VAR.settings.buildSpeed,
+                    time: 45000 / Main.SETTINGS.buildSpeed,
                     onActionClick: this.onActionClick,
+                    used: true,
                     create: {
                         class: Peasant,
                         key: 'peasant',
