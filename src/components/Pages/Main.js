@@ -74,7 +74,7 @@ class Main {
                 buildSpeed: 44, //default 1
                 timeInMine: 4500,
                 timeInTown: 2500,
-                timeInForest: 1000,//15000
+                timeInForest: 15000,
                 unitsSpeed: 1 * 1.5,
                 upgrade: {
                     sword: 0,
@@ -154,12 +154,12 @@ class Main {
             //     y: 32 * 12
             // });
 
-            new Peasant(this.game, {
-                key: 'peasant',
-                x: 32 * 12,
-                y: 32 * 14,
-                enemy: true
-            });
+            // new Peasant(this.game, {
+            //     key: 'peasant',
+            //     x: 32 * 12,
+            //     y: 32 * 14,
+            //     enemy: true
+            // });
             // new Grunt(this.game, {
             //     key: 'peasant',
             //     x: 32 * 12,
@@ -217,8 +217,10 @@ class Main {
             this.game.VAR.goldMine = new GoldMine(this.game, {
                 key: 'gold',
                 x: 32 * 2,
-                y: 32 * 7
+                y: 32 * 7,
             })
+
+            this.mousePoiter = this.game.add.image({ x: -300, y: -300, key: "mousePoiter", used: false });
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
             // grunt.move(null, this.game.VAR.town)
@@ -299,6 +301,22 @@ class Main {
         // console.log(tile.id)
     }
 
+    mousePoiterFlash() {
+        this.mousePoiter.used = !this.mousePoiter.used;
+        if (this.mousePoiterTimeOut) {
+            clearTimeout(this.mousePoiterTimeOut)
+        }
+        if (this.mousePoiterTick > 0) {
+            this.mousePoiterTimeOut = setTimeout(() => {
+                if (this.mousePoiter.used) {
+                    this.mousePoiterTick--;
+                }
+                this.mousePoiterFlash()
+            }, 80)
+        }
+
+    }
+
     rightMouseClick() {
         this.game.mouse.triggerRight((mouse) => {
             // this.game.VAR.pathfinder.reRenderTile(Math.floor(this.game.mouse.mouseX / 32), Math.floor(this.game.mouse.mouseY / 32), 6);
@@ -309,11 +327,16 @@ class Main {
                     this.game.VAR.sellectedObj.doInTimeStop();
                     this.game.VAR.sellectedObj.inWooding = false;
                 }
+                this.mousePoiterTick = 3;
 
                 this.game.VAR.sellectedObj.getRandomMoveSound();
                 this.game.VAR.sellectedObj.isAttacking = false;
                 // this.game.VAR.sellectedObj.pathMove.restartPosition();
+                clearTimeout(this.game.VAR.sellectedObj.pathMove.timeOut)
                 this.game.VAR.sellectedObj.pathMove.move(endPos);
+                this.mousePoiter.x = endPos.x;
+                this.mousePoiter.y = endPos.y;
+                this.mousePoiterFlash()
             }
         }, false)
     }
@@ -325,6 +348,10 @@ class Main {
                 if (canPut) {
                     this.game.VAR.sellectedObj.buildingPut.used = false;
                     this.game.VAR.sellectedObj.buildingPut.border.used = false;
+                    if (this.game.VAR.sellectedObj.inWooding) {
+                        this.game.VAR.sellectedObj.doInTimeStop();
+                        this.game.VAR.sellectedObj.inWooding = false;
+                    }
 
                     this.game.VAR.hudLeft.cancelBox.used = false;
                     this.game.VAR.hudLeft.set(this.game.VAR.sellectedObj.info);

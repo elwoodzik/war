@@ -12,7 +12,7 @@ class Blacksmith extends Buildings {
         this.hitPointsMax = 2230;
 
         this.isBuilt();
-      
+
         this.info = {
             imageKey: 'blacksmith',
             name: 'Kuźnia',

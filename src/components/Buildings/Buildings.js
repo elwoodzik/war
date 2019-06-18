@@ -8,7 +8,7 @@ class Building extends Sprite {
         this.objectType = 'building';
 
         this.currentHp = 1;
-    
+
         this.buildingPut = {};
 
         this.completed = options.completed || false;
@@ -38,7 +38,12 @@ class Building extends Sprite {
         this.game.VAR.hudLeft.cancelBox.used = false;
         this.game.VAR.hudLeft.set(this.info);
         this.game.VAR.hudLeft.creationBox.show();
-        this.getRandomSelectedSound();
+        if (this.completed) {
+            this.getRandomSelectedSound('selected');
+        } else {
+            this.getRandomSelectedSound('building');
+        }
+
         // }
     }
 
@@ -53,19 +58,26 @@ class Building extends Sprite {
         //nic sie nie dzieje po prawym klawiszu
     }
 
-    getRandomSelectedSound() {
-        if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
-            const rand = this.game.rand(0, this.sounds.selected.length - 1);
-            this.AssetManager.play(this.sounds.selected[rand]);
+    getRandomSelectedSound(type) {
+        if (this.sounds && this.sounds[type] && this.sounds[type].length > 0) {
+            const rand = this.game.rand(0, this.sounds[type].length - 1);
+            this.AssetManager.play(this.sounds[type][rand]);
         }
     }
 
-    getRandomMoveSound() {
-        if (this.sounds && this.sounds.move && this.sounds.move.length > 0) {
-            const rand = this.game.rand(0, this.sounds.move.length - 1);
-            this.AssetManager.play(this.sounds.move[rand]);
-        }
-    }
+    // getRandomSelectedSound() {
+    //     if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
+    //         const rand = this.game.rand(0, this.sounds.selected.length - 1);
+    //         this.AssetManager.play(this.sounds.selected[rand]);
+    //     }
+    // }
+
+    // getRandomMoveSound() {
+    //     if (this.sounds && this.sounds.move && this.sounds.move.length > 0) {
+    //         const rand = this.game.rand(0, this.sounds.move.length - 1);
+    //         this.AssetManager.play(this.sounds.move[rand]);
+    //     }
+    // }
 
     // getRandomActionCompletedSound() {
     //     if (this.sounds && this.sounds.actionCompleted && this.sounds.actionCompleted.length > 0) {
@@ -94,6 +106,9 @@ class Building extends Sprite {
                 this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood)
                 this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: action.key });
 
+                if (typeof Main.SETTINGS.requirements[action.key] !== 'undefined') {
+                    Main.SETTINGS.requirements[action.key] = true;
+                }
 
                 if (action.create.upgradeDir) {
                     this.dir = action.create.upgradeDir
@@ -115,9 +130,10 @@ class Building extends Sprite {
                                 y: place.y
                             });
                             this.info.inProgress = false;
-                            this.game.VAR.hudLeft.creationBox.hide();
+
 
                             if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
+                                this.game.VAR.hudLeft.creationBox.hide();
                                 this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios());
                                 this.game.VAR.hudLeft.actionBox.set(this.info.actions);
                             }
@@ -130,21 +146,16 @@ class Building extends Sprite {
                     } else if (action.create.upgrade) {
                         Main.SETTINGS.upgrade[action.create.upgrade] += action.create.upgradeValue;
 
-                        if (typeof Main.SETTINGS.requirements[action.key] !== 'undefined') {
-                            Main.SETTINGS.requirements[action.key] = true;
-                        }
-
                         if (action.create.upgradeFinishDir) {
                             this.dir = action.create.upgradeFinishDir
                         }
 
                         this.info.inProgress = false;
                         action.used = false;
-                        this.game.VAR.hudLeft.creationBox.hide();
 
-                        this.game.VAR.hudLeft.infoBox.showDescription(this.game.VAR.sellectedObj.info.descriptios());
                         if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
-
+                            this.game.VAR.hudLeft.creationBox.hide();
+                            this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios());
                             this.game.VAR.hudLeft.actionBox.set(this.info.actions);
                         }
                     }

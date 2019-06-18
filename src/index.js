@@ -23,6 +23,7 @@ class Game {
             gold_icon: 'images/gold_icon.png',
             wood_icon: 'images/wood_icon.png',
             home_icon: 'images/home_icon.png',
+            mousePoiter: 'images/poiter.png',
             S_peasantSelected1: 'sounds/selected1.wav',
             S_peasantSelected2: 'sounds/selected2.wav',
             S_peasantSelected3: 'sounds/selected3.wav',
@@ -62,6 +63,7 @@ class Game {
             S_archerMove3: 'sounds/archer_move3.wav',
             S_archerMove4: 'sounds/archer_move4.wav',
             S_archer_created: 'sounds/archer_created.wav',
+            S_constrct: 'sounds/constrct.wav',
         }
 
         new Leya(gameWidth, gameHeight, orientation, scallable, mobile, assets)

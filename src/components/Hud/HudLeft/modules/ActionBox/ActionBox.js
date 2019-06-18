@@ -32,7 +32,8 @@ class ActionBox {
                     if (action.currentAction.requirements) {
                         req = action.currentAction.requirements.every((req) => Main.SETTINGS.requirements[req])
                     }
-                    if (req && action.currentAction.used) {
+
+                    if (req && action.currentAction.used && !Main.SETTINGS.requirements[action.currentAction.key]) {
                         action.used = action.currentAction.used;
                         action.animations.playOnce({ key: actions[i].key });
                         action.x = x;

@@ -207,9 +207,9 @@ class Units extends Sprite {
         // this.image = this.AssetManager.get('chop')
 
         if (_nextStep.x > startPos.x && _nextStep.y > startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_right_down';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_right_down';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -220,12 +220,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_right_down';
             } else {
-                this.dir = 'idle_right_down';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x === startPos.x && _nextStep.y > startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_down';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_down';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -236,12 +236,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_down';
             } else {
-                this.dir = 'idle_down';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y > startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_left_down';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_left_down';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -252,12 +252,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_left_down';
             } else {
-                this.dir = 'idle_left_down';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y === startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_left';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_left';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -268,12 +268,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_left';
             } else {
-                this.dir = 'idle_left';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x < startPos.x && _nextStep.y < startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_left_up';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_left_up';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -284,12 +284,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_left_up';
             } else {
-                this.dir = 'idle_left_up';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x === startPos.x && _nextStep.y < startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_up';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_up';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -300,12 +300,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_up';
             } else {
-                this.dir = 'idle_up';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x > startPos.x && _nextStep.y < startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_right_up';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_right_up';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -316,12 +316,12 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_right_up';
             } else {
-                this.dir = 'idle_right_up';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else if (_nextStep.x > startPos.x && _nextStep.y === startPos.y) {
-            if (this.cargo === 'gold') {
+            if (this.cargo === 'gold' && this.isMoving) {
                 this.dir = 'move_gold_right';
-            } else if (this.cargo === 'wood') {
+            } else if (this.cargo === 'wood' && this.isMoving) {
                 this.dir = 'move_wood_right';
             } else if (this.inWooding) {
                 this.image = this.AssetManager.get('chop');
@@ -332,7 +332,7 @@ class Units extends Sprite {
             } else if (this.isMoving) {
                 this.dir = 'move_right';
             } else {
-                this.dir = 'idle_right';
+                this.dir = `idle${this.dir.slice(4)}`;
             }
         } else {
             this.dir = `idle${this.dir.slice(4)}`;

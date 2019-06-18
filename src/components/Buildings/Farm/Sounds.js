@@ -7,6 +7,9 @@ class Sounds {
         this.move = [
 
         ]
+        this.building = [
+            'S_constrct'
+        ]
     }
 
 }
