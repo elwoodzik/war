@@ -28,7 +28,7 @@ class Tower extends Buildings {
                     key: 'tower_arrow',
                     woodCost: 0,
                     goldCost: 300,
-                    time: 22100 / Main.SETTINGS.buildSpeed,
+                    time: 22100 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     used: true,
                     create: {
@@ -45,7 +45,7 @@ class Tower extends Buildings {
                     key: 'tower_cannon',
                     woodCost: 0,
                     goldCost: 300,
-                    time: 22100 / Main.SETTINGS.buildSpeed,
+                    time: 22100 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     used: true,
                     create: {

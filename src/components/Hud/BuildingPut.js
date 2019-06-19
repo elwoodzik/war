@@ -133,10 +133,10 @@ class BuildingPut extends Sprite {
         building.info.inProgress = true;
         building.info.inProgressTime = this.action.time;
 
-        Main.SETTINGS.gold -= this.action.goldCost;
-        Main.SETTINGS.wood -= this.action.woodCost;
-        this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold);
-        this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood);
+        Main.SETTINGS.player.gold -= this.action.goldCost;
+        Main.SETTINGS.player.wood -= this.action.woodCost;
+        this.game.VAR.hudTop.goldText.use(Main.SETTINGS.player.gold);
+        this.game.VAR.hudTop.woodText.use(Main.SETTINGS.player.wood);
 
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objID === building.objID) {
             this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: this.action.key });

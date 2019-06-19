@@ -11,6 +11,8 @@ class Building extends Sprite {
 
         this.buildingPut = {};
 
+        this.enemy = options.enemy || false;
+
         this.completed = options.completed || false;
 
         this.buildingState = options.buildingState || 'complete';
@@ -21,7 +23,7 @@ class Building extends Sprite {
 
         if (this.completed) {
             this.dir = 'complete';
-            this.key = 'buildings';
+            // this.key = 'buildings';
             this.image = this.AssetManager.get(this.key);
         }
         // const startPos = this.game.VAR.pathfinder.getTileBySprite(this);
@@ -43,12 +45,9 @@ class Building extends Sprite {
         } else {
             this.getRandomSelectedSound('building');
         }
-
-        // }
     }
 
     isBuilt() {
-        console.log(this.completed)
         if (this.completed) {
             this.currentHp = this.hitPointsMax;
         }
@@ -65,20 +64,6 @@ class Building extends Sprite {
         }
     }
 
-    // getRandomSelectedSound() {
-    //     if (this.sounds && this.sounds.selected && this.sounds.selected.length > 0) {
-    //         const rand = this.game.rand(0, this.sounds.selected.length - 1);
-    //         this.AssetManager.play(this.sounds.selected[rand]);
-    //     }
-    // }
-
-    // getRandomMoveSound() {
-    //     if (this.sounds && this.sounds.move && this.sounds.move.length > 0) {
-    //         const rand = this.game.rand(0, this.sounds.move.length - 1);
-    //         this.AssetManager.play(this.sounds.move[rand]);
-    //     }
-    // }
-
     // getRandomActionCompletedSound() {
     //     if (this.sounds && this.sounds.actionCompleted && this.sounds.actionCompleted.length > 0) {
     //         const rand = this.game.rand(0, this.sounds.actionCompleted.length - 1);
@@ -86,28 +71,22 @@ class Building extends Sprite {
     //     }
     // }
 
-    // onBuilding() {
-    //     this.doInTime(this.buildingTime, () => {
-
-    //     })
-    // }
-
     onActionClick = (action) => {
-        if (Main.SETTINGS.gold >= action.goldCost && Main.SETTINGS.wood >= action.woodCost) {
-            if (Main.SETTINGS.people.length < Main.SETTINGS.homeMax) {
+        if (Main.SETTINGS.player.gold >= action.goldCost && Main.SETTINGS.player.wood >= action.woodCost) {
+            if (Main.SETTINGS.player.people.length < Main.SETTINGS.player.homeMax) {
                 this.game.VAR.hudLeft.infoBox.hideDescription();
                 this.game.VAR.hudLeft.actionBox.hide();
 
                 this.info.inProgress = true;
                 this.info.inProgressTime = action.time;
-                Main.SETTINGS.gold -= action.goldCost;
-                Main.SETTINGS.wood -= action.woodCost;
-                this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold)
-                this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood)
+                Main.SETTINGS.player.gold -= action.goldCost;
+                Main.SETTINGS.player.wood -= action.woodCost;
+                this.game.VAR.hudTop.goldText.use(Main.SETTINGS.player.gold)
+                this.game.VAR.hudTop.woodText.use(Main.SETTINGS.player.wood)
                 this.game.VAR.hudLeft.creationBox.icon.animations.playOnce({ key: action.key });
 
-                if (typeof Main.SETTINGS.requirements[action.key] !== 'undefined') {
-                    Main.SETTINGS.requirements[action.key] = true;
+                if (typeof Main.SETTINGS.player.requirements[action.key] !== 'undefined') {
+                    Main.SETTINGS.player.requirements[action.key] = true;
                 }
 
                 if (action.create.upgradeDir) {
@@ -131,7 +110,6 @@ class Building extends Sprite {
                             });
                             this.info.inProgress = false;
 
-
                             if (this.game.VAR.sellectedObj && this.objID === this.game.VAR.sellectedObj.objID) {
                                 this.game.VAR.hudLeft.creationBox.hide();
                                 this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios());
@@ -139,12 +117,12 @@ class Building extends Sprite {
                             }
 
                             unit.AssetManager.play(unit.sounds.created[0]);
-                            Main.SETTINGS.people.push(unit);
-                            this.game.VAR.hudTop.homeTextCurrent.use(Main.SETTINGS.people.length);
+                            Main.SETTINGS.player.people.push(unit);
+                            this.game.VAR.hudTop.homeTextCurrent.use(Main.SETTINGS.player.people.length);
                             this.game.sortByIndex();
                         });
                     } else if (action.create.upgrade) {
-                        Main.SETTINGS.upgrade[action.create.upgrade] += action.create.upgradeValue;
+                        Main.SETTINGS.player.upgrade[action.create.upgrade] += action.create.upgradeValue;
 
                         if (action.create.upgradeFinishDir) {
                             this.dir = action.create.upgradeFinishDir
@@ -157,6 +135,8 @@ class Building extends Sprite {
                             this.game.VAR.hudLeft.creationBox.hide();
                             this.game.VAR.hudLeft.infoBox.showDescription(this.info.descriptios());
                             this.game.VAR.hudLeft.actionBox.set(this.info.actions);
+                        } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.objectType === 'unit') {
+                            this.game.VAR.hudLeft.infoBox.showDescription(this.game.VAR.sellectedObj.info.descriptios());
                         }
                     }
                 });
@@ -229,7 +209,6 @@ class Building extends Sprite {
     update(dt) {
         super.update(dt);
 
-
         if (this.info.inProgress && this.dir !== 'complete') {
             this.currentHp = Math.ceil(this.timeLocal / (this.info.inProgressTime / this.hitPointsMax));
             this.info.currentHp = this.currentHp;
@@ -254,21 +233,6 @@ class Building extends Sprite {
             key: this.dir
         });
     }
-
-    // restartPosition() {
-    //     if (this.nextPosition) {
-    //         this.game.VAR.pathfinder.reRenderTile(this.nextPosition.row, this.nextPosition.column, 1);
-    //     }
-
-    //     if (this.currentPosition) {
-    //         this.game.VAR.pathfinder.reRenderTile(this.currentPosition.row, this.currentPosition.column, 1);
-    //     }
-
-
-    //     this.nextPosition = null;
-    //     this.currentPosition = null;
-    // }
-
 
     unWalkable(index, type, cost) {
         for (let i = 0; i < this.width; i += 32) {

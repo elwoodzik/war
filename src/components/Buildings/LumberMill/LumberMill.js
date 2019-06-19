@@ -33,7 +33,7 @@ class LumberMill extends Buildings {
                     woodCost: 400,
                     goldCost: 800,
 
-                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    time: 45000 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     used: true,
                     create: {
@@ -49,7 +49,7 @@ class LumberMill extends Buildings {
                     key: 'arrowUpgrade2',
                     woodCost: 400,
                     goldCost: 800,
-                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    time: 45000 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     requirements: ['arrowUpgrade1'],
                     used: true,
@@ -66,7 +66,7 @@ class LumberMill extends Buildings {
                     key: 'arrowUpgrade3',
                     woodCost: 400,
                     goldCost: 800,
-                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    time: 45000 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     requirements: ['arrowUpgrade2'],
                     used: true,
@@ -92,7 +92,7 @@ class LumberMill extends Buildings {
         super.isBuilt();
 
         if (this.completed) {
-            Main.SETTINGS.requirements.lumbermill = true;
+            Main.SETTINGS.player.requirements.lumbermill = true;
         }
     }
 }

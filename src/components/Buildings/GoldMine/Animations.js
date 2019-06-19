@@ -2,7 +2,7 @@
 class Animations {
     constructor(sprite) {
         sprite.animations.add({
-            key: 'idle',
+            key: 'complete',
             frames: [
                 { sx: 12, sy: 10, fW: 96, fH: 96, },
             ]

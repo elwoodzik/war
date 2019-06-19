@@ -12,8 +12,8 @@ class Town extends Buildings {
         this.dir = 'complete';
         this.armor = 0;
         this.hitPointsMax = 2230;
-        
-        this.isBuilt();
+        console.log(Main.SETTINGS)
+        // this.isBuilt();
 
         this.info = {
             imageKey: 'town',
@@ -32,7 +32,7 @@ class Town extends Buildings {
                     key: 'peasant',
                     woodCost: 0,
                     goldCost: 400,
-                    time: 45000 / Main.SETTINGS.buildSpeed,
+                    time: 45000 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     used: true,
                     create: {
@@ -47,7 +47,7 @@ class Town extends Buildings {
         new Animations(this);
         this.sounds = new Sounds();
         this.unWalkable(5, 'town');
-        
+
     }
 
     update(dt) {
@@ -57,7 +57,7 @@ class Town extends Buildings {
     onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold' || this.game.VAR.sellectedObj.cargo === 'wood')) {
             this.game.VAR.sellectedObj.pathMove.restartPosition();
-            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
+            this.game.VAR.sellectedObj.goToBuilding(Main.SETTINGS.player.town, 2);
             this.game.VAR.sellectedObj.getRandomMoveSound();
         } else {
             return false;

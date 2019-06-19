@@ -32,7 +32,7 @@ class Barracks extends Buildings {
                     key: 'warrior',
                     woodCost: 0,
                     goldCost: 600,
-                    time: 60000 / Main.SETTINGS.buildSpeed,
+                    time: 60000 / Main.SETTINGS.player.buildSpeed,
                     onActionClick: this.onActionClick,
                     used: true,
                     create: {
@@ -46,7 +46,7 @@ class Barracks extends Buildings {
                     key: 'archer',
                     woodCost: 50,
                     goldCost: 500,
-                    time: 70000 / Main.SETTINGS.buildSpeed,
+                    time: 70000 / Main.SETTINGS.player.buildSpeed,
                     requirements: ['lumbermill'],
                     onActionClick: this.onActionClick,
                     used: true,

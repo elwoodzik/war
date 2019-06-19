@@ -12,11 +12,11 @@ class Units extends Sprite {
 
         this.currentPosition = null;
         this.nextPosition = null;
-        this.speed = 60 * Main.SETTINGS.unitsSpeed;
+        this.speed = 60 * Main.SETTINGS.player.unitsSpeed;
         this.isAttacking = false;
         this.enemy = options.enemy || false;
-
-        // this.game.VAR.map.addToFog(this.x, this.y, 32);
+        this.townPlayer = options.enemy ? 'enemy' : 'player'
+        this.toBuilding = null;
 
         this.pathMove = new PathMove(this.game, {
             sprite: this,
@@ -26,7 +26,7 @@ class Units extends Sprite {
 
         this.inRange = this.game.add.inRange({
             element: this,
-            target: Main.SETTINGS.people,
+            target: Main.SETTINGS.player.people,
             isRender: false,
             zIndex: 2,
             radius: 120,
@@ -56,15 +56,15 @@ class Units extends Sprite {
     }
 
     setDmg(min, max) {
-        return () => [min + Main.SETTINGS.upgrade.sword, max + Main.SETTINGS.upgrade.sword];
+        return () => [min + Main.SETTINGS.player.upgrade.sword, max + Main.SETTINGS.player.upgrade.sword];
     }
 
     setRangeDmg(min, max) {
-        return () => [min + Main.SETTINGS.upgrade.arrow, max + Main.SETTINGS.upgrade.arrow];
+        return () => [min + Main.SETTINGS.player.upgrade.arrow, max + Main.SETTINGS.player.upgrade.arrow];
     }
 
     setArmor(val) {
-        return () => val + Main.SETTINGS.upgrade.armor;
+        return () => val + Main.SETTINGS.player.upgrade.armor;
     }
 
     getRandomSelectedSound() {
@@ -154,57 +154,12 @@ class Units extends Sprite {
         this.updateBorder();
     }
 
-    // onHitEnemy(enemy) {
-    //     if (enemy.used) {
-    //         const dmg = this.game.rand(this.sprite.dmg[0], this.sprite.dmg[1]);
-    //         enemy.currentHp -= dmg - enemy.armor;
-
-    //         if (enemy.currentHp <= 0) {
-    //             enemy.used = false;
-    //             this.sprite.isAttacking = false;
-    //             this.sprite.isMoving = false;
-    //             if (this.spriteAnimation && typeof this.spriteAnimation === 'function') {
-    //                 this.spriteAnimation(this.currentTile, this.nextStep);
-    //             }
-
-    //             if (enemy.pathMove.nextTile) {
-    //                 enemy.pathMove.nextTile.type = 'empty';
-    //                 this.game.easystar.setAdditionalPointCost(enemy.pathMove.nextTile.row, enemy.pathMove.nextTile.column, 0);
-    //             }
-    //             if (enemy.pathMove.currentTile) {
-    //                 enemy.pathMove.currentTile.type = 'empty';
-    //                 this.game.easystar.setAdditionalPointCost(enemy.pathMove.currentTile.row, enemy.pathMove.currentTile.column, 0);
-    //             }
-    //             // this.currentTile.type = 'solid';
-    //             // this.game.easystar.setAdditionalPointCost(this.currentTile.row, this.currentTile.column, 200);
-
-    //             enemy.unSelectedBorder();
-    //             this.sprite.attackTarget = null;
-    //         } else {
-    //             this.followEnemy(enemy);
-    //         }
-    //     } else {
-    //         this.sprite.attackTarget = null;
-    //         this.sprite.isAttacking = false;
-    //         this.sprite.isMoving = false;
-    //         if (this.spriteAnimation && typeof this.spriteAnimation === 'function') {
-    //             this.spriteAnimation(this.currentTile, this.nextStep);
-    //         }
-    //     }
-    // }
-    // upgrade(type) {
-    //     if (type === 'sword') {
-    //         this.
-    //     }
-    // }
-
     getAnimationInMove(startPos, nextStep, callback) {
         const _nextStep = { x: nextStep.x * 32, y: nextStep.y * 32 };
 
         if (this.type === 'worker') {
             this.image = this.AssetManager.get('peasant');
         }
-        // this.image = this.AssetManager.get('chop')
 
         if (_nextStep.x > startPos.x && _nextStep.y > startPos.y) {
             if (this.cargo === 'gold' && this.isMoving) {

@@ -53,33 +53,65 @@ class Main {
             this.game.VAR.map = map;
 
             Main.SETTINGS = {
-                gold: 200000, //1500,
-                goldUpdateBy: 100,
-                wood: 500000,
-                woodUpdateBy: 100,
-                homeMax: 400,
-                people: [],
-                requirements: {
-                    lumbermill: false,
-                    swordUpgrade1: false,
-                    swordUpgrade2: false,
-                    swordUpgrade3: false,
-                    shieldUpgrade1: false,
-                    shieldUpgrade2: false,
-                    shieldUpgrade3: false,
-                    arrowUpgrade1: false,
-                    arrowUpgrade2: false,
-                    arrowUpgrade3: false,
+                player: {
+                    gold: 200000, //1500,
+                    goldUpdateBy: 100,
+                    wood: 500000,
+                    woodUpdateBy: 100,
+                    homeMax: 400,
+                    people: [],
+                    requirements: {
+                        lumbermill: false,
+                        swordUpgrade1: false,
+                        swordUpgrade2: false,
+                        swordUpgrade3: false,
+                        shieldUpgrade1: false,
+                        shieldUpgrade2: false,
+                        shieldUpgrade3: false,
+                        arrowUpgrade1: false,
+                        arrowUpgrade2: false,
+                        arrowUpgrade3: false,
+                    },
+                    buildSpeed: 44, //default 1
+                    timeInMine: 4500,
+                    timeInTown: 2500,
+                    timeInForest: 15000,
+                    unitsSpeed: 1 * 1.5,
+                    upgrade: {
+                        sword: 0,
+                        armor: 0,
+                        arrow: 0
+                    }
                 },
-                buildSpeed: 44, //default 1
-                timeInMine: 4500,
-                timeInTown: 2500,
-                timeInForest: 15000,
-                unitsSpeed: 1 * 1.5,
-                upgrade: {
-                    sword: 0,
-                    armor: 0,
-                    arrow: 0
+                enemy: {
+                    gold: 200000, //1500,
+                    goldUpdateBy: 100,
+                    wood: 500000,
+                    woodUpdateBy: 100,
+                    homeMax: 400,
+                    people: [],
+                    requirements: {
+                        lumbermill: false,
+                        swordUpgrade1: false,
+                        swordUpgrade2: false,
+                        swordUpgrade3: false,
+                        shieldUpgrade1: false,
+                        shieldUpgrade2: false,
+                        shieldUpgrade3: false,
+                        arrowUpgrade1: false,
+                        arrowUpgrade2: false,
+                        arrowUpgrade3: false,
+                    },
+                    buildSpeed: 44, //default 1
+                    timeInMine: 4500,
+                    timeInTown: 2500,
+                    timeInForest: 15000,
+                    unitsSpeed: 1 * 1.5,
+                    upgrade: {
+                        sword: 0,
+                        armor: 0,
+                        arrow: 0
+                    }
                 }
             }
 
@@ -89,9 +121,9 @@ class Main {
             this.game.VAR.hudLeft = new HudLeft(this.game, { zIndex: 50 });
             this.game.VAR.textError = new TextError(this.game, { zIndex: 50 });
 
-            this.game.VAR.hudTop.goldText.use(Main.SETTINGS.gold);
-            this.game.VAR.hudTop.woodText.use(Main.SETTINGS.wood);
-            this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.homeMax);
+            this.game.VAR.hudTop.goldText.use(Main.SETTINGS.player.gold);
+            this.game.VAR.hudTop.woodText.use(Main.SETTINGS.player.wood);
+            this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.player.homeMax);
 
             this.game.easystar = new EasyStar.js();
             this.game.easystar.setAcceptableTiles([266, 349, 116, 117, 137]);
@@ -114,31 +146,20 @@ class Main {
                 followed: this.game.VAR.cameraMan
             })
 
-            // Main.SETTINGS.people.push(new Peasant(this.game, {
-            //     key: 'peasant',
-            //     x: 32 * 3,
-            //     y: 32 * 12
-            // }));
-
-            // Main.SETTINGS.people.push(new Peasant(this.game, {
-            //     key: 'peasant',
-            //     x: 32 * 14,
-            //     y: 32 * 13
-            // }));
-
-            Main.SETTINGS.people.push(new Peasant(this.game, {
+            Main.SETTINGS.player.people.push(new Peasant(this.game, {
                 key: 'peasant',
                 x: 32 * 14,
                 y: 32 * 14
             }));
-            this.game.VAR.town = new Town(this.game, {
+
+            Main.SETTINGS.player.town = new Town(this.game, {
                 key: 'buildings',
                 x: 32 * 15,
                 y: 32 * 12,
                 completed: true
             })
 
-            // Main.SETTINGS.people.push(new Warrior(this.game, {
+            // Main.SETTINGS.player.people.push(new Warrior(this.game, {
             //     key: 'warrior',
             //     x: 32 * 14,
             //     y: 32 * 12
@@ -171,7 +192,7 @@ class Main {
             //     y: 32 * 15
             // });
 
-            // Main.SETTINGS.people.push(new Archer(this.game, {
+            // Main.SETTINGS.player.people.push(new Archer(this.game, {
             //     key: 'archer',
             //     x: 32 * 7,
             //     y: 32 * 12
@@ -214,16 +235,17 @@ class Main {
                 completed: true
             })
 
-            this.game.VAR.goldMine = new GoldMine(this.game, {
+            new GoldMine(this.game, {
                 key: 'gold',
                 x: 32 * 2,
                 y: 32 * 7,
+                completed: true
             })
 
             this.mousePoiter = this.game.add.image({ x: -300, y: -300, key: "mousePoiter", used: false });
 
             this.game.easystar.setGrid(this.game.VAR.map.mapTilesLayers[0].pathfinder);
-            // grunt.move(null, this.game.VAR.town)
+            // grunt.move(null,  Main.SETTINGS.player.town)
             // grunt.move({ row: 5, column: 25 })
             for (let i = 0; i < 5; i++) {
                 const pes = new Peasant(this.game, {
@@ -232,7 +254,7 @@ class Main {
                     y: 32 * 13
                 });
                 // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
-                Main.SETTINGS.people.push(pes);
+                Main.SETTINGS.player.people.push(pes);
 
             }
             for (let i = 0; i < 5; i++) {
@@ -242,7 +264,7 @@ class Main {
                     y: 32 * 14
                 });
                 // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
-                Main.SETTINGS.people.push(pes);
+                Main.SETTINGS.player.people.push(pes);
 
             }
             for (let i = 0; i < 5; i++) {
@@ -252,7 +274,7 @@ class Main {
                     y: 32 * 15
                 });
                 // pes.pathMove.move(pes.pathMove.findShortPathToBuilding(this.game.VAR.goldMine));
-                Main.SETTINGS.people.push(pes);
+                Main.SETTINGS.player.people.push(pes);
 
             }
 
@@ -262,7 +284,7 @@ class Main {
             //         x: 32 * (i + 3),
             //         y: 32 * 21
             //     });
-            //     Main.SETTINGS.people.push(pes);
+            //     Main.SETTINGS.player.people.push(pes);
             //     // pes.move(null, this.game.VAR.goldMine, 1);
 
             // }
@@ -271,7 +293,7 @@ class Main {
             this.game.VAR.sellectedBorder = this.game.add.rect({ fill: null, strokeColor: 'yellow', zIndex: 2 })
             this.game.VAR.sellectedBorder.hide();
 
-            this.game.VAR.hudTop.homeTextCurrent.use(Main.SETTINGS.people.length)
+            this.game.VAR.hudTop.homeTextCurrent.use(Main.SETTINGS.player.people.length)
             this.rightMouseClick();
             this.leftMouseClick();
             this.game.sortByIndex();
@@ -363,7 +385,7 @@ class Main {
                     const worker = this.game.VAR.sellectedObj;
 
                     worker.pathMove.move(endPos, (pathMove, peaseant) => {
-                        if (Main.SETTINGS.gold >= peaseant.buildingPut.action.goldCost && Main.SETTINGS.wood >= peaseant.buildingPut.action.woodCost) {
+                        if (Main.SETTINGS.player.gold >= peaseant.buildingPut.action.goldCost && Main.SETTINGS.player.wood >= peaseant.buildingPut.action.woodCost) {
 
                             peaseant.dir = `idle${peaseant.dir.slice(4)}`;
                             pathMove.nextTile.type = 'empty';

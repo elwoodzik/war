@@ -36,8 +36,8 @@ class Farm extends Buildings {
     isBuilt() {
         super.isBuilt();
         if (this.completed) {
-            Main.SETTINGS.homeMax += Farm.addPeople;
-            this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.homeMax);
+            Main.SETTINGS.player.homeMax += Farm.addPeople;
+            this.game.VAR.hudTop.homeTextMax.use(Main.SETTINGS.player.homeMax);
         }
     }
 }

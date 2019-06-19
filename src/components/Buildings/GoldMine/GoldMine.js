@@ -6,7 +6,7 @@ class GoldMine extends Buildings {
     constructor(game, options) {
         super(game, options);
 
-        this.dir = 'inMine';
+        this.dir = 'complete';
         this.usersInMine = 0;
 
         this.info = {
@@ -17,6 +17,8 @@ class GoldMine extends Buildings {
                 'Nieskończone',
                 // 'Wood: 100'
             ],
+            inProgress: false,
+            inProgressTime: 0,
         }
 
         new Animations(this);
@@ -26,12 +28,13 @@ class GoldMine extends Buildings {
 
     onRightClick() {
         if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && this.game.VAR.sellectedObj.cargo === 'empty') {
-            this.game.VAR.sellectedObj.pathMove.restartPosition();
-            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.goldMine, 1);
+            // this.game.VAR.sellectedObj.pathMove.restartPosition();
+            this.game.VAR.sellectedObj.toBuilding = this;
+            this.game.VAR.sellectedObj.goToBuilding(this, 1);
             this.game.VAR.sellectedObj.getRandomMoveSound();
         } else if (this.game.VAR.sellectedObj && this.game.VAR.sellectedObj.type === 'worker' && (this.game.VAR.sellectedObj.cargo === 'gold' || this.game.VAR.sellectedObj.cargo === 'wood')) {
-            this.game.VAR.sellectedObj.pathMove.restartPosition();
-            this.game.VAR.sellectedObj.goToBuilding(this.game.VAR.town, 2);
+            // this.game.VAR.sellectedObj.pathMove.restartPosition();
+            this.game.VAR.sellectedObj.goToBuilding(Main.SETTINGS.player.town, 2);
             this.game.VAR.sellectedObj.getRandomMoveSound();
         } else {
             return false;
@@ -44,7 +47,7 @@ class GoldMine extends Buildings {
         if (this.usersInMine > 0) {
             this.dir = 'inMine';
         } else {
-            this.dir = 'idle';
+            this.dir = 'complete';
         }
     }
 

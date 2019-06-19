@@ -30,10 +30,10 @@ class ActionBox {
                     let req = true;
 
                     if (action.currentAction.requirements) {
-                        req = action.currentAction.requirements.every((req) => Main.SETTINGS.requirements[req])
+                        req = action.currentAction.requirements.every((req) => Main.SETTINGS.player.requirements[req])
                     }
 
-                    if (req && action.currentAction.used && !Main.SETTINGS.requirements[action.currentAction.key]) {
+                    if (req && action.currentAction.used && !Main.SETTINGS.player.requirements[action.currentAction.key]) {
                         action.used = action.currentAction.used;
                         action.animations.playOnce({ key: actions[i].key });
                         action.x = x;

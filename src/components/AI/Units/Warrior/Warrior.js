@@ -43,7 +43,7 @@ class Warrior extends Units {
 
         this.inRange = this.game.add.inRange({
             element: this,
-            target: Main.SETTINGS.people,
+            target: Main.SETTINGS.player.people,
             isRender: true,
             zIndex: 2,
             radius: 120
